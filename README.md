@@ -1,10 +1,10 @@
-# pagepal
+# Pagepal
 
 Find your perfect reading match!
 
-With **pagepal**, we aim at reducing book waste. Like us, you probably have a ton of books, sitting on your shelves, which are probably never going to be read again. Wouldn't it be great if you could put those books to good use, and in turn, get new books to read at no cost? With **pagepal**, you can! With our taste-mathcing system, you can find someone with a book that you will love, and you can ask that person for books. If you give a book, you can get a book, while using our *Book Credits* system.
+With **Pagepal**, we aim at reducing waste. Like us, you probably have a ton of books, sitting on your shelves, which are probably never going to be read again. Wouldn't it be great if you could put those books to good use, and in turn, get new books to read at no cost? With **Pagepal**, you can! With our taste-matching system, you can find someone with a book that you will love, and you can ask that person for books. If you give a book, you can get a book, while using our *Book Credits* system.
 
-## High-Level Features Definition
+## High-Priority Features Definition
 
 - User profile
   - personal library of books
@@ -12,7 +12,17 @@ With **pagepal**, we aim at reducing book waste. Like us, you probably have a to
   - *Book Credits*
 - Messaging system
 - Book-matching system (*tinderlike*; if user **A** likes genre **X**, and user **B** has a book of genre **X**, **A** can ask **B** for that book, and if **B** accepts, he will earn book credits)
+- Prioritize closer offers based on Geolocation.
+- Swipe System
 - Book rating system
+
+## Medium-Priority Features
+- Rating other peoples profile (like Uber)
+- Blind Exchange: A user can be available for a random exchange skipping the swiping process.
+
+## Low-Priority Features
+- System to add new books to the database
+- System to payment
 
 ## Book Credits
 
