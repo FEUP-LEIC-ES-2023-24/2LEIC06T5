@@ -5,6 +5,8 @@ def get_book_genre(title):
     response = requests.get(url)
     data = response.json()
 
+    print(response.json())
+
     if 'docs' in data and data['docs']:
         book_info = data['docs'][0]
         if 'subject' in book_info:
