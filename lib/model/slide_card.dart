@@ -7,8 +7,6 @@ class BookCard extends StatelessWidget {
   final Color color;
   final String text;
 
-  final Image loadedImage = const Image(image: AssetImage('assets/dune.png'));
-
   @override
   Widget build(BuildContext context) {
     return Container(
