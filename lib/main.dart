@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pagepal/view/home/chat.dart';
-import 'package:pagepal/view/home/home.dart';
-import 'package:pagepal/view/home/profile.dart';
-import 'package:pagepal/view/home/settings.dart';
-import 'package:pagepal/view/home/shop.dart';
+import 'package:pagepal/view/chat/chat.dart';
+import 'package:pagepal/view/swipe/swipe.dart';
+import 'package:pagepal/view/profile/profile.dart';
+import 'package:pagepal/view/settings/settings.dart';
+import 'package:pagepal/view/shop/shop.dart';
 
 void main() {
   runApp(const MyApp());

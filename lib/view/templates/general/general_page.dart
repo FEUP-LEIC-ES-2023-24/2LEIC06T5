@@ -18,7 +18,7 @@ abstract class GeneralPageState extends State {
         foregroundColor: Colors.white,
         shape: const CircleBorder(),
         onPressed: () => Navigator.pushNamed(context, NavItem.swipePage.page),
-        child: Icon(NavBarItem.swipeItem.icon),
+        child: NavBarItem.swipeItem.icon,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: const BottomNavBar(),

@@ -1,30 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:pagepal/model/nav_item.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 enum NavBarItem {
   shopItem(
-    Icons.storefront,
+    Icon(PhosphorIconsBold.shoppingCart, color: Colors.white, size: 30),
     NavItem.shopPage,
   ),
   messagesItem(
-    Icons.markunread,
+    Icon(
+      PhosphorIconsBold.chatCircle,
+      color: Colors.white,
+      size: 30,
+    ),
     NavItem.messagesPage,
   ),
   swipeItem(
-    Icons.auto_stories,
-    NavItem.swipePage,
-  ),
+      Icon(
+        PhosphorIconsBold.books,
+        color: Colors.white,
+        size: 30,
+      ),
+      NavItem.swipePage),
   profileItem(
-    Icons.person,
+    Icon(
+      PhosphorIconsBold.user,
+      color: Colors.white,
+      size: 30,
+    ),
     NavItem.profilePage,
   ),
   settingsItem(
-    Icons.settings,
+    Icon(
+      PhosphorIconsBold.gear,
+      color: Colors.white,
+      size: 30,
+    ),
     NavItem.settingsPage,
   );
 
   const NavBarItem(this.icon, this.page);
 
-  final IconData icon;
+  final Icon icon;
   final NavItem page;
 }

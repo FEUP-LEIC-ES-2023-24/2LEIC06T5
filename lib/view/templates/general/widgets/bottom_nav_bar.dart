@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:pagepal/model/navbar_item.dart';
 
 class BottomNavBar extends StatelessWidget {
@@ -17,6 +18,14 @@ class BottomNavBar extends StatelessWidget {
     return -1;
   }
 
+  Widget _buildMiddleSeparator() {
+    return SizedBox(
+      height: 60.0,
+      width: 25,
+      child: Container(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final items = <Widget>[];
@@ -26,15 +35,16 @@ class BottomNavBar extends StatelessWidget {
         items.insert(
             idx,
             IconButton(
+                padding: const EdgeInsets.all(0),
                 onPressed: () =>
                     Navigator.pushNamed(context, '/${item.page.page}'),
-                icon: Icon(
-                  item.icon,
-                  color: Colors.white,
-                )));
+                icon: item.icon));
         idx++;
       }
     }
+
+    items.insert(2, _buildMiddleSeparator());
+
     return BottomAppBar(
       shape: const CircularNotchedRectangle(),
       notchMargin: 5,
