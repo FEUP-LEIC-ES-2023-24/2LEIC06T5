@@ -1,47 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:pagepal/view/chat/chat.dart';
+import 'package:pagepal/view/swipe/swipe.dart';
+import 'package:pagepal/view/profile/profile.dart';
+import 'package:pagepal/view/settings/settings.dart';
+import 'package:pagepal/view/shop/shop.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  static GlobalKey<NavigatorState> navigator = GlobalKey<NavigatorState>();
+
+  @override
+  State<MyApp> createState() => MyAppState();
+}
+
+class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'PagePal'),
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(title),
-      ),
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'PagePal',
-            ),
-          ],
-        ),
-      ),
-    );
+        title: 'PagePal',
+        initialRoute: 'swipe',
+        onGenerateRoute: (RouteSettings settings) {
+          switch (settings.name) {
+            case '/chat':
+              return PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const ChatPageView(),
+                transitionDuration: const Duration(seconds: 0),
+                settings: settings,
+              );
+            case '/shop':
+              return PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const ShopPageView(),
+                transitionDuration: const Duration(seconds: 0),
+                settings: settings,
+              );
+            case '/profile':
+              return PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const ProfilePageView(),
+                transitionDuration: const Duration(seconds: 0),
+                settings: settings,
+              );
+            case '/swipe':
+              return PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const SwipePageView(),
+                transitionDuration: const Duration(seconds: 0),
+                settings: settings,
+              );
+            case '/settings':
+              return PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const SettingsPageView(),
+                transitionDuration: const Duration(seconds: 0),
+                settings: settings,
+              );
+          }
+          return PageRouteBuilder(
+            pageBuilder: (_, __, ___) => const SwipePageView(),
+            transitionDuration: const Duration(seconds: 0),
+            settings: settings,
+          );
+        });
   }
 }
