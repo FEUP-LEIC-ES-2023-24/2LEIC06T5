@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:pagepal/model/navbar_item.dart';
 
 class BottomNavBar extends StatelessWidget {
