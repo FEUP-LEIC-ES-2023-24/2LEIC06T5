@@ -17,15 +17,12 @@ class Swiper extends StatelessWidget {
     return Column(children: [
       SizedBox(
         height: 400,
-        child: Flexible(
-          child: CardSwiper(
-            cardsCount: cards.length,
-            cardBuilder:
-                (context, index, percentThresholdX, percentThresholdY) =>
-                    cards[index],
-            duration: const Duration(milliseconds: 200),
-            controller: cardController,
-          ),
+        child: CardSwiper(
+          cardsCount: cards.length,
+          cardBuilder: (context, index, percentThresholdX, percentThresholdY) =>
+              cards[index],
+          duration: const Duration(milliseconds: 200),
+          controller: cardController,
         ),
       ),
       Container(

@@ -6,11 +6,10 @@ class BookCard extends StatelessWidget {
       {super.key,
       required this.color,
       required this.text,
-      this.image = const NetworkImage(
-          'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1555447414i/44767458.jpg')});
+      this.image = const AssetImage("assets/dune.jpg")});
   final Color color;
   final String text;
-  final NetworkImage image;
+  final AssetImage image;
 
   @override
   Widget build(BuildContext context) {
