@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:pagepal/view/swipe/widgets/book_card.dart';
@@ -10,6 +12,15 @@ class Swiper extends StatelessWidget {
     const BookCard(color: Colors.blue, text: 'teste2'),
     const BookCard(color: Colors.green, text: 'teste3')
   ];
+
+  FutureOr<bool> acceptChoice(
+      int previousIndex,
+      int? currentIndex,
+      CardSwiperDirection direction,
+      ) {
+    // TODO: DO SOMETHING GIVEN THE DIRECTION OF THE SWIPE
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +36,8 @@ class Swiper extends StatelessWidget {
                     cards[index],
             duration: const Duration(milliseconds: 200),
             controller: cardController,
+            allowedSwipeDirection: const AllowedSwipeDirection.only(right: true,left: true),
+            onSwipe: acceptChoice,
           ),
         ),
       ),
