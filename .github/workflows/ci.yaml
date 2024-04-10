@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./2LEIC06T5
+        working-directory: ./
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./2LEIC06T5
+        working-directory: ./
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
