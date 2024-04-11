@@ -14,10 +14,10 @@ class Swiper extends StatelessWidget {
   ];
 
   FutureOr<bool> acceptChoice(
-      int previousIndex,
-      int? currentIndex,
-      CardSwiperDirection direction,
-      ) {
+    int previousIndex,
+    int? currentIndex,
+    CardSwiperDirection direction,
+  ) {
     // TODO: DO SOMETHING GIVEN THE DIRECTION OF THE SWIPE
     return false;
   }
@@ -36,7 +36,8 @@ class Swiper extends StatelessWidget {
                     cards[index],
             duration: const Duration(milliseconds: 200),
             controller: cardController,
-            allowedSwipeDirection: const AllowedSwipeDirection.only(right: true,left: true),
+            allowedSwipeDirection:
+                const AllowedSwipeDirection.only(right: true, left: true),
             onSwipe: acceptChoice,
           ),
         ),
