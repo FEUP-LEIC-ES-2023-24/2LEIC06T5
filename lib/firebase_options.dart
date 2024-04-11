@@ -65,5 +65,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'pagepal-101ec.appspot.com',
     iosBundleId: 'com.example.pagepal',
   );
-
 }
