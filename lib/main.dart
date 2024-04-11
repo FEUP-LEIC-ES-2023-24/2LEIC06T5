@@ -4,8 +4,14 @@ import 'package:pagepal/view/swipe/swipe.dart';
 import 'package:pagepal/view/profile/profile.dart';
 import 'package:pagepal/view/settings/settings.dart';
 import 'package:pagepal/view/shop/shop.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+
+Future<void> main() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
