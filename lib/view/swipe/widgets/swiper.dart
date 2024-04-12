@@ -28,18 +28,15 @@ class Swiper extends StatelessWidget {
     return Column(children: [
       SizedBox(
         height: 400,
-        child: Flexible(
-          child: CardSwiper(
-            cardsCount: cards.length,
-            cardBuilder:
-                (context, index, percentThresholdX, percentThresholdY) =>
-                    cards[index],
-            duration: const Duration(milliseconds: 200),
-            controller: cardController,
-            allowedSwipeDirection:
-                const AllowedSwipeDirection.only(right: true, left: true),
-            onSwipe: acceptChoice,
-          ),
+        child: CardSwiper(
+          cardsCount: cards.length,
+          cardBuilder: (context, index, percentThresholdX, percentThresholdY) =>
+              cards[index],
+          duration: const Duration(milliseconds: 200),
+          controller: cardController,
+          allowedSwipeDirection:
+              const AllowedSwipeDirection.only(right: true, left: true),
+          onSwipe: acceptChoice,
         ),
       ),
       Container(
