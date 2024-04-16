@@ -12,9 +12,7 @@ dependencies:
   phosphor_flutter: any
   flutter_card_swiper: ^7.0.0
   flutter_launcher_icons: ^0.13.1
-  http: ^1.2.1
-  
-
+  http: ^1.2.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

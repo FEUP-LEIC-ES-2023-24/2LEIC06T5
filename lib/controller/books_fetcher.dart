@@ -29,10 +29,10 @@ class BooksFetcher {
           genres: genres,
           isbn: isbn,
           lang: '',
-          pubYear: int.parse(data['publish_date']),
+          pubYear: data['publish_date'],
           title: data['title']);
     } else {}
     return Book(
-        authors: [], genres: [], isbn: '', lang: '', pubYear: 0, title: '');
+        authors: [], genres: [], isbn: '', lang: '', pubYear: '', title: '');
   }
 }
