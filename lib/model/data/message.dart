@@ -5,12 +5,14 @@ class Message {
   final String recieverID;
   final String text;
   final Timestamp date;
+  final bool isRead;
 
   Message({
     required this.senderID,
     required this.recieverID,
     required this.text,
-    required this.date
+    required this.date,
+    required this.isRead
   });
 
   factory Message.fromMap(Map<String, dynamic> map) {
@@ -18,7 +20,8 @@ class Message {
       senderID: map['senderID'],
       recieverID: map['recieverID'],
       text: map['text'],
-      date: map['date']
+      date: map['date'],
+      isRead: map['isRead']
     );
   }
 
@@ -27,7 +30,8 @@ class Message {
       'senderID' : senderID,
       'recieverID' : recieverID,
       'text' : text,
-      'date' : date
+      'date' : date,
+      'isRead' : isRead
     };
   }
 }
