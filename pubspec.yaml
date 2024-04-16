@@ -17,7 +17,6 @@ dependencies:
   cloud_firestore: any
   logger: ^2.2.0
 
-=======
   http: ^1.2.0
 dev_dependencies:
   flutter_test:
