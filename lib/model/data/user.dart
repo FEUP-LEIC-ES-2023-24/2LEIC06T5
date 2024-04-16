@@ -2,14 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
   final String email;
-  final List<String> likedGenre;
+  final List<dynamic> likedGenres;
   final GeoPoint location;
-  final List<String> owns;
+  final List<dynamic> owns;
   final String username;
 
   User({
     required this.email,
-    required this.likedGenre,
+    required this.likedGenres,
     required this.location,
     required this.owns,
     required this.username
@@ -18,20 +18,20 @@ class User {
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
       email: map['email'],
-      likedGenre: map['likedGenre'],
+      likedGenres: map['likedGenres'],
       location: map['location'],
       owns: map['owns'],
-      username: map['username']
+      username: map['userName']
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'email' : email,
-      'likedGenre' : likedGenre,
+      'likedGenres' : likedGenres,
       'location' : location,
       'owns' : owns,
-      'username' : username
+      'userName' : username
     };
   }
 }
