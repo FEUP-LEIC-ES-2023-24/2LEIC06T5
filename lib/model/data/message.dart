@@ -4,13 +4,13 @@ class Message {
   final String senderID;
   final String recieverID;
   final String text;
-  final Timestamp time;
+  final Timestamp date;
 
   Message({
     required this.senderID,
     required this.recieverID,
     required this.text,
-    required this.time
+    required this.date
   });
 
   factory Message.fromMap(Map<String, dynamic> map) {
@@ -18,7 +18,7 @@ class Message {
       senderID: map['senderID'],
       recieverID: map['recieverID'],
       text: map['text'],
-      time: map['time']
+      date: map['date']
     );
   }
 
@@ -27,7 +27,7 @@ class Message {
       'senderID' : senderID,
       'recieverID' : recieverID,
       'text' : text,
-      'time' : time
+      'date' : date
     };
   }
 }
