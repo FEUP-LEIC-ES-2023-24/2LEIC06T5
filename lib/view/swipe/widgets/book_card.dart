@@ -15,6 +15,7 @@ class BookCard extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
+        color: const Color(0xFFCCD5AE),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Stack(

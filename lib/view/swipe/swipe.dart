@@ -15,10 +15,11 @@ class SwipePageViewState extends GeneralPageState {
     return Column(
       children: [
         buildHeader(),
-        const Padding(
+        const Flexible(child: Padding(
           padding: EdgeInsets.all(5),
           child: Swiper(),
-        ),
+        ))
+        ,
       ],
     );
   }

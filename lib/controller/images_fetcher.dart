@@ -10,6 +10,8 @@ class ImageFetcher {
     final ref = storage.ref().child("$isbn.jpg");
     final url = await ref.getDownloadURL();
 
-    return Image(image: NetworkImage(url),);
+    return Image(
+      image: NetworkImage(url),
+    );
   }
 }

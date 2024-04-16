@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 class Book {
-  Book(
-      {required this.authors,
-      required this.genres,
-      required this.isbn,
-      required this.lang,
-      required this.pubYear,
-      required this.title,
-      required this.image,
-      });
+  Book({
+    required this.authors,
+    required this.genres,
+    required this.isbn,
+    required this.lang,
+    required this.pubYear,
+    required this.title,
+    required this.image,
+  });
 
   final List<String> authors;
   final List<String> genres;

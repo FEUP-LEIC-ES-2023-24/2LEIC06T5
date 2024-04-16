@@ -40,6 +40,12 @@ class BooksFetcher {
           title: data['title']);
     } else {}
     return Book(
-        authors: [], genres: [], isbn: '', lang: '',image: placeholderImage, pubYear: '', title: '');
+        authors: [],
+        genres: [],
+        isbn: '',
+        lang: '',
+        image: placeholderImage,
+        pubYear: '',
+        title: '');
   }
 }
