@@ -7,9 +7,8 @@ class Book {
       required this.lang,
       required this.pubYear,
       required this.title,
-      this.image = const Image(
-        image: AssetImage("assets/dune.jpg"),
-      )});
+      required this.image,
+      });
 
   final List<String> authors;
   final List<String> genres;

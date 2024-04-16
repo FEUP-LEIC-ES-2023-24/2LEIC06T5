@@ -20,7 +20,7 @@ class BookCard extends StatelessWidget {
       child: Stack(
         children: [
           Center(
-            child: book.image!,
+            child: book.image,
           ),
           Align(
             alignment: const Alignment(0, 0.85),
