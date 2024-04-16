@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pagepal/model/message.dart';
 import 'package:pagepal/view/chat/chat.dart';
 import 'package:pagepal/view/swipe/swipe.dart';
 import 'package:pagepal/view/profile/profile.dart';
