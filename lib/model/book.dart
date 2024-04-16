@@ -1,17 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-
 class Book {
-  Book(
-      {required this.authors,
-      required this.genres,
-      required this.isbn,
-      required this.lang,
-      required this.pubYear,
-      required this.title,
-      this.image = const Image(
-        image: AssetImage("assets/dune.jpg"),
-      )});
+  Book({
+    required this.authors,
+    required this.genres,
+    required this.isbn,
+    required this.lang,
+    required this.pubYear,
+    required this.title,
+    required this.image,
+  });
 
   final List<String> authors; //TODO na firebase authors é só 1
   final List<String> genres;

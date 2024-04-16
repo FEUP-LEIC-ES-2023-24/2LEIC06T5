@@ -19,6 +19,7 @@ class Swiper extends StatelessWidget {
     final firstBook = await bookFetcher.searchBookByISBN("0425038912");
     final secondBook = await bookFetcher.searchBookByISBN("1451673310");
     final thirdBook = await bookFetcher.searchBookByISBN("8401434645");
+<<<<<<< HEAD
     
     
     return createBookCards([firstBook,secondBook,thirdBook]);
@@ -26,6 +27,10 @@ class Swiper extends StatelessWidget {
     List<Book> books = await getNearbyUsersBooks();
     return createBookCards(books);
 
+=======
+
+    return createBookCards([firstBook, secondBook, thirdBook]);
+>>>>>>> 84ef857f071055f798c7ca020ced48806e6258da
   }
 
   List<BookCard> createBookCards(List<Book> books) {
@@ -48,45 +53,40 @@ class Swiper extends StatelessWidget {
         future: getBookCards(),
         builder:
             (BuildContext context, AsyncSnapshot<List<BookCard>> bookCards) {
-          final Widget child;
-
           if (bookCards.hasData) {
-            child = SizedBox(
-              height: 400,
-              child: CardSwiper(
-                cardsCount: bookCards.data!.length,
-                cardBuilder:
-                    (context, index, percentThresholdX, percentThresholdY) =>
-                        bookCards.data?[index],
-                duration: const Duration(milliseconds: 200),
-                controller: cardController,
+            return Column(children: [
+              SizedBox(
+                height: 400,
+                child: CardSwiper(
+                  cardsCount: bookCards.data!.length,
+                  cardBuilder:
+                      (context, index, percentThresholdX, percentThresholdY) =>
+                          bookCards.data?[index],
+                  duration: const Duration(milliseconds: 200),
+                  controller: cardController,
+                ),
               ),
-            );
+              Container(
+                padding: const EdgeInsets.only(top: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    buildButton(false, cardController),
+                    buildButton(true, cardController)
+                  ],
+                ),
+              )
+            ]);
           } else if (bookCards.hasError) {
-            child = SizedBox(
+            return SizedBox(
               height: 400,
               child: Text('ERROR BOOK_CARDS: ${bookCards.error}'),
             );
           } else {
-            child = const SizedBox(
-              height: 400,
-              child: Text("LOADING"),
+            return const Center(
+              child: CircularProgressIndicator(color: Color(0xFFCCD5AE),),
             );
           }
-
-          return Column(children: [
-            child,
-            Container(
-              padding: const EdgeInsets.only(top: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  buildButton(false, cardController),
-                  buildButton(true, cardController)
-                ],
-              ),
-            )
-          ]);
         });
   }
 
