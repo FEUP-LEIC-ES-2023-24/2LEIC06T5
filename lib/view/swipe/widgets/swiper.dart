@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:pagepal/controller/books_fetcher.dart';
+import 'package:pagepal/controller/nearby.dart';
 import 'package:pagepal/view/swipe/widgets/book_card.dart';
 
 import '../../../model/book.dart';
@@ -12,13 +13,19 @@ class Swiper extends StatelessWidget {
 
   // TODO: TESTING PURPOSES
   Future<List<BookCard>> getBookCards() async {
+    /*
     final bookFetcher = BooksFetcher();
-
+    
     final firstBook = await bookFetcher.searchBookByISBN("0425038912");
     final secondBook = await bookFetcher.searchBookByISBN("1451673310");
     final thirdBook = await bookFetcher.searchBookByISBN("8401434645");
     
+    
     return createBookCards([firstBook,secondBook,thirdBook]);
+    */
+    List<Book> books = await getNearbyUsersBooks();
+    return createBookCards(books);
+
   }
 
   List<BookCard> createBookCards(List<Book> books) {
