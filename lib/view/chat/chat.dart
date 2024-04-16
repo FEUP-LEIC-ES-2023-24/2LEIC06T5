@@ -1,5 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:pagepal/model/data/message.dart';
+import 'package:pagepal/view/chat/widgets/chat_card.dart';
 import 'package:pagepal/view/templates/general/general_page.dart';
+
+void doNothing() {
+  print('hi');
+}
 
 class ChatPageView extends StatefulWidget {
   const ChatPageView({super.key});
@@ -13,7 +20,8 @@ class ChatPageViewState extends GeneralPageState {
   Widget getBody(BuildContext context) {
     return Column(
       children: [
-        buildHeader()
+        buildHeader(),
+        MessageCard(message: Message(senderID: "John", recieverID: "Doe", text: "Hullo", date: Timestamp.now(), isRead: false), onPressed: doNothing)
       ],
     );
   }
