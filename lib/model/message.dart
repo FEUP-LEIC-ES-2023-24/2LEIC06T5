@@ -1,30 +1,32 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pagepal/model/data/user.dart';
+import 'package:pagepal/model/data/message.dart';
 
 final db = FirebaseFirestore.instance;
 
-Future<Map<String, dynamic>> getRecievedMessages(String userID) async {
+Future<List<Message>> getRecievedMessages(String userID) async {
   final snapshot = await db.collection("message").where("recieverID", isEqualTo: userID).get();
-  Map<String, dynamic> messages = {};
+  List<Message> messages = [];
 
   snapshot.docs.forEach((doc) {
-    messages[doc.id] = doc.data();
+    messages.add(Message.fromMap(doc.data()));
   });
 
   return messages;
 }
 
-Future<Map<String, dynamic>> getSentMessages(String userID) async {
+Future<List<Message>> getSentMessages(String userID) async {
   final snapshot = await db.collection("message").where("senderID", isEqualTo: userID).get();
-  Map<String, dynamic> messages = {};
+  List<Message> messages = [];
 
   snapshot.docs.forEach((doc) {
-    messages[doc.id] = doc.data();
+    messages.add(Message.fromMap(doc.data()));
   });
 
   return messages;
 }
 
-Future<Set<String>> getAllUsersChattedWith(String userID) async {
+Future<List<User>> getAllUsersChattedWith(String userID) async {
   final snapshot = await db.collection("message").where(
     Filter.or(
       Filter("senderID", isEqualTo: userID),
@@ -32,18 +34,25 @@ Future<Set<String>> getAllUsersChattedWith(String userID) async {
     )
   ).get();
 
-  Set<String> users = {};
+  List<User> users = [];
 
-  snapshot.docs.forEach((doc) {
+  for (final doc in snapshot.docs) {
     String sender = doc["senderID"];
     String reciever = doc["recieverID"];
 
     if (sender != userID) {
-      users.add(sender);
+      final userSnap = await db.collection('user').doc(sender).get();
+      Map<String, dynamic>? map = userSnap.data();
+      if (map != null) {
+        users.add(User.fromMap(map));
+      }
     } else if (reciever != userID) {
-      users.add(reciever);
+      final userSnap = await db.collection('user').doc(reciever).get();
+      Map<String, dynamic>? map = userSnap.data();
+      if (map != null) {
+        users.add(User.fromMap(map));
+      }
     }
-  });
-
+  }
   return users;
 }
