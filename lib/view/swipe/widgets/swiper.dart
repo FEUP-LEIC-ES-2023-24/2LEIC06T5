@@ -13,24 +13,21 @@ class Swiper extends StatelessWidget {
 
   // TODO: TESTING PURPOSES
   Future<List<BookCard>> getBookCards() async {
-    /*
+    
     final bookFetcher = BooksFetcher();
     
     final firstBook = await bookFetcher.searchBookByISBN("0425038912");
     final secondBook = await bookFetcher.searchBookByISBN("1451673310");
-    final thirdBook = await bookFetcher.searchBookByISBN("8401434645");
-<<<<<<< HEAD
-    
+    final thirdBook = await bookFetcher.searchBookByISBN("8401434645");    
     
     return createBookCards([firstBook,secondBook,thirdBook]);
-    */
+    
+    /*
     List<Book> books = await getNearbyUsersBooks();
     return createBookCards(books);
+    */
 
-=======
 
-    return createBookCards([firstBook, secondBook, thirdBook]);
->>>>>>> 84ef857f071055f798c7ca020ced48806e6258da
   }
 
   List<BookCard> createBookCards(List<Book> books) {
