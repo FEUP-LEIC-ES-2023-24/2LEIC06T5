@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pagepal/controller/auth/auth_gate.dart';
 import 'package:pagepal/view/chat/chat.dart';
 import 'package:pagepal/view/swipe/swipe.dart';
 import 'package:pagepal/view/profile/profile.dart';
@@ -29,9 +30,15 @@ class MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'PagePal',
-        initialRoute: 'swipe',
+        initialRoute: '/auth',
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
+            case '/auth':
+              return PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const AuthGate(),
+                transitionDuration: const Duration(seconds: 0),
+                settings: settings,
+              );
             case '/chat':
               return PageRouteBuilder(
                 pageBuilder: (_, __, ___) => const ChatPageView(),

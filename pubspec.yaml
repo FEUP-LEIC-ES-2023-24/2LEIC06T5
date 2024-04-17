@@ -12,10 +12,12 @@ dependencies:
   phosphor_flutter: any
   flutter_card_swiper: ^7.0.0
   flutter_launcher_icons: ^0.13.1
-  http: ^1.2.0
-
+  http: any
+  
   firebase_core: ^2.27.0
   cloud_firestore: any
+  firebase_auth: ^4.17.8
+  firebase_ui_auth: ^1.13.1
   flutter_gherkin: ^2.0.0
 
 dev_dependencies:
