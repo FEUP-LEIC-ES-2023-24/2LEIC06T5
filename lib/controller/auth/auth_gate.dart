@@ -57,6 +57,7 @@ class AuthGate extends StatelessWidget {
       'email': user.email,
       'likedGenres': [],
       'owns': [],
+      'Location': const GeoPoint(0, 0),
       'userName': '',
     });
   }
