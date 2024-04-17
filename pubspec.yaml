@@ -17,6 +17,8 @@ dependencies:
   intl_translation: any
   http: any
   
+  firebase_auth: ^4.17.8
+  firebase_ui_auth: ^1.13.1
 
 dev_dependencies:
   flutter_test:
