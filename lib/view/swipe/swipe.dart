@@ -1,3 +1,4 @@
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pagepal/view/swipe/widgets/swiper.dart';
 import 'package:pagepal/view/templates/general/general_page.dart';
@@ -31,6 +32,7 @@ class SwipePageViewState extends GeneralPageState {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              const SignOutButton(),
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(elevation: 10),
