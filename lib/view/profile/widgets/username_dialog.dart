@@ -45,7 +45,7 @@ class ChangeUsernameDialogState extends State {
                 userQuery.docs.first.reference
                     .update({'userName': newUsername});
 
-                Navigator.of(context).pop();
+                if (context.mounted) Navigator.of(context).pop();
               }
             },
             child: const Text("Change!"))
