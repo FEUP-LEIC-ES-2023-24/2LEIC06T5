@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:pagepal/view/profile/widgets/edit_dialog.dart';
-import 'package:pagepal/view/templates/general/general_page.dart';
 import 'package:pagepal/controller/queries.dart';
-import 'package:pagepal/view/templates/general/widgets/app_bar.dart';
+import 'package:pagepal/view/profile/widgets/edit_dialog.dart';
+import 'package:pagepal/controller/books_fetcher.dart';
+import 'package:pagepal/view/profile/widgets/custom_painter.dart';
+import 'package:pagepal/view/profile/widgets/profile_info.dart';
+import 'package:pagepal/view/profile/widgets/small_book_display.dart';
+import 'package:pagepal/view/templates/general/general_page.dart';
 
 class ProfilePageView extends StatefulWidget {
   const ProfilePageView({super.key});
@@ -14,107 +17,131 @@ class ProfilePageView extends StatefulWidget {
 }
 
 class ProfilePageViewState extends GeneralPageState {
-  final _formKey = GlobalKey<FormState>();
   final user = FirebaseAuth.instance.currentUser;
+  @override
+  void initState() {
+    super.initState();
+  }
 
-  String name = '';
-  String isbn = '';
-  String author = '';
+  final List<Image> books = [];
+  static const int numMatches = 42;
+  static const int numTrades = 42;
+  static const int numStars = 4;
+  static const String username = 'Pedro Marta';
+  static const String userTitle = 'Product Manager';
+  static const String location = 'Porto,Portugal';
+  static const NetworkImage profilePic = NetworkImage(
+      // needs to be an image provider to work
+      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png");
+
+  final booksFetcher = BooksFetcher();
+
+  final profileInfo = ProfileInfo(
+      username, userTitle, location, numMatches, numStars, numTrades);
+
+  final smallBoookDisplay = SmallBookDisplay();
 
   @override
   Widget getBody(BuildContext context) {
     return Column(
       children: [
-        Column(
-          children: [
-            const CircleAvatar(
-              backgroundImage: NetworkImage(
-                'https://images.hola.com/us/images/0266-1197a831fb20-d4b3b80e6ea4-1000/square-480/apple-memoji.jpg',
-              ),
-            ),
-            Text(user?.displayName ?? 'error'),
-          ],
-        )
+        profileInfo.getProfileInfo(),
+        profileInfo.getProfileStats(),
+        smallBoookDisplay.getYourBooksBar(),
+        getBooksPics(books)
       ],
     );
   }
 
+  Widget getBooksPics(List<Image> books) {
+    final List<Widget> picBooks = books
+        .map((book) => Container(
+            padding: const EdgeInsets.all(5),
+            child: SizedBox(
+              width: 100,
+              height: 150,
+              child: book,
+            )))
+        .toList();
+    final buttonToAddBook = Container(
+        padding: const EdgeInsets.all(5),
+        child: SizedBox(
+            width: 100,
+            height: 150,
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10), color: Colors.grey),
+              child: IconButton(
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onPressed: () => setState(() {
+                        // TODO: CHANGE THIS
+                        books.add(
+                          const Image(
+                            image: NetworkImage(
+                                "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1555447414i/44767458.jpg"),
+                          ),
+                        );
+                      }),
+                  icon: const Icon(Icons.add)),
+            )));
+
+    picBooks.insert(0, buttonToAddBook);
+
+    return Expanded(
+        child: SingleChildScrollView(
+            child: Wrap(
+      children: picBooks,
+    )));
+  }
+
   @override
   PreferredSizeWidget getAppBar(BuildContext context) {
-    return TopAppBar(
-      appBar: AppBar(
-        title: const Text(
-          "Profile",
-          style: TextStyle(fontSize: 18),
-        ),
-        centerTitle: true,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15)),
-        ),
-        backgroundColor: const Color(0xFFD4A373),
-        foregroundColor: Colors.white,
-        leading: IconButton(
-          icon: const Icon(Icons.add),
-          onPressed: () => showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                    content: Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: TextFormField(
-                                  onSaved: (String? value) => name = value!),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: TextFormField(
-                                onSaved: (String? value) => isbn = value!,
-                              ),
-                            ),
-                            Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: TextFormField(
-                                    onSaved: (String? value) =>
-                                        author = value!)),
-                          ],
-                        )),
-                    actions: [
-                      ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              _formKey.currentState!.save();
-                              addBook(name, isbn, author);
-                              Navigator.of(context).pop();
-                            }
-                          },
-                          child: const Text("Submit"))
-                    ],
-                  )),
-        ),
-        actions: [
-          Padding(
-              padding: const EdgeInsets.all(10),
+    const double heightAppBar = 190;
+    return AppBar(
+        toolbarHeight: heightAppBar,
+        leading: null,
+        automaticallyImplyLeading: false,
+        flexibleSpace: Stack(
+          children: <Widget>[
+            Container(
+              height: heightAppBar * 0.8,
+              color: const Color(0xFFD4A373),
+            ),
+            Container(
+              alignment: Alignment.topRight,
               child: TextButton(
-                onPressed: () => showDialog(
+                    onPressed: () => showDialog(
                   context: context,
                   builder: (context) => const EditProfileDialog(),
                 ),
-                style: TextButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    fixedSize: const Size(70, 5),
-                    backgroundColor: Colors.white,
-                    foregroundColor: const Color(0xFFD4A373)),
-                child: const Text(
-                  'Edit Profile',
-                  style: TextStyle(fontSize: 10),
-                ),
-              ))
-        ],
-      ),
-    );
+                  style: TextButton.styleFrom(
+                      backgroundColor: const Color(0xFFFEFAE0),
+                      foregroundColor: const Color(0xFFD4A373)),
+                  child: const Text('Edit Profile')),
+            ),
+            Container(
+                alignment: Alignment.bottomCenter,
+                child: Stack(
+                  children: [
+                    Container(
+                      alignment: Alignment.bottomCenter,
+                      child: CustomPaint(
+                        size: const Size(30, 70),
+                        painter: customPainter(),
+                      ),
+                    )
+                  ],
+                )),
+            Container(
+              alignment: Alignment.bottomCenter,
+              child:
+                  const CircleAvatar(radius: 35, backgroundImage: profilePic),
+            )
+          ],
+        ));
   }
+
 
   void addBook(String name, String isbn, String author) async {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
