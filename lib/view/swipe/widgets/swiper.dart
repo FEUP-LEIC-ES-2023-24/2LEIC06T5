@@ -27,7 +27,7 @@ class Swiper extends StatelessWidget {
     CardSwiperController cardController = CardSwiperController();
     return Column(children: [
       SizedBox(
-        height: 400,
+        height: 375,
         child: CardSwiper(
           cardsCount: cards.length,
           cardBuilder: (context, index, percentThresholdX, percentThresholdY) =>

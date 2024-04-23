@@ -1,8 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:pagepal/view/templates/general/general_page.dart';
 import 'package:pagepal/controller/queries.dart';
+import 'package:pagepal/view/templates/general/widgets/app_bar.dart';
 
 class ProfilePageView extends StatefulWidget {
   const ProfilePageView({super.key});
@@ -20,46 +24,80 @@ class ProfilePageViewState extends GeneralPageState {
 
   @override
   Widget getBody(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-                  content: Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: TextFormField(
-                                onSaved: (String? value) => name = value!),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: TextFormField(
-                              onSaved: (String? value) => isbn = value!,
-                            ),
-                          ),
-                          Padding(
+    return const Text('Profile');
+  }
+
+  @override
+  PreferredSizeWidget getAppBar(BuildContext context) {
+    return TopAppBar(
+      appBar: AppBar(
+        title: const Text(
+          "Profile",
+          style: TextStyle(fontSize: 18),
+        ),
+        centerTitle: true,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(15)),
+        ),
+        backgroundColor: const Color(0xFFD4A373),
+        foregroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.add),
+          onPressed: () => showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                    content: Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            Padding(
                               padding: const EdgeInsets.all(8),
                               child: TextFormField(
-                                  onSaved: (String? value) => author = value!)),
-                        ],
-                      )),
-                  actions: [
-                    ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            _formKey.currentState!.save();
-                            addBook(name, isbn, author);
-                            Navigator.of(context).pop();
-                          }
-                        },
-                        child: const Text("Submit"))
-                  ],
-                ));
-      },
-      child: const Text("Add book"),
+                                  onSaved: (String? value) => name = value!),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: TextFormField(
+                                onSaved: (String? value) => isbn = value!,
+                              ),
+                            ),
+                            Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: TextFormField(
+                                    onSaved: (String? value) =>
+                                        author = value!)),
+                          ],
+                        )),
+                    actions: [
+                      ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              _formKey.currentState!.save();
+                              addBook(name, isbn, author);
+                              Navigator.of(context).pop();
+                            }
+                          },
+                          child: const Text("Submit"))
+                    ],
+                  )),
+        ),
+        actions: [
+          Padding(
+              padding: const EdgeInsets.all(10),
+              child: TextButton(
+                onPressed: () => {},
+                style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    fixedSize: const Size(70, 5),
+                    backgroundColor: Colors.white,
+                    foregroundColor: const Color(0xFFD4A373)),
+                child: const Text(
+                  'Edit Profile',
+                  style: TextStyle(fontSize: 10),
+                ),
+              ))
+        ],
+      ),
     );
   }
 

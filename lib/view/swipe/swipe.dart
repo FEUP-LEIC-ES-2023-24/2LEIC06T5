@@ -24,6 +24,11 @@ class SwipePageViewState extends GeneralPageState {
     );
   }
 
+  @override
+  PreferredSizeWidget? getAppBar(BuildContext context) {
+    return null;
+  }
+
   Widget buildHeader() {
     return Column(
       children: [

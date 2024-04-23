@@ -20,4 +20,9 @@ class ChatPageViewState extends GeneralPageState {
           children: [Text("CHAT PAGE")],
         ));
   }
+
+  @override
+  PreferredSizeWidget? getAppBar(BuildContext context) {
+    return null;
+  }
 }
