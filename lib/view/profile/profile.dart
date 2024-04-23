@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
+import 'package:pagepal/view/profile/widgets/edit_dialog.dart';
 import 'package:pagepal/view/templates/general/general_page.dart';
 import 'package:pagepal/controller/queries.dart';
 import 'package:pagepal/view/templates/general/widgets/app_bar.dart';
@@ -17,6 +15,7 @@ class ProfilePageView extends StatefulWidget {
 
 class ProfilePageViewState extends GeneralPageState {
   final _formKey = GlobalKey<FormState>();
+  final user = FirebaseAuth.instance.currentUser;
 
   String name = '';
   String isbn = '';
@@ -24,7 +23,20 @@ class ProfilePageViewState extends GeneralPageState {
 
   @override
   Widget getBody(BuildContext context) {
-    return const Text('Profile');
+    return Column(
+      children: [
+        Column(
+          children: [
+            const CircleAvatar(
+              backgroundImage: NetworkImage(
+                'https://images.hola.com/us/images/0266-1197a831fb20-d4b3b80e6ea4-1000/square-480/apple-memoji.jpg',
+              ),
+            ),
+            Text(user?.displayName ?? 'error'),
+          ],
+        )
+      ],
+    );
   }
 
   @override
@@ -85,7 +97,10 @@ class ProfilePageViewState extends GeneralPageState {
           Padding(
               padding: const EdgeInsets.all(10),
               child: TextButton(
-                onPressed: () => {},
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => const EditProfileDialog(),
+                ),
                 style: TextButton.styleFrom(
                     padding: EdgeInsets.zero,
                     fixedSize: const Size(70, 5),
