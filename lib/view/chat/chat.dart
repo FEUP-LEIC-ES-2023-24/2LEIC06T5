@@ -5,10 +5,6 @@ import 'package:pagepal/model/message.dart';
 import 'package:pagepal/view/chat/widgets/chat_card.dart';
 import 'package:pagepal/view/templates/general/general_page.dart';
 
-void doNothing() {
-  print('hi');
-}
-
 class ChatPageView extends StatefulWidget {
   const ChatPageView({super.key});
 

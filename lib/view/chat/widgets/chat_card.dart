@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 import 'package:cloud_firestore/cloud_firestore.dart';
-=======
->>>>>>> 87a3f7c (add intl dependency for timestamp formatting, and add a basic version of the message Widget)
 import 'package:flutter/material.dart';
 import 'package:pagepal/model/data/message.dart';
 import 'package:intl/intl.dart';
