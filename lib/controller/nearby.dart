@@ -64,8 +64,8 @@ Future<List<Map<String,dynamic>>> getNearbyUsers() async{
 Future<Book> getBookFromRef(DocumentReference bookRef) async{
 
   DocumentSnapshot<Map<String, dynamic>> bookData = await bookRef.get() as DocumentSnapshot<Map<String, dynamic>>;
-  Logger l = Logger();
-  l.d("title: " + bookData['title']);
+  //Logger l = Logger();
+  //l.d("title: " + bookData['title']);
   Book book = Book.fromFirestore(bookData);
   return book;
   /*
@@ -110,14 +110,14 @@ Future<List<Book>> filterBooks(Future<List<Book>> books )async{
 
 
 Future<List<Book>> getUsersBooks(List<Map<String,dynamic>> nearbyUsers) async{
-  Logger logger = Logger();
+  //Logger logger = Logger();
   List<Book> nearbyBooks = [];
 
   for (Map<String,dynamic> userRef in nearbyUsers)
   {
     for (DocumentReference bookRef in userRef['owns'])
     {
-      logger.d("adding book");
+      //logger.d("adding book");
       nearbyBooks.add( await getBookFromRef(bookRef) );
     }
   }
