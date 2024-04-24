@@ -5,7 +5,10 @@ import 'package:pagepal/model/data/message.dart';
 final db = FirebaseFirestore.instance;
 
 Future<List<Message>> getRecievedMessages(String userID) async {
-  final snapshot = await db.collection("message").where("recieverID", isEqualTo: userID).get();
+  final snapshot = await db
+      .collection("message")
+      .where("recieverID", isEqualTo: userID)
+      .get();
   List<Message> messages = [];
 
   snapshot.docs.forEach((doc) {
@@ -16,7 +19,8 @@ Future<List<Message>> getRecievedMessages(String userID) async {
 }
 
 Future<List<Message>> getSentMessages(String userID) async {
-  final snapshot = await db.collection("message").where("senderID", isEqualTo: userID).get();
+  final snapshot =
+      await db.collection("message").where("senderID", isEqualTo: userID).get();
   List<Message> messages = [];
 
   snapshot.docs.forEach((doc) {
@@ -27,12 +31,11 @@ Future<List<Message>> getSentMessages(String userID) async {
 }
 
 Future<List<User>> getAllUsersChattedWith(String userID) async {
-  final snapshot = await db.collection("message").where(
-    Filter.or(
-      Filter("senderID", isEqualTo: userID),
-      Filter("recieverID", isEqualTo: userID)
-    )
-  ).get();
+  final snapshot = await db
+      .collection("message")
+      .where(Filter.or(Filter("senderID", isEqualTo: userID),
+          Filter("recieverID", isEqualTo: userID)))
+      .get();
 
   List<User> users = [];
 

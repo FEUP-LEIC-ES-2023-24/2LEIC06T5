@@ -17,7 +17,8 @@ class MessageCard extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.9, // 90% of the screen width
+        width:
+            MediaQuery.of(context).size.width * 0.9, // 90% of the screen width
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -72,7 +73,8 @@ class MessageCard extends StatelessWidget {
             ),
             // Date
             Text(
-              DateFormat('h:mm a').format(message.date.toDate()),// You might want to format this date
+              DateFormat('h:mm a').format(
+                  message.date.toDate()), // You might want to format this date
               style: TextStyle(fontSize: 12, color: Colors.grey),
             ),
           ],
