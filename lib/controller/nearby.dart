@@ -21,7 +21,24 @@ bool isWithinDistance(double lat, double lon, double distance){
 
 }
 
-Future<List<String>> getNearbyUsernames() async{
+Future<List<Map<String,dynamic>>> getNearbyUsers() async{
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  //TODO get user logged in
+
+  List<Map<String,dynamic>> allCloseUsernames = [];
+  try {
+    QuerySnapshot querySnapshot = await db.collection('user').get();
+
+    for (var userDoc in querySnapshot.docs) {
+      var userData = userDoc.data() as Map<String,dynamic>;
+      allCloseUsernames.add(userData); 
+    }
+  } catch  (e) {
+
+  }
+  return allCloseUsernames;
+
+  /* TODO implement
   FirebaseFirestore db = FirebaseFirestore.instance;
   /*TODo session getUsername*/ String username = "janeDoe"; 
   List<String> allCloseUsernames = [];
@@ -41,10 +58,17 @@ Future<List<String>> getNearbyUsernames() async{
     logger.d("Error in fetching all Users");
   }
   return allCloseUsernames;
+  */
 }
 
-Future<List<Book>> getSingleUserBooks(QueryDocumentSnapshot userDoc) async{
+Future<Book> getBookFromRef(DocumentReference bookRef) async{
 
+  DocumentSnapshot<Map<String, dynamic>> bookData = await bookRef.get() as DocumentSnapshot<Map<String, dynamic>>;
+  Logger l = Logger();
+  l.d("title: " + bookData['title']);
+  Book book = Book.fromFirestore(bookData);
+  return book;
+  /*
   List<Book> userBooks = [];
 
   List<DocumentReference> ownedBooks = (userDoc.data() as Map<String,dynamic>)['owns'];
@@ -56,6 +80,7 @@ Future<List<Book>> getSingleUserBooks(QueryDocumentSnapshot userDoc) async{
   }
 
   return userBooks;
+  */
 }
 
 Future<List<Book>> filterBooks(Future<List<Book>> books )async{
@@ -84,8 +109,30 @@ Future<List<Book>> filterBooks(Future<List<Book>> books )async{
 }
 
 
+Future<List<Book>> getUsersBooks(List<Map<String,dynamic>> nearbyUsers) async{
+  Logger logger = Logger();
+  List<Book> nearbyBooks = [];
 
-Future<List<Book>> getUsersBooks(Future<List<String>> nearbyUsernames) async{
+  for (Map<String,dynamic> userRef in nearbyUsers)
+  {
+    for (DocumentReference bookRef in userRef['owns'])
+    {
+      logger.d("adding book");
+      nearbyBooks.add( await getBookFromRef(bookRef) );
+    }
+  }
+
+  return nearbyBooks;
+  /*
+  for (String otherUsername in await nearbyUsernames){
+    QueryDocumentSnapshot otherUserRef = usersRef.docs.firstWhere((doc) => (doc.data() as Map<String, dynamic>)['userName'] == otherUsername);
+    List<Book> singlNearbyBooks = await getSingleUserBooks(otherUserRef);
+    for (Book book in singlNearbyBooks){
+      nearbyBooks.add(book);
+    }
+  }
+  return nearbyBooks;
+  
   FirebaseFirestore db = FirebaseFirestore.instance;
 
   QuerySnapshot usersRef = await db.collection('user').get();
@@ -99,15 +146,25 @@ Future<List<Book>> getUsersBooks(Future<List<String>> nearbyUsernames) async{
     }
   }
   return nearbyBooks;
+  */
 }
 
 Future<List<Book>> getNearbyUsersBooks() async{
   
-  Future<List<String>> nearbyUsernames = getNearbyUsernames();
+  Logger logger = Logger(); 
+  List<Map<String,dynamic>> nearbyUsers = await getNearbyUsers();
+  logger.d("Finished get nearby\n");
 
+
+  List<Book> usersBooks = await getUsersBooks(nearbyUsers);
+  logger.d("Finished get Users Books");
+
+  return usersBooks;
+  //Future<List<Book>> UsersBooks = getUsersBooks(nearbyUsernames);
+  /*
   Future<List<Book>> UsersBooks = getUsersBooks(nearbyUsernames);
   List<Book> filteredBooks = await filterBooks(UsersBooks);
-  return filteredBooks;
+  */
 }
 
 //import 'package:geocoder/geocoder.dart'; PASSAR adress to coordinates

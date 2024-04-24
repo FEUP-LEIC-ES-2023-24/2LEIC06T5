@@ -38,7 +38,7 @@ class InfoCard extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      book.authors[0],
+                      /*TODO book.authors[0]*/"JOJO",
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                           fontWeight: FontWeight.bold,

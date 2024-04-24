@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:pagepal/controller/images_fetcher.dart';
@@ -21,14 +22,14 @@ class BooksFetcher {
     if (response.statusCode == 200) {
       final Map<String, dynamic> data =
           json.decode(response.body)['ISBN:$isbn'];
-      final List<String> authors = [];
+      final List<DocumentReference> authors = [];
       final List<String> genres = [];
 
       final image = await imageFetcher.getImageByISBN(isbn);
 
 
       for (final author in data['authors']) {
-        authors.add(author['name']);
+        authors.add(author);
       }
       for (final genre in data['subjects']) {
         genres.add(genre['name']);

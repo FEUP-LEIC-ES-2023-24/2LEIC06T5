@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:logger/logger.dart';
 class Book {
   Book({
     required this.authors,
@@ -11,35 +12,38 @@ class Book {
     required this.image,
   });
 
-  final List<String> authors; //TODO na firebase authors é só 1
+  final List<DocumentReference> authors;
   final List<String> genres;
+  final Image image;
   final String isbn;
   final String lang;
   final String pubYear;
   final String title;
-  final Image image;
 
 
 //Get a Book class instance from firebase 
     factory Book.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
   ) {
+
+
     final data = snapshot.data();
     return Book(
-      authors: data?['author'], //TODO se authors mudar na firebase alterar aqui
+      authors: data?['author'],
       genres: data?['genres'],
+      image: data?['image'],
       isbn: data?['isbn'],
       lang: data?['language'],
       pubYear: data?['publicationYear'],
       title: data?['title'],
-      image: data?['image']
     );
   }
 
 //TODO possivelmente util para colocar na database
+/*
 Map<String, dynamic> toFirestore() {
     return {
-      if (authors != null) "author": authors, //TODO se authors mudar na firebase alterar aqui
+      if (author != null) "author": author,
       if (genres != null) "genres": genres,
       if (isbn != null) "isbn": isbn,
       if (lang != null) "language": lang,
@@ -48,4 +52,5 @@ Map<String, dynamic> toFirestore() {
       if (image != null) "image": image
     };
   }
+  */
 }
