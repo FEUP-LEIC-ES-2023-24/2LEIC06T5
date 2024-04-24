@@ -49,5 +49,3 @@ Map<String, dynamic> toFirestore() {
     };
   }
 }
-
-

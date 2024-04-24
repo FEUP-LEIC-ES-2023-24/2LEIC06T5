@@ -46,6 +46,7 @@ class Swiper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CardSwiperController cardController = CardSwiperController();
+
     return FutureBuilder(
         future: getBookCards(),
         builder:
