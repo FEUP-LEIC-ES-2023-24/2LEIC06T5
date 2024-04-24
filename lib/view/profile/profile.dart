@@ -5,7 +5,8 @@ import 'package:pagepal/controller/queries.dart';
 import 'package:pagepal/view/profile/widgets/edit_dialog.dart';
 import 'package:pagepal/controller/books_fetcher.dart';
 import 'package:pagepal/view/profile/widgets/custom_painter.dart';
-import 'package:pagepal/view/profile/widgets/profile_info.dart';
+import 'package:pagepal/view/profile/widgets/main_info.dart';
+import 'package:pagepal/view/profile/widgets/profile_stats.dart';
 import 'package:pagepal/view/profile/widgets/small_book_display.dart';
 import 'package:pagepal/view/templates/general/general_page.dart';
 
@@ -18,26 +19,20 @@ class ProfilePageView extends StatefulWidget {
 
 class ProfilePageViewState extends GeneralPageState {
   final user = FirebaseAuth.instance.currentUser;
+  static String username = '';
+
   @override
   void initState() {
     super.initState();
+    username = FirebaseAuth.instance.currentUser?.displayName ?? '';
   }
 
   final List<Image> books = [];
-  static const int numMatches = 42;
-  static const int numTrades = 42;
-  static const int numStars = 4;
-  static const String username = 'Pedro Marta';
-  static const String userTitle = 'Product Manager';
-  static const String location = 'Porto,Portugal';
   static const NetworkImage profilePic = NetworkImage(
       // needs to be an image provider to work
       "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png");
 
   final booksFetcher = BooksFetcher();
-
-  final profileInfo = ProfileInfo(
-      username, userTitle, location, numMatches, numStars, numTrades);
 
   final smallBoookDisplay = SmallBookDisplay();
 
@@ -45,8 +40,8 @@ class ProfilePageViewState extends GeneralPageState {
   Widget getBody(BuildContext context) {
     return Column(
       children: [
-        profileInfo.getProfileInfo(),
-        profileInfo.getProfileStats(),
+        const MainInfo(),
+        const ProfileStats(),
         smallBoookDisplay.getYourBooksBar(),
         getBooksPics(books)
       ],
@@ -111,10 +106,10 @@ class ProfilePageViewState extends GeneralPageState {
             Container(
               alignment: Alignment.topRight,
               child: TextButton(
-                    onPressed: () => showDialog(
-                  context: context,
-                  builder: (context) => const EditProfileDialog(),
-                ),
+                  onPressed: () => showDialog(
+                        context: context,
+                        builder: (context) => const EditProfileDialog(),
+                      ),
                   style: TextButton.styleFrom(
                       backgroundColor: const Color(0xFFFEFAE0),
                       foregroundColor: const Color(0xFFD4A373)),
@@ -141,7 +136,6 @@ class ProfilePageViewState extends GeneralPageState {
           ],
         ));
   }
-
 
   void addBook(String name, String isbn, String author) async {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
