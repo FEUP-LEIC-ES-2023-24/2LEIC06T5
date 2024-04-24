@@ -22,14 +22,12 @@ class ChatPageViewState extends GeneralPageState {
   @override
   void initState() {
     super.initState();
-    print("here initState");
     // Call the asynchronous method to initialize the messages list
     initializeMessages();
   }
 
   Future<void> initializeMessages() async {
     List<Message> recentMessages = await getMostRecentMessagesOfUser("/user/ADvcBGLuEGEqejUQACh4");
-    print(recentMessages.isEmpty);
     setState(() {
       messages = recentMessages;
     });
@@ -40,10 +38,21 @@ class ChatPageViewState extends GeneralPageState {
     return Column(
       children: [
         buildHeader(),
-        MessageCard(message: Message(senderID: "John", recieverID: "Doe", text: "Hullo", date: Timestamp.now(), isRead: false), onPressed: doNothing)
+        Expanded(
+          child: ListView.builder(
+            itemCount: messages.length,
+            itemBuilder: (context, index) {
+              return MessageCard(
+                message: messages[index],
+                onPressed: doNothing,
+              );
+            },
+          ),
+        ),
       ],
     );
   }
+
 
   Widget buildHeader() {
     return Column(
