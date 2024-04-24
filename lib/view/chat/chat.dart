@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pagepal/model/data/message.dart';
+import 'package:pagepal/model/message.dart';
 import 'package:pagepal/view/chat/widgets/chat_card.dart';
 import 'package:pagepal/view/templates/general/general_page.dart';
 
@@ -16,6 +17,24 @@ class ChatPageView extends StatefulWidget {
 }
 
 class ChatPageViewState extends GeneralPageState {
+  List<Message> messages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    print("here initState");
+    // Call the asynchronous method to initialize the messages list
+    initializeMessages();
+  }
+
+  Future<void> initializeMessages() async {
+    List<Message> recentMessages = await getMostRecentMessagesOfUser("/user/ADvcBGLuEGEqejUQACh4");
+    print(recentMessages.isEmpty);
+    setState(() {
+      messages = recentMessages;
+    });
+  }
+
   @override
   Widget getBody(BuildContext context) {
     return Column(
