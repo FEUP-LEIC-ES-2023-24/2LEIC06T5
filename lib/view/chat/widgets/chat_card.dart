@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pagepal/model/data/message.dart';
 import 'package:intl/intl.dart';
@@ -11,6 +12,11 @@ class MessageCard extends StatelessWidget {
     required this.message,
     this.onPressed,
   }) : super(key: key);
+
+  Future<String> getUserName(String userID) async {
+    final user = await FirebaseFirestore.instance.doc(userID).get();
+    return user["userName"];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,12 +61,35 @@ class MessageCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    message.senderID,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
+                  FutureBuilder<String>(
+                    future: getUserName(message.senderID),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Text(
+                          "Loading...", // Placeholder text while loading
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        );
+                      }
+                      if (snapshot.hasError) {
+                        return Text(
+                          "Error", // Placeholder text for error
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        );
+                      }
+                      return Text(
+                        snapshot.data ?? "", // Display username if available
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      );
+                    },
                   ),
                   SizedBox(height: 5),
                   Text(
@@ -72,7 +101,7 @@ class MessageCard extends StatelessWidget {
             ),
             // Date
             Text(
-              DateFormat('h:mm a').format(message.date.toDate()),// You might want to format this date
+              DateFormat('h:mm a').format(message.date.toDate()), // You might want to format this date
               style: TextStyle(fontSize: 12, color: Colors.grey),
             ),
           ],
@@ -80,4 +109,5 @@ class MessageCard extends StatelessWidget {
       ),
     );
   }
+
 }
