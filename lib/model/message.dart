@@ -112,3 +112,13 @@ Future<List<Message>> getAllMessagesByhUserOrdered(String userID) async {
 
   return messages;
 }
+
+bool sendMessage(Message message) {
+  try {
+    db.collection("message").add(message.toMap());
+    return true;
+  } catch (error) {
+    print(error.toString());
+    return false;
+  }
+}
