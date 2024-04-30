@@ -21,7 +21,7 @@ Map<String, dynamic> findMostRecentMessage(List<Map<String, dynamic>> userMessag
 }
 
 Future<List<Message>> getRecievedMessages(String userID) async {
-  final snapshot = await db.collection("message").where("recieverID", isEqualTo: userID).get();
+  final snapshot = await db.collection("message").where("recieverID", isEqualTo: db.doc(userID)).get();
   List<Message> messages = [];
 
   snapshot.docs.forEach((doc) {
@@ -32,7 +32,7 @@ Future<List<Message>> getRecievedMessages(String userID) async {
 }
 
 Future<List<Message>> getSentMessages(String userID) async {
-  final snapshot = await db.collection("message").where("senderID", isEqualTo: userID).get();
+  final snapshot = await db.collection("message").where("senderID", isEqualTo: db.doc(userID)).get();
   List<Message> messages = [];
 
   snapshot.docs.forEach((doc) {
