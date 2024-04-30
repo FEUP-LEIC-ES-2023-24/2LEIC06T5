@@ -91,3 +91,22 @@ Future<List<Message>> getMostRecentMessagesOfUser(String userID) async {
 
   return messages;
 }
+
+Future<List<Message>> getAllMessagesWithUserOrdered(String userID) async {
+  List<Message> sentMessages = await getSentMessages(userID);
+  List<Message> recievedMessages = await getRecievedMessages(userID);
+
+  List<Message> messages = [];
+
+  for (final message in sentMessages) {
+    messages.add(message);
+  }
+
+  for (final message in recievedMessages) {
+    messages.add(message);
+  }
+
+  messages.sort((a,b) => b.date.compareTo(a.date));
+
+  return messages;
+}
