@@ -5,10 +5,6 @@ import 'package:pagepal/model/message.dart';
 import 'package:pagepal/view/chat/widgets/chat_card.dart';
 import 'package:pagepal/view/templates/general/general_page.dart';
 
-void doNothing() {
-  print('hi');
-}
-
 class ChatPageView extends StatefulWidget {
   const ChatPageView({super.key});
 
@@ -44,8 +40,7 @@ class ChatPageViewState extends GeneralPageState {
             itemBuilder: (context, index) {
               return MessageCard(
                 message: messages[index],
-                onPressed: doNothing,
-              );
+                onPressed: () => Navigator.pushNamed(context, '/individual_chat'));
             },
           ),
         ),
@@ -74,8 +69,10 @@ class ChatPageViewState extends GeneralPageState {
             color: Colors.grey[300], // Grey background color
             borderRadius: BorderRadius.circular(20), // Rounded corners
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 10), // Reduced padding
-          margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 10), // Margin to adjust size
+          padding:
+              const EdgeInsets.symmetric(horizontal: 10), // Reduced padding
+          margin: const EdgeInsets.symmetric(
+              horizontal: 25, vertical: 10), // Margin to adjust size
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -98,5 +95,4 @@ class ChatPageViewState extends GeneralPageState {
       ],
     );
   }
-
 }
