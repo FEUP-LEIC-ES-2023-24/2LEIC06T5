@@ -42,7 +42,7 @@ Future<List<Message>> getSentMessages(String userID) async {
   return messages;
 }
 
-Future<List<String>> getAllUsersChattedWith(String userID) async {
+Future<Set<String>> getAllUsersChattedWith(String userID) async {
   final snapshot = await db.collection("message").where(
     Filter.or(
       Filter("senderID", isEqualTo: db.doc(userID)),
@@ -50,7 +50,7 @@ Future<List<String>> getAllUsersChattedWith(String userID) async {
     )
   ).get();
 
-  List<String> users = [];
+  Set<String> users = {};
 
   for (final doc in snapshot.docs) {
     DocumentReference senderRef = doc["senderID"];
@@ -72,6 +72,8 @@ Future<List<Message>> getMostRecentMessagesOfUser(String userID) async {
 
   final users = await getAllUsersChattedWith(userID);
 
+  print(users.length);
+
   for (final user in users) {
     List<Map<String, dynamic>> userMessages = [];
 
@@ -92,7 +94,7 @@ Future<List<Message>> getMostRecentMessagesOfUser(String userID) async {
   return messages;
 }
 
-Future<List<Message>> getAllMessagesWithUserOrdered(String userID) async {
+Future<List<Message>> getAllMessagesByhUserOrdered(String userID) async {
   List<Message> sentMessages = await getSentMessages(userID);
   List<Message> recievedMessages = await getRecievedMessages(userID);
 
