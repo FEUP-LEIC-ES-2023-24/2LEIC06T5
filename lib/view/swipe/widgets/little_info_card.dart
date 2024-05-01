@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pagepal/model/book.dart';
 
@@ -38,7 +39,7 @@ class InfoCard extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      book.authors[0].toString(),//TODO by PEDRO change
+                      book.mainAuthor ,//TODO by PEDRO change
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                           fontWeight: FontWeight.bold,

@@ -48,49 +48,14 @@ Future<List<Map<String,dynamic>>> getNearbyUsers() async{
 
   }
   return allCloseUsers;
-
-  /* TODO implement
-  FirebaseFirestore db = FirebaseFirestore.instance;
-  /*TODo session getUsername*/ String username = "janeDoe"; 
-  List<String> allCloseUsernames = [];
-
-  try {
-    QuerySnapshot querySnapshot = await db.collection('user').get();
-
-    for (var userDoc in querySnapshot.docs) {
-      var userData = userDoc.data() as Map<String,dynamic>;
-      if (isWithinDistance( userData['latitude'], userData['longitude'], 60) && username != userData['userName']) {
-        allCloseUsernames.add(userData['userName']); 
-      }
-    }
-  } catch  (e) {
-
-    var logger = Logger();
-    logger.d("Error in fetching all Users");
-  }
-  return allCloseUsernames;
-  */
 }
 
 Future<Book> getBookFromRef(DocumentReference bookRef) async{
 
   DocumentSnapshot<Map<String, dynamic>> bookData = await bookRef.get() as DocumentSnapshot<Map<String, dynamic>>;
-  //l.d("title: " + bookData['title']);
   Book book = await Book.createBookFromFirestore(bookData);
   return book;
-  /*
-  List<Book> userBooks = [];
 
-  List<DocumentReference> ownedBooks = (userDoc.data() as Map<String,dynamic>)['owns'];
-
-  for (DocumentReference bookId in ownedBooks) {
-    DocumentSnapshot bookSnapshot = await bookId.get();
-    Book book = Book.fromFirestore(bookSnapshot.data() as DocumentSnapshot<Map<String, dynamic>>);
-    userBooks.add(book);
-  }
-
-  return userBooks;
-  */
 }
 
 Future<List<Book>> filterBooks(Future<List<Book>> books )async{
@@ -131,30 +96,6 @@ Future<List<Book>> getUsersBooks(List<Map<String,dynamic>> nearbyUsers) async{
   }
 
   return nearbyBooks;
-  /*
-  for (String otherUsername in await nearbyUsernames){
-    QueryDocumentSnapshot otherUserRef = usersRef.docs.firstWhere((doc) => (doc.data() as Map<String, dynamic>)['userName'] == otherUsername);
-    List<Book> singlNearbyBooks = await getSingleUserBooks(otherUserRef);
-    for (Book book in singlNearbyBooks){
-      nearbyBooks.add(book);
-    }
-  }
-  return nearbyBooks;
-  
-  FirebaseFirestore db = FirebaseFirestore.instance;
-
-  QuerySnapshot usersRef = await db.collection('user').get();
-  List<Book> nearbyBooks = [];
-
-  for (String otherUsername in await nearbyUsernames){
-    QueryDocumentSnapshot otherUserRef = usersRef.docs.firstWhere((doc) => (doc.data() as Map<String, dynamic>)['userName'] == otherUsername);
-    List<Book> singlNearbyBooks = await getSingleUserBooks(otherUserRef);
-    for (Book book in singlNearbyBooks){
-      nearbyBooks.add(book);
-    }
-  }
-  return nearbyBooks;
-  */
 }
 
 Future<List<Book>> getNearbyUsersBooks() async{

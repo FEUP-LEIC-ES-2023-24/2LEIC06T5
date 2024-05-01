@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pagepal/view/swipe/widgets/little_info_card.dart';
 
@@ -9,7 +10,7 @@ class BookCard extends StatelessWidget {
     required this.book,
   });
   final Book book;
-
+  
   @override
   Widget build(BuildContext context) {
     return Container(
