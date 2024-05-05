@@ -59,3 +59,48 @@ Maintaining Accurate User Library:
 Our Deployment Diagram is composed of two parts, the PagePal app that present in each user phone and the Google Server that contains the FireBase system used to store PagePal information.
 
 ![image](https://github.com/FEUP-LEIC-ES-2023-24/2LEIC06T5/assets/88210776/3827e6d5-e9f0-4537-8c36-32206cb1f2fc)
+
+## Sprint Review and Retrospective
+
+### SPRINT 1
+
++ Done:
+  + Authentication
+  + Database integration
+  + Fix Widget Displacement
+
++ Doing:
+  + Messages page
+  + Pairing algorithm
+  + Profile Page
+
++ Puzzles:
+  + Epics instead of user stories
+  + Communication problems
+  + Bad Expectations
+
+Before:
+![Before first sprint](assets/before_sprint_1.png)
+
+After:
+![After first sprint](assets/after_sprint_1.png)
+
+### SPRINT 2
+
++ Done:
+  + Tests
+
++ Doing:
+  + Messages page
+  + Pairing algorithm
+  + Profile Page
+
++ Puzzles:
+  + Communication problems
+  + Bad Expectations
+
+Before:
+![Before second sprint](assets/before_sprint_2.png)
+
+After:
+![After second sprint](assets/after_sprint_2.png)
