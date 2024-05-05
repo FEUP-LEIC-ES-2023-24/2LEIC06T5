@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
-import 'package:logger/logger.dart';
 import 'package:pagepal/controller/nearby.dart';
 import 'package:pagepal/view/swipe/widgets/book_card.dart';
 
@@ -13,7 +12,6 @@ class Swiper extends StatelessWidget {
 
   // TODO: TESTING PURPOSES
   Future<List<BookCard>> getBookCards() async {
-    
     /*
     final bookFetcher = BooksFetcher();
     
@@ -21,11 +19,10 @@ class Swiper extends StatelessWidget {
     final secondBook = await bookFetcher.searchBookByISBN("1451673310");
     final thirdBook = await bookFetcher.searchBookByISBN("8401434645");
     */
-    
+
     List<Book> books = await getNearbyUsersBooks();
 
     return createBookCards(books);
-    
   }
 
   List<BookCard> createBookCards(List<Book> books) {
@@ -37,8 +34,7 @@ class Swiper extends StatelessWidget {
     int? currentIndex,
     CardSwiperDirection direction,
   ) {
-    // TODO: DO SOMETHING GIVEN THE DIRECTION OF THE SWIPE
-    return false;
+    return true;
   }
 
   @override
@@ -60,6 +56,9 @@ class Swiper extends StatelessWidget {
                           bookCards.data?[index],
                   duration: const Duration(milliseconds: 200),
                   controller: cardController,
+                  allowedSwipeDirection:
+                      const AllowedSwipeDirection.only(right: true, left: true),
+                  onSwipe: acceptChoice,
                 ),
               ),
               Container(
@@ -80,7 +79,9 @@ class Swiper extends StatelessWidget {
             );
           } else {
             return const Center(
-              child: CircularProgressIndicator(color: Color(0xFFCCD5AE),),
+              child: CircularProgressIndicator(
+                color: Color(0xFFCCD5AE),
+              ),
             );
           }
         });
