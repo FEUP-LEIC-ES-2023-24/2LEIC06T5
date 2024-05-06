@@ -104,3 +104,11 @@ Before:
 
 After:
 ![After second sprint](assets/after_sprint_2.png)
+
+
+### SPRINT 3
+
++ Sprint Planning: Since the result on the previous sprints were not as expected, we decided to cut some of the feature and focus what is really important. Then we decided to remove the settings and search users stories and give total focus on the main aspects of the app.
+
+Before:
+![Before second sprint](assets/before_sprint_3.png)
