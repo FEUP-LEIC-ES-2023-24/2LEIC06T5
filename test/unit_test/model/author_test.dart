@@ -4,7 +4,7 @@ import 'package:mockito/mockito.dart';
 import 'package:pagepal/model/author.dart';
 import 'package:pagepal/model/book.dart';
 
-import 'author.test.mocks.dart';
+import 'author_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<Book>()])
 void main() {
