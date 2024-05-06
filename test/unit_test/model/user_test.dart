@@ -1,12 +1,10 @@
-import 'dart:math';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pagepal/model/book.dart';
 import 'package:pagepal/model/user.dart';
 
-import 'author.test.mocks.dart';
+import 'author_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<Book>()])
 void main() {
