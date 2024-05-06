@@ -8,8 +8,8 @@ class InfoCard extends StatelessWidget {
     return InkWell(
       onTap: () {},
       child: Container(
-        width: 230,
-        height: 80,
+        width: 1000,
+        height: 100,
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -23,6 +23,7 @@ class InfoCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
+                  // TODO: HARDCODED
                   'Dune',
                   style: TextStyle(
                       fontSize: 20,
@@ -30,6 +31,7 @@ class InfoCard extends StatelessWidget {
                       fontWeight: FontWeight.bold),
                 ),
                 Text(
+                  // TODO: HARDCODED
                   'Frank Herbert',
                   style: TextStyle(
                       fontWeight: FontWeight.bold, color: Color(0xFF949494)),
