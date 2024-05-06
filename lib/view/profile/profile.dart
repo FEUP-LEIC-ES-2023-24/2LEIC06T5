@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_better_camera/camera.dart';
 import 'package:pagepal/controller/queries.dart';
+import 'package:pagepal/view/camera/camera.dart';
 import 'package:pagepal/view/profile/widgets/edit_dialog.dart';
 import 'package:pagepal/controller/books_fetcher.dart';
 import 'package:pagepal/view/profile/widgets/custom_painter.dart';
@@ -19,6 +21,7 @@ class ProfilePageView extends StatefulWidget {
 
 class ProfilePageViewState extends GeneralPageState {
   final user = FirebaseAuth.instance.currentUser;
+
   static String username = '';
 
   @override
@@ -93,10 +96,39 @@ class ProfilePageViewState extends GeneralPageState {
   @override
   PreferredSizeWidget getAppBar(BuildContext context) {
     const double heightAppBar = 190;
+
     return AppBar(
         toolbarHeight: heightAppBar,
         leading: null,
         automaticallyImplyLeading: false,
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => FutureBuilder<List<CameraDescription>?>(
+                        future: availableCameras(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List<CameraDescription>?> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            // Make sure there is at least one camera
+                            if (snapshot.data != null) {
+                              print(snapshot.data);
+                              return TakePictureScreen(
+                                  camera: snapshot.data!.first);
+                            } else {
+                              return Text('No camera available');
+                            }
+                          } else {
+                            return CircularProgressIndicator(); // Show a loading indicator while waiting for the cameras
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+              child: const Text("Take a picture!"))
+        ],
         flexibleSpace: Stack(
           children: <Widget>[
             Container(
