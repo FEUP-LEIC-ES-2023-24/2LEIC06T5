@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pagepal/model/data/message.dart';
 import 'package:pagepal/model/message.dart';
@@ -23,7 +24,8 @@ class ChatPageViewState extends GeneralPageState {
   }
 
   Future<void> initializeMessages() async {
-    List<Message> recentMessages = await getMostRecentMessagesOfUser("/user/ADvcBGLuEGEqejUQACh4");
+    final user = FirebaseAuth.instance.currentUser?.uid;
+    List<Message> recentMessages = await getMostRecentMessagesOfUser("/user/$user");
     setState(() {
       messages = recentMessages;
     });

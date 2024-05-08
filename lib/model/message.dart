@@ -56,11 +56,11 @@ Future<Set<String>> getAllUsersChattedWith(String userID) async {
     DocumentReference senderRef = doc["senderID"];
     DocumentReference recieverRef = doc["recieverID"];
 
-    if (senderRef.path != userID) {
-      final userSnap = await db.collection('user').doc(senderRef.id).get();
-      users.add(userSnap.reference.path);
-    } else if (recieverRef.path != userID) {
+    if (senderRef != userID) {
       final userSnap = await db.collection('user').doc(recieverRef.id).get();
+      users.add(userSnap.reference.path);
+    } else if (recieverRef != userID) {
+      final userSnap = await db.collection('user').doc(senderRef.id).get();
       users.add(userSnap.reference.path);
     }
   }
@@ -71,8 +71,6 @@ Future<List<Message>> getMostRecentMessagesOfUser(String userID) async {
   List<Message> messages = [];
 
   final users = await getAllUsersChattedWith(userID);
-
-  print(users.length);
 
   for (final user in users) {
     List<Map<String, dynamic>> userMessages = [];
@@ -87,7 +85,6 @@ Future<List<Message>> getMostRecentMessagesOfUser(String userID) async {
     for (final message in snapshot.docs) {
       userMessages.add(message.data());
     }
-
     messages.add(Message.fromMap(findMostRecentMessage(userMessages)));
   }
 
