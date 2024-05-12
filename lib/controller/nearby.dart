@@ -1,17 +1,18 @@
+import 'dart:ffi';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:logger/logger.dart';
 import 'package:pagepal/model/book.dart';
+
 
 double degreesToRadians(double degree){
   return degree * pi / 180.0;
 }
+Future<bool> isWithinDistance(double userLat, double userLon, double otherLat, double otherLon, double distance) async{
 
-bool isWithinDistance(double otherLat, double otherLon, double distance){
-  
-  /*TODo session get coordinates*/ double userLat = 0;
-  /*TODo session get coordinates*/ double userLon = 0;
+
   otherLat = degreesToRadians(otherLat);
   otherLon = degreesToRadians(otherLon);
   userLat = degreesToRadians(userLat);
@@ -26,34 +27,69 @@ bool isWithinDistance(double otherLat, double otherLon, double distance){
   return (c * 6371000) < distance;
 }
 
+Future<DocumentSnapshot> getCurrentUser() async{
+  FirebaseFirestore db = FirebaseFirestore.instance;
+
+  final User? user = FirebaseAuth.instance.currentUser;
+  String? currentEmail = user?.email;
+  QuerySnapshot usersRef = await db.collection('user').get();
+
+  DocumentSnapshot loggedUserData = usersRef.docs.firstWhere((doc) => (doc.data() as Map<String, dynamic>)['email'] == currentEmail);
+  return loggedUserData;
+}
+
 Future<List<Map<String,dynamic>>> getNearbyUsers() async{
   FirebaseFirestore db = FirebaseFirestore.instance;
 
-  //TODO get user logged in
-  //final user = FirebaseAuth.instance.currentUser;
-  //String? currentEmail = user?.email;
+  final User? user = FirebaseAuth.instance.currentUser;
+  String? currentEmail = user?.email;
+
+  QuerySnapshot usersRef = await db.collection('user').get();
+
+  //QueryDocumentSnapshot loggedUserData = await getCurrentUser(); 
+
+  //GeoPoint originGeoPoint = loggedUserData['location'];
+
   List<Map<String,dynamic>> allCloseUsers = [];
-  try {
-    QuerySnapshot querySnapshot = await db.collection('user').get();
-
-    for (DocumentSnapshot userDoc in querySnapshot.docs) {
-      var userData = userDoc.data() as Map<String,dynamic>;
-      GeoPoint geoPoint;// = userData['location'];
+  for (DocumentSnapshot userDoc in usersRef.docs) {
+    var userData = userDoc.data() as Map<String,dynamic>;
+    /*
+    GeoPoint geoPoint = userData['location'];
       
-      //if ((userData['email'] != currentEmail) /*&& (isWithinDistance(geoPoint.latitude, geoPoint.longitude, 60))*/){
+    if ((userData['email'] != currentEmail) && (await isWithinDistance(originGeoPoint.latitude, originGeoPoint.longitude, geoPoint.latitude, geoPoint.longitude, 60))){
       allCloseUsers.add(userData); 
-      //}
     }
-  } catch  (e) {
+    */
 
+    if ((userData['email'] != currentEmail)){
+      allCloseUsers.add(userData); 
+    }
   }
   return allCloseUsers;
 }
 
+/*
+Future<List<Map<String,dynamic>>> getPairedUsers() async{
+  FirebaseFirestore db = FirebaseFirestore.instance;
+
+  final User? user = FirebaseAuth.instance.currentUser;
+  String? currentEmail = user?.email;
+  QuerySnapshot usersRef = await db.collection('bookExchange').get();
+
+  QueryDocumentSnapshot loggedUserData = await getCurrentUser(); 
+
+
+}
+*/
+
+
+
 Future<Book> getBookFromRef(DocumentReference bookRef) async{
 
   DocumentSnapshot<Map<String, dynamic>> bookData = await bookRef.get() as DocumentSnapshot<Map<String, dynamic>>;
+
   Book book = await Book.createBookFromFirestore(bookData);
+  
   return book;
 
 }
@@ -62,12 +98,11 @@ Future<List<Book>> filterBooks(Future<List<Book>> books )async{
 
   FirebaseFirestore db = FirebaseFirestore.instance;
 
-  //TODO add SESSION get username
-  String loggedUsername = 'janeDoe';
+  final User? user = FirebaseAuth.instance.currentUser;
+
 
   QuerySnapshot usersRef = await db.collection('user').get();
-
-  QueryDocumentSnapshot loggedUserRef = usersRef.docs.firstWhere((doc) => (doc.data() as Map<String, dynamic>)['userName'] == loggedUsername);
+  QueryDocumentSnapshot loggedUserRef = usersRef.docs.firstWhere((doc) => (doc.data() as Map<String, dynamic>)['email'] == user?.email );
   List<String> loggedLikedGenres = loggedUserRef['likedGenres'];
   List<Book> allBooks = await books;
   List<Book> filterBooks = [];
@@ -85,37 +120,50 @@ Future<List<Book>> filterBooks(Future<List<Book>> books )async{
 
 
 Future<List<Book>> getUsersBooks(List<Map<String,dynamic>> nearbyUsers) async{
-  List<Book> nearbyBooks = [];
 
+  List<Book> nearbyBooks = [];
+  DocumentSnapshot currentUserData = await getCurrentUser();
+
+  List<dynamic> ownedBooks = (currentUserData['owns'] as List<dynamic>);
+  
   for (Map<String,dynamic> userRef in nearbyUsers)
   {
     for (DocumentReference bookRef in userRef['owns'])
     {
-      nearbyBooks.add( await getBookFromRef(bookRef) );
+      bool isOwned = ownedBooks.any((ref) => ref.path == bookRef.path);
+      if (!isOwned) {
+
+        nearbyBooks.add( await getBookFromRef(bookRef) );
+        Logger logger = Logger();
+        logger.d(bookRef.toString());
+      }
     }
   }
-
   return nearbyBooks;
 }
 
 Future<List<Book>> getNearbyUsersBooks() async{
   
   List<Map<String,dynamic>> nearbyUsers = await getNearbyUsers();
-  
-  GeoPoint geoPoint;
-  /*
-  for(Map<String,dynamic> user in nearbyUsers)
-  {
-    geoPoint = user['location'];
-    logger.d("User: " + user['email']);
-    logger.d(geoPoint.latitude);
-    logger.d(geoPoint.longitude);
-  }
-  */
+  //List<Map<String,dynamic>> pairedUsers = await getPairedUsers();
 
   List<Book> usersBooks = await getUsersBooks(nearbyUsers);
 
+  for (Book b in usersBooks)
+  {
+    Logger logger = Logger();
+    logger.d(b.mainAuthor);
+  }
+
   return usersBooks;
+
+/*
+Logger logger = Logger();
+const query = "Rua Buarcos 71, Valbom Gondomar";
+List<Location> locations = await locationFromAddress(query);
+logger.d('Latitude: ${locations.first.latitude}, Longitude: ${locations.first.longitude}');
+*/
+
   //Future<List<Book>> UsersBooks = getUsersBooks(nearbyUsernames);
   /*
   Future<List<Book>> UsersBooks = getUsersBooks(nearbyUsernames);

@@ -22,10 +22,10 @@ class BooksFetcher {
     if (response.statusCode == 200) {
       final Map<String, dynamic> data =
           json.decode(response.body)['ISBN:$isbn'];
-      final List<DocumentReference> authors = [];
-      final List<String> genres = [];
+      final List<dynamic> authors = [];
+      final List<dynamic> genres = [];
 
-      final image = await imageFetcher.getImageByISBN(isbn);
+      final image = await ImageFetcher.getImageByISBN(isbn);
 
 
       for (final author in data['authors']) {
@@ -36,8 +36,14 @@ class BooksFetcher {
         genres.add(genre['name']);
       }
 
+      DocumentSnapshot authorSnapshot = await (data['authors'][0]).get();
+      final Map<String,dynamic> authorData = authorSnapshot.data() as Map<String,dynamic>;
+      String mainAuthorName = authorData["name"];
+      //TODO maybe function get_author_from_ref()
+
       return Book(
           authors: authors,
+          mainAuthor: mainAuthorName,
           genres: genres,
           isbn: isbn,
           lang: '',
@@ -47,6 +53,7 @@ class BooksFetcher {
     } else {}
     return Book(
         authors: [],
+        mainAuthor: '',
         genres: [],
         isbn: '',
         lang: '',
