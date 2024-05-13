@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:pagepal/model/message.dart';
 import 'package:pagepal/view/chat/widgets/message_card.dart';
@@ -39,6 +40,31 @@ class IndividualChatViewState extends State<IndividualChatView> {
     });
   }
 
+  Future<void> getAllMessages() async {
+    final message = ModalRoute.of(context)?.settings.arguments as Message;
+    final currentId = FirebaseAuth.instance.currentUser?.uid;
+    DocumentSnapshot<Map<String, dynamic>> user;
+    if (currentId == message.senderID) {
+      user = await FirebaseFirestore.instance.doc(message.senderID).get();
+    } else {
+      user = await FirebaseFirestore.instance.doc(message.recieverID).get();
+    }
+    List<SingleMessageCard> l = [];
+    final m = await getAllMessagesByhUserOrdered(user.reference.path);
+    for (final me in m) {
+      bool flag = false;
+      if (FirebaseFirestore.instance.doc(me.senderID) ==
+          FirebaseFirestore.instance.doc("/user/${FirebaseAuth.instance.currentUser!.uid}")) {
+        flag = true;
+      }
+      final smc = SingleMessageCard(me.text, flag);
+      l.add(smc);
+    }
+    setState(() {
+      messages = l;
+    });
+  }
+
   Future<String> getRecieverId() async {
     final message = ModalRoute.of(context)?.settings.arguments as Message;
     final currentId = FirebaseAuth.instance.currentUser?.uid;
@@ -54,7 +80,7 @@ class IndividualChatViewState extends State<IndividualChatView> {
   Future pressSendButton(BuildContext context) async {
     final senderID = FirebaseAuth.instance.currentUser!.uid;
     final recieverID = await getRecieverId();
-    final message = Message(senderID: senderID, recieverID: recieverID,
+    final message = Message(senderID: "/user/$senderID", recieverID: "/user/$recieverID",
         text: messageController.text, date: Timestamp.now(), isRead: false);
     sendMessage(message);
   }
@@ -74,11 +100,12 @@ class IndividualChatViewState extends State<IndividualChatView> {
     return null;
   }
 
-  final List<SingleMessageCard> messages = [];
+  List<SingleMessageCard> messages = [];
 
   @override
   Widget build(BuildContext context) {
     getUserName();
+    getAllMessages();
     return Scaffold(
         body: Column(
       children: [

@@ -16,8 +16,8 @@ class Message {
 
   factory Message.fromMap(Map<String, dynamic> map) {
     return Message(
-        senderID: map['senderID'].path,
-        recieverID: map['recieverID'].path,
+        senderID: map['senderID'],
+        recieverID: map['recieverID'],
         text: map['text'],
         date: map['date'],
         isRead: map['isRead']

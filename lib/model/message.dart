@@ -21,7 +21,7 @@ Map<String, dynamic> findMostRecentMessage(List<Map<String, dynamic>> userMessag
 }
 
 Future<List<Message>> getRecievedMessages(String userID) async {
-  final snapshot = await db.collection("message").where("recieverID", isEqualTo: db.doc(userID)).get();
+  final snapshot = await db.collection("message").where("recieverID", isEqualTo: userID).get();
   List<Message> messages = [];
 
   snapshot.docs.forEach((doc) {
@@ -77,8 +77,8 @@ Future<List<Message>> getMostRecentMessagesOfUser(String userID) async {
 
     final snapshot = await db.collection('message').where(
       Filter.or(
-          Filter.and(Filter("senderID", isEqualTo: db.doc(userID)), Filter("recieverID", isEqualTo: db.doc(user))),
-          Filter.and(Filter("recieverID", isEqualTo: db.doc(userID)), Filter("senderID", isEqualTo: db.doc(user))))
+          Filter.and(Filter("senderID", isEqualTo: userID), Filter("recieverID", isEqualTo: user)),
+          Filter.and(Filter("recieverID", isEqualTo: userID), Filter("senderID", isEqualTo: user)))
     ).get();
 
 
@@ -93,7 +93,7 @@ Future<List<Message>> getMostRecentMessagesOfUser(String userID) async {
 
 Future<List<Message>> getAllMessagesByhUserOrdered(String userID) async {
   List<Message> sentMessages = await getSentMessages(userID);
-  List<Message> recievedMessages = await getRecievedMessages(userID);
+  List<Message> recievedMessages = await getRecievedMessages("/$userID");
 
   List<Message> messages = [];
 

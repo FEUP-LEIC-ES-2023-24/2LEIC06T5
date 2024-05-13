@@ -25,7 +25,7 @@ class ChatPageViewState extends GeneralPageState {
 
   Future<void> initializeMessages() async {
     final user = FirebaseAuth.instance.currentUser?.uid;
-    List<Message> recentMessages = await getMostRecentMessagesOfUser("/user/$user");
+    List<Message> recentMessages = await getMostRecentMessagesOfUser("user/$user");
     setState(() {
       messages = recentMessages;
     });
