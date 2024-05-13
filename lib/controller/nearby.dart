@@ -58,14 +58,14 @@ Future<List<DocumentReference>> getPairedUsers(DocumentReference currentUser) as
   FirebaseFirestore db = FirebaseFirestore.instance;
   List<DocumentReference> pairedUsers = [];
 
-  QuerySnapshot bookEchanges = await db.collection('bookEchange').where('switchReceiver', isEqualTo: currentUser).get();
+  QuerySnapshot bookEchanges = await db.collection('bookExchange').where('switchReceiver', isEqualTo: currentUser).get();
 
 
 
   for (DocumentSnapshot bookEchange in bookEchanges.docs)
   {
     Map<String, dynamic> bookExchangeData = bookEchange.data() as Map<String,dynamic>;
-    pairedUsers.add(bookExchangeData['switchIniciator']);
+    pairedUsers.add(bookExchangeData['switchInitiator']);
 
   }
 
@@ -84,31 +84,6 @@ Future<Book> getBookFromRef(DocumentReference bookRef) async{
   return book;
 
 }
-
-Future<List<Book>> filterBooks(Future<List<Book>> books )async{
-
-  FirebaseFirestore db = FirebaseFirestore.instance;
-
-  final User? user = FirebaseAuth.instance.currentUser;
-
-
-  QuerySnapshot usersRef = await db.collection('user').get();
-  QueryDocumentSnapshot loggedUserRef = usersRef.docs.firstWhere((doc) => (doc.data() as Map<String, dynamic>)['email'] == user?.email );
-  List<String> loggedLikedGenres = loggedUserRef['likedGenres'];
-  List<Book> allBooks = await books;
-  List<Book> filterBooks = [];
-
-  for (Book book in allBooks){
-    for (String genre in book.genres){
-  
-      if (loggedLikedGenres.contains(genre)){
-        filterBooks.add(book);
-      }
-    }
-  }
-  return filterBooks;
-}
-
 
 Future<List<Book>> getUsersBooks(List<DocumentReference> pairedUsers, DocumentReference currentUserDocRef) async{
 
