@@ -12,7 +12,6 @@ class BooksFetcher {
   final imageFetcher = ImageFetcher();
   final placeholderImage = const Image(image: AssetImage('assets/dune.jpg'));
 
-
   Future<Book> searchBookByISBN(String isbn) async {
     final url = Uri.https('openlibrary.org', '/api/books',
         {'bibkeys': 'ISBN:$isbn', 'format': 'json', 'jscmd': 'data'});
@@ -29,7 +28,6 @@ class BooksFetcher {
 
 
       for (final author in data['authors']) {
-        
         authors.add(author);
       }
       for (final genre in data['subjects']) {
@@ -44,6 +42,7 @@ class BooksFetcher {
       return Book(
           authors: authors,
           mainAuthor: mainAuthorName,
+
           genres: genres,
           isbn: isbn,
           lang: data['language'],
@@ -52,6 +51,7 @@ class BooksFetcher {
           title: data['title']);
     } else {}
     return Book(
+        mainAuthor: "",
         authors: [],
         mainAuthor: '',
         genres: [],

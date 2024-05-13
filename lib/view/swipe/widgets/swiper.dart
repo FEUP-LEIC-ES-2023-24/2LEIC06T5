@@ -11,7 +11,6 @@ class Swiper extends StatelessWidget {
   const Swiper({super.key});
 
   Future<List<BookCard>> getBookCards() async {
-    
     /*
     final bookFetcher = BooksFetcher();
     
@@ -19,11 +18,10 @@ class Swiper extends StatelessWidget {
     final secondBook = await bookFetcher.searchBookByISBN("1451673310");
     final thirdBook = await bookFetcher.searchBookByISBN("8401434645");
     */
-    
+
     List<Book> books = await getNearbyUsersBooks();
 
     return createBookCards(books);
-    
   }
 
   List<BookCard> createBookCards(List<Book> books) {
@@ -36,6 +34,7 @@ class Swiper extends StatelessWidget {
     CardSwiperDirection direction,
   ) {
     // TODO: DO SOMETHING GIVEN THE DIRECTION OF THE SWIPE
+
     return true;
   }
 
@@ -58,6 +57,9 @@ class Swiper extends StatelessWidget {
                           bookCards.data?[index],
                   duration: const Duration(milliseconds: 200),
                   controller: cardController,
+                  allowedSwipeDirection:
+                      const AllowedSwipeDirection.only(right: true, left: true),
+                  onSwipe: acceptChoice,
                 ),
               ),
               Container(
@@ -78,7 +80,9 @@ class Swiper extends StatelessWidget {
             );
           } else {
             return const Center(
-              child: CircularProgressIndicator(color: Color(0xFFCCD5AE),),
+              child: CircularProgressIndicator(
+                color: Color(0xFFCCD5AE),
+              ),
             );
           }
         });
