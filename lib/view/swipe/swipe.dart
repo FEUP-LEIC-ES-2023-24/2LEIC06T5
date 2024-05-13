@@ -14,15 +14,17 @@ class SwipePageView extends StatefulWidget {
 class SwipePageViewState extends GeneralPageState {
   @override
   Widget getBody(BuildContext context) {
-    return Column(
-      children: [
-        buildHeader(),
-        Padding(
-          padding: const EdgeInsets.all(5),
-          child: Swiper(),
-        ),
-      ],
-    );
+    return ListView(children: [
+      Column(
+        children: [
+          buildHeader(),
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: Swiper(),
+          ),
+        ],
+      )
+    ]);
   }
 
   Widget buildHeader() {
