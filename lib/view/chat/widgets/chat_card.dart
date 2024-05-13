@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pagepal/model/data/message.dart';
 import 'package:intl/intl.dart';
@@ -13,8 +14,14 @@ class MessageCard extends StatelessWidget {
     this.onPressed,
   }) : super(key: key);
 
-  Future<String> getUserName(String userID) async {
-    final user = await FirebaseFirestore.instance.doc(userID).get();
+  Future<String> getUserName() async {
+    final currentId = FirebaseAuth.instance.currentUser?.uid;
+    DocumentSnapshot<Map<String, dynamic>> user;
+    if (currentId == message.senderID) {
+      user = await FirebaseFirestore.instance.doc(message.senderID).get();
+    } else {
+      user = await FirebaseFirestore.instance.doc(message.recieverID).get();
+    }
     return user["userName"];
   }
 
@@ -66,7 +73,7 @@ class MessageCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   FutureBuilder<String>(
-                    future: getUserName(message.senderID),
+                    future: getUserName(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Text(
