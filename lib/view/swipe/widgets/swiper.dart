@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:pagepal/controller/nearby.dart';
+import 'package:pagepal/controller/pairing.dart';
 import 'package:pagepal/view/swipe/widgets/book_card.dart';
 
 import '../../../model/book.dart';
@@ -28,13 +29,16 @@ class Swiper extends StatelessWidget {
     return (books.map((book) => BookCard(book: book))).toList();
   }
 
-  FutureOr<bool> acceptChoice(
+  bool acceptChoice(
     int previousIndex,
     int? currentIndex,
     CardSwiperDirection direction,
+    Book book,
   ) {
-    // TODO: DO SOMETHING GIVEN THE DIRECTION OF THE SWIPE
-
+    if (direction == CardSwiperDirection.right)
+    {
+      processSwipeRight(book);
+    }
     return true;
   }
 
@@ -46,6 +50,7 @@ class Swiper extends StatelessWidget {
         future: getBookCards(),
         builder:
             (BuildContext context, AsyncSnapshot<List<BookCard>?> bookCards) {
+              bookCards.data?.first.book;
           if (bookCards.hasData) {
             return Column(children: [
               SizedBox(
@@ -59,7 +64,7 @@ class Swiper extends StatelessWidget {
                   controller: cardController,
                   allowedSwipeDirection:
                       const AllowedSwipeDirection.only(right: true, left: true),
-                  onSwipe: acceptChoice,
+                  onSwipe: (int previousIndex, int? currentIndex, CardSwiperDirection direction) {return acceptChoice(previousIndex,currentIndex, direction ,bookCards.data![previousIndex].book);},
                 ),
               ),
               Container(

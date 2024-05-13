@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -45,5 +46,27 @@ class Queries {
   DocumentReference userRef = querySnapshot.docs[0].reference;
   return userRef;
   }
-  
+
+  static Future<DocumentReference> getBookDocRef(String isbn) async{
+  QuerySnapshot querySnapshot = await firestore.collection('book').where('isbn',isEqualTo: isbn).limit(1).get();
+  DocumentReference bookRef = querySnapshot.docs[0].reference;
+  return bookRef;
+  }
+
+  static Future<Map<String, dynamic>> getUserData(String? userEmail) async{
+  QuerySnapshot querySnapshot = await firestore.collection('user').where('email',isEqualTo: userEmail).limit(1).get();
+  Map<String, dynamic> userData = querySnapshot.docs[0].data() as Map<String, dynamic>;
+  return userData;
+  }
+
+  static Future<DocumentReference?> getbookExchange(DocumentReference initiatorEmail, DocumentReference receiverEmail) async{
+    QuerySnapshot querySnapshot = await 
+      firestore.collection('incompleteExchanges').where('switchReceiver', isEqualTo:receiverEmail).where('switchInitiator', isEqualTo: initiatorEmail).get();
+
+    if (querySnapshot.docs.isEmpty) {
+      return null;
+      }
+
+    return querySnapshot.docs[0].reference;
+  }
 }

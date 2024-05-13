@@ -58,7 +58,7 @@ Future<List<DocumentReference>> getPairedUsers(DocumentReference currentUser) as
   FirebaseFirestore db = FirebaseFirestore.instance;
   List<DocumentReference> pairedUsers = [];
 
-  QuerySnapshot bookEchanges = await db.collection('bookExchange').where('switchReceiver', isEqualTo: currentUser).get();
+  QuerySnapshot bookEchanges = await db.collection('incompleteExchanges').where('switchReceiver', isEqualTo: currentUser).get();
 
 
 
@@ -127,7 +127,8 @@ Future<List<Book>> getNearbyUsersBooks() async{
   List<Book> usersBooks = await getUsersBooks(pairedUsers, currentUserDocRef);
 
 
-/* //Turn query to coordinates
+/*
+//Turn query to coordinates
 import 'package:geocoding/geocoding.dart';
 const query = "Valbom";
 List<Location> locations = await locationFromAddress(query);

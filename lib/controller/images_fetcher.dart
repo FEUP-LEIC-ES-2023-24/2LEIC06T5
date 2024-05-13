@@ -9,9 +9,12 @@ class ImageFetcher {
   static Future<Image> getImageByISBN(String isbn) async {
 
     final ref = storage.ref().child("$isbn.jpg");
-    
-
-    final url = await ref.getDownloadURL();
+    String url;
+    try {
+      url = await ref.getDownloadURL();
+    }catch (error){
+      url = "NoCover.jpg"; 
+    }
 
     return Image(
       image: NetworkImage(url),
