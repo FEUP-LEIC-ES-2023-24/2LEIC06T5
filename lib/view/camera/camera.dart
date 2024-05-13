@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter_better_camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:pagepal/view/camera/widgets/photo_preview.dart';
 import 'package:path_provider/path_provider.dart';
 
 class TakePictureScreen extends StatefulWidget {
@@ -91,23 +92,12 @@ class TakePictureScreenState extends State<TakePictureScreen>
             ),
           ),
           _captureControlRowWidget(),
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                _thumbnailWidget(),
-              ],
-            ),
-          )
         ],
       ),
     );
   }
 
   Widget _cameraPreviewWidget() {
-    print(_controller);
-    print(!_controller!.value.isInitialized!);
     if (_controller == null || !_controller!.value.isInitialized!) {
       return const Text(
         'Tap a camera',
@@ -132,41 +122,39 @@ class TakePictureScreenState extends State<TakePictureScreen>
       children: <Widget>[
         IconButton(
             onPressed: _controller != null && _controller!.value.isInitialized!
-                ? onTakePictureButtonPressed
+                ? () => onTakePictureButtonPressed()
                 : () {},
             icon: const Icon(Icons.camera_alt))
       ],
     );
   }
 
-  Widget _thumbnailWidget() {
-    return Expanded(
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            imagePath == null
-                ? Container()
-                : SizedBox(
-                    width: 64,
-                    height: 64,
-                    child: Image.file(File(imagePath!)),
-                  )
-          ],
+  void onTakePictureButtonPressed() async {
+    String? filePath = await takePicture();
+    if (mounted) {
+      setState(() {
+        imagePath = filePath;
+      });
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => FutureBuilder<String?>(
+            future: Future.value(imagePath),
+            builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.data != null) {
+                  return PhotoPreviewer(filePath: snapshot.data!);
+                } else {
+                  return const CircularProgressIndicator.adaptive();
+                }
+              } else {
+                return const Text("error");
+              }
+            },
+          ),
         ),
-      ),
-    );
-  }
-
-  void onTakePictureButtonPressed() {
-    takePicture().then((String? filePath) {
-      if (mounted) {
-        setState(() {
-          imagePath = filePath;
-        });
-      }
-    });
+      );
+    }
   }
 
   String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();
@@ -175,7 +163,7 @@ class TakePictureScreenState extends State<TakePictureScreen>
     final Directory extDir = await getApplicationDocumentsDirectory();
     final String dirPath = '${extDir.path}/Pictures/flutter_test';
     await Directory(dirPath).create(recursive: true);
-    final String filePath = '$dirPath/$timestamp()}.jpg';
+    final String filePath = '$dirPath/${timestamp()}.jpg';
 
     if (_controller!.value.isTakingPicture!) {
       return null;

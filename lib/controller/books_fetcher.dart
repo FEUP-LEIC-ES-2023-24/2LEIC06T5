@@ -32,7 +32,7 @@ class BooksFetcher {
           genres: genres,
           isbn: isbn,
           lang: '',
-          pubYear: int.parse(data['publish_date']),
+          pubYear: 0,
           title: data['title']);
     } else {}
     return Book(

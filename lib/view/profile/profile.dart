@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_better_camera/camera.dart';
-import 'package:pagepal/controller/queries.dart';
 import 'package:pagepal/view/camera/camera.dart';
 import 'package:pagepal/view/profile/widgets/edit_dialog.dart';
 import 'package:pagepal/controller/books_fetcher.dart';
@@ -112,16 +110,14 @@ class ProfilePageViewState extends GeneralPageState {
                             AsyncSnapshot<List<CameraDescription>?> snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.done) {
-                            // Make sure there is at least one camera
                             if (snapshot.data != null) {
-                              print(snapshot.data);
                               return TakePictureScreen(
                                   camera: snapshot.data!.first);
                             } else {
-                              return Text('No camera available');
+                              return const Text('No camera available');
                             }
                           } else {
-                            return CircularProgressIndicator(); // Show a loading indicator while waiting for the cameras
+                            return const CircularProgressIndicator();
                           }
                         },
                       ),
@@ -167,49 +163,5 @@ class ProfilePageViewState extends GeneralPageState {
             )
           ],
         ));
-  }
-
-  void addBook(String name, String isbn, String author) async {
-    final FirebaseFirestore firestore = FirebaseFirestore.instance;
-    final FirebaseAuth auth = FirebaseAuth.instance;
-
-    QuerySnapshot authorQuery = await Queries.getAuthor(author);
-
-    DocumentReference authorRef;
-
-    if (authorQuery.docs.isEmpty) {
-      authorRef = firestore.collection('author').doc();
-
-      authorRef.set({
-        'name': author,
-        'wrote': [],
-      });
-    } else {
-      authorRef = authorQuery.docs.first.reference;
-    }
-
-    final DocumentReference booksRef = firestore.collection('book').doc();
-
-    booksRef.set({
-      'author': authorRef.id,
-      'isbn': isbn,
-      'title': name,
-    });
-
-    authorQuery = await Queries.getAuthor(author);
-
-    List<String> wrote = await Queries.retrieveAuthorBooks(author);
-
-    wrote.add(booksRef.id);
-    authorQuery.docs.first.reference.update({'wrote': wrote});
-
-    QuerySnapshot userQuery =
-        await Queries.getUser(auth.currentUser!.email ?? '');
-
-    List<String> owns =
-        await Queries.retrieveUserBooks(auth.currentUser!.email ?? '');
-
-    owns.add(booksRef.id);
-    userQuery.docs.first.reference.update({'owns': owns});
   }
 }
