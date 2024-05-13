@@ -1,3 +1,4 @@
+
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +44,10 @@ class AuthGate extends StatelessWidget {
               });
         }
 
-        _addUserToFirestore(snapshot.data!);
+        if (snapshot.data!.metadata.creationTime == snapshot.data!.metadata.lastSignInTime)
+        {
+          _addUserToFirestore(snapshot.data!);
+        }
 
         return const SwipePageView();
       },

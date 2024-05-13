@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Queries {
   static FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -28,4 +29,21 @@ class Queries {
     return List.from(
         (userQuery.docs.first.data() as Map<String, dynamic>)['owns'] ?? []);
   }
+
+  static Future<DocumentSnapshot> getCurrentUser() async{
+
+    final User? user = FirebaseAuth.instance.currentUser;
+    String? currentEmail = user?.email;
+    QuerySnapshot usersRef = await firestore.collection('user').get();
+
+    DocumentSnapshot loggedUserData = usersRef.docs.firstWhere((doc) => (doc.data() as Map<String, dynamic>)['email'] == currentEmail);
+    return loggedUserData;
+  }
+
+  static Future<DocumentReference> getUserDocRef(String? userEmail) async{
+  QuerySnapshot querySnapshot = await firestore.collection('user').where('email',isEqualTo: userEmail).limit(1).get();
+  DocumentReference userRef = querySnapshot.docs[0].reference;
+  return userRef;
+  }
+  
 }
