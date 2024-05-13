@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pagepal/model/message.dart';
 import 'package:pagepal/view/chat/widgets/message_card.dart';
 
 import '../../../model/data/message.dart';
@@ -38,14 +39,24 @@ class IndividualChatViewState extends State<IndividualChatView> {
     });
   }
 
-  Future pressSendButton(BuildContext context) {
-    final alert = AlertDialog(content: Text(messageController.text));
-    messageController.clear();
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return alert;
-        });
+  Future<String> getRecieverId() async {
+    final message = ModalRoute.of(context)?.settings.arguments as Message;
+    final currentId = FirebaseAuth.instance.currentUser?.uid;
+    DocumentSnapshot<Map<String, dynamic>> user;
+    if (currentId == message.senderID) {
+      user = await FirebaseFirestore.instance.doc(message.senderID).get();
+    } else {
+      user = await FirebaseFirestore.instance.doc(message.recieverID).get();
+    }
+    return user.id;
+  }
+
+  Future pressSendButton(BuildContext context) async {
+    final senderID = FirebaseAuth.instance.currentUser!.uid;
+    final recieverID = await getRecieverId();
+    final message = Message(senderID: senderID, recieverID: recieverID,
+        text: messageController.text, date: Timestamp.now(), isRead: false);
+    sendMessage(message);
   }
 
   Widget? uploadFile() {
