@@ -39,3 +39,19 @@ jobs:
           flutter-version: 3.16.5
           cache: true
       - run: flutter analyze
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v4
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.16.5
+          cache: true
+      - run: flutter test

@@ -36,7 +36,7 @@ class Swiper extends StatelessWidget {
     CardSwiperDirection direction,
   ) {
     // TODO: DO SOMETHING GIVEN THE DIRECTION OF THE SWIPE
-    return false;
+    return true;
   }
 
   @override

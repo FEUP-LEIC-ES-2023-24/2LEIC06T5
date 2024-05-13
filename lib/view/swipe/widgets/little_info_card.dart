@@ -57,6 +57,7 @@ class InfoCard extends StatelessWidget {
               ),
             ],
           ),
+
         ),
       ),
     );
