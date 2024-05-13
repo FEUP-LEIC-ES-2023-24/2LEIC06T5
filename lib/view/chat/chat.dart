@@ -42,7 +42,8 @@ class ChatPageViewState extends GeneralPageState {
             itemBuilder: (context, index) {
               return MessageCard(
                 message: messages[index],
-                onPressed: () => Navigator.pushNamed(context, '/individual_chat'));
+                onPressed: () => Navigator.pushNamed(context, '/individual_chat',
+                arguments: messages[index]));
             },
           ),
         ),

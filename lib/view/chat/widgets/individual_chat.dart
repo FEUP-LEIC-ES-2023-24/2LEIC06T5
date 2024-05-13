@@ -1,7 +1,12 @@
+import 'dart:async';
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pagepal/view/chat/widgets/message_card.dart';
+
+import '../../../model/data/message.dart';
 
 class IndividualChatView extends StatefulWidget {
   const IndividualChatView({super.key});
@@ -12,7 +17,26 @@ class IndividualChatView extends StatefulWidget {
 
 class IndividualChatViewState extends State<IndividualChatView> {
   final messageController = TextEditingController();
-  final String messager = "Rubem Neto";
+  String messager = "";
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> getUserName() async {
+    final message = ModalRoute.of(context)?.settings.arguments as Message;
+    final currentId = FirebaseAuth.instance.currentUser?.uid;
+    DocumentSnapshot<Map<String, dynamic>> user;
+    if (currentId == message.senderID) {
+      user = await FirebaseFirestore.instance.doc(message.senderID).get();
+    } else {
+      user = await FirebaseFirestore.instance.doc(message.recieverID).get();
+    }
+    setState(() {
+      messager = user["userName"];
+    });
+  }
 
   Future pressSendButton(BuildContext context) {
     final alert = AlertDialog(content: Text(messageController.text));
@@ -43,6 +67,7 @@ class IndividualChatViewState extends State<IndividualChatView> {
 
   @override
   Widget build(BuildContext context) {
+    getUserName();
     return Scaffold(
         body: Column(
       children: [
