@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pagepal/controller/queries.dart';
 
 class ProfileStats extends StatefulWidget {
   const ProfileStats({super.key});
@@ -9,8 +11,24 @@ class ProfileStats extends StatefulWidget {
 
 class ProfileStatsState extends State {
   final int numMatches = 0;
-  final int numStars = 4;
+  int numStars = 0;
   final int numTrades = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    initializeRating();
+  }
+
+  Future<void> initializeRating() async {
+    final rating =
+        await Queries.getRating(FirebaseAuth.instance.currentUser!.uid);
+    setState(() {
+      print(rating.rating);
+      print(rating.rating.round());
+      numStars = rating.rating.round();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
