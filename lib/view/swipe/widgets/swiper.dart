@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
-import 'package:logger/logger.dart';
 import 'package:pagepal/controller/nearby.dart';
 import 'package:pagepal/view/swipe/widgets/book_card.dart';
 
@@ -11,7 +10,6 @@ import '../../../model/book.dart';
 class Swiper extends StatelessWidget {
   const Swiper({super.key});
 
-  // TODO: TESTING PURPOSES
   Future<List<BookCard>> getBookCards() async {
     
     /*

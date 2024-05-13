@@ -46,7 +46,7 @@ class BooksFetcher {
           mainAuthor: mainAuthorName,
           genres: genres,
           isbn: isbn,
-          lang: '',
+          lang: data['language'],
           image: image,
           pubYear: data['publish_date'],
           title: data['title']);
@@ -59,6 +59,7 @@ class BooksFetcher {
         lang: '',
         image: placeholderImage,
         pubYear: '',
-        title: '');
+        title: '',
+        ownerEmail: '');
   }
 }

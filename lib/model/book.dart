@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:logger/logger.dart';
 import 'package:pagepal/controller/images_fetcher.dart';
 class Book {
   Book({
@@ -12,6 +11,7 @@ class Book {
     required this.pubYear,
     required this.title,
     required this.image,
+    this.ownerEmail,
   });
 
   final List<dynamic> authors;
@@ -22,12 +22,13 @@ class Book {
   final String lang;
   final String pubYear;
   final String title;
+  String? ownerEmail; 
   
 
 
 //Get a Book class instance from firebase 
     static Future<Book> createBookFromFirestore (
-    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    DocumentSnapshot<Map<String, dynamic>> snapshot
   ) async {
 
     final data = snapshot.data();
@@ -53,19 +54,4 @@ class Book {
       title: data?['title'],
     );
   }
-
-//TODO possivelmente util para colocar na database
-/*
-Map<String, dynamic> toFirestore() {
-    return {
-      if (author != null) "author": author,
-      if (genres != null) "genres": genres,
-      if (isbn != null) "isbn": isbn,
-      if (lang != null) "language": lang,
-      if (pubYear != null) "publicationYear": pubYear,
-      if (title != null) "title": title,
-      if (image != null) "image": image
-    };
-  }
-  */
 }
