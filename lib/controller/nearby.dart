@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:logger/logger.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:pagepal/model/book.dart';
+import 'package:pagepal/controller/queries.dart';
+
 
 
 double degreesToRadians(double degree){
@@ -27,31 +27,13 @@ Future<bool> isWithinDistance(double userLat, double userLon, double otherLat, d
   return (c * 6371000) < distance;
 }
 
-Future<DocumentSnapshot> getCurrentUser() async{
-  FirebaseFirestore db = FirebaseFirestore.instance;
-
-  final User? user = FirebaseAuth.instance.currentUser;
-  String? currentEmail = user?.email;
-  QuerySnapshot usersRef = await db.collection('user').get();
-
-  DocumentSnapshot loggedUserData = usersRef.docs.firstWhere((doc) => (doc.data() as Map<String, dynamic>)['email'] == currentEmail);
-  return loggedUserData;
-}
-
-Future<DocumentReference> getUserDocRef(String? userEmail) async{
-  FirebaseFirestore db = FirebaseFirestore.instance;
-  QuerySnapshot querySnapshot = await db.collection('user').where('email',isEqualTo: userEmail).limit(1).get();
-  DocumentReference userRef = querySnapshot.docs[0].reference;
-  return userRef;
-}
-
 
 Future<List<DocumentReference>> getNearbyUsers() async{
   FirebaseFirestore db = FirebaseFirestore.instance;
 
   QuerySnapshot usersRef = await db.collection('user').get();
 
-  Map<String,dynamic> loggedUserData = (await getCurrentUser()).data() as Map<String,dynamic>; 
+  Map<String,dynamic> loggedUserData = (await  Queries.getCurrentUser()).data() as Map<String,dynamic>; 
   String currentEmail = loggedUserData['email'];
 
 
@@ -64,7 +46,7 @@ Future<List<DocumentReference>> getNearbyUsers() async{
     GeoPoint geoPoint = userData['Location'];
       
     if ((userData['email'] != currentEmail) && (await isWithinDistance(originGeoPoint.latitude, originGeoPoint.longitude, geoPoint.latitude, geoPoint.longitude, 60))){
-      allCloseUsers.add( (await getUserDocRef(userData['email']))); 
+      allCloseUsers.add( (await Queries.getUserDocRef(userData['email']))); 
     }
   }
   return allCloseUsers;
@@ -155,7 +137,7 @@ Future<List<Book>> getUsersBooks(List<DocumentReference> pairedUsers, DocumentRe
 Future<List<Book>> getNearbyUsersBooks() async{
   
   final User? currentUser = FirebaseAuth.instance.currentUser;
-  DocumentReference currentUserDocRef = await getUserDocRef(currentUser?.email); 
+  DocumentReference currentUserDocRef = await Queries.getUserDocRef(currentUser?.email); 
   List<DocumentReference> pairedUsers = await getPairedUsers(currentUserDocRef);
   List<DocumentReference> nearbyUsers = await getNearbyUsers();
   for (DocumentReference nearbyUser in nearbyUsers)
@@ -170,6 +152,7 @@ Future<List<Book>> getNearbyUsersBooks() async{
 
 
 /* //Turn query to coordinates
+import 'package:geocoding/geocoding.dart';
 const query = "Valbom";
 List<Location> locations = await locationFromAddress(query);
 logger.d('Latitude: ${locations.first.latitude}, Longitude: ${locations.first.longitude}');
@@ -178,15 +161,3 @@ logger.d('Latitude: ${locations.first.latitude}, Longitude: ${locations.first.lo
 return usersBooks;
 
 }
-
-//import 'package:geocoder/geocoder.dart'; PASSAR adress to coordinates
-/*
-----------Morada to coordenada----------
-import 'package:geocoder/geocoder.dart';
-
-final query = "1600 Amphiteatre Parkway, Mountain View";
-var addresses = await Geocoder.local.findAddressesFromQuery(query);
-var first = addresses.first;
-print("${first.featureName} : ${first.coordinates}");
-
-----------------------------------------*/
