@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pagepal/model/data/user.dart';
 import 'package:pagepal/model/data/message.dart';
 
@@ -21,7 +22,8 @@ Map<String, dynamic> findMostRecentMessage(List<Map<String, dynamic>> userMessag
 }
 
 Future<List<Message>> getRecievedMessages(String userID) async {
-  final snapshot = await db.collection("message").where("recieverID", isEqualTo: userID).get();
+  final snapshot = await db.collection("message").where(
+      Filter.and(Filter('recieverID', isEqualTo: "/user/${FirebaseAuth.instance.currentUser!.uid}"), Filter('senderID', isEqualTo: userID))).get();
   List<Message> messages = [];
 
   snapshot.docs.forEach((doc) {
@@ -32,7 +34,8 @@ Future<List<Message>> getRecievedMessages(String userID) async {
 }
 
 Future<List<Message>> getSentMessages(String userID) async {
-  final snapshot = await db.collection("message").where("senderID", isEqualTo: db.doc(userID)).get();
+  final snapshot = await db.collection("message").where(
+    Filter.and(Filter('senderID', isEqualTo: "/user/${FirebaseAuth.instance.currentUser!.uid}"), Filter('recieverID', isEqualTo: userID))).get();
   List<Message> messages = [];
 
   snapshot.docs.forEach((doc) {
