@@ -59,6 +59,7 @@ class AuthGate extends StatelessWidget {
       'owns': [],
       'Location': const GeoPoint(0, 0),
       'userName': '',
+      'rating': 5.0
     });
   }
 }

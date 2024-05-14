@@ -14,11 +14,10 @@ class User {
 
   User.fromJson(Map<String, Object?> json)
       : this(
-          email: json['email']! as String,
-          username: json['username']! as String,
-          likedGenres: json['likedGenre']! as List<String>,
-          books: json['owns']! as List<Book>,
-        );
+            email: json['email']! as String,
+            username: json['username']! as String,
+            likedGenres: json['likedGenre']! as List<String>,
+            books: json['owns']! as List<Book>);
 
   Map<String, Object?> toJson() {
     return {

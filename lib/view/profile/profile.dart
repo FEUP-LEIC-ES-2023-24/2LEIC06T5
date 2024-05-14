@@ -7,6 +7,7 @@ import 'package:pagepal/controller/books_fetcher.dart';
 import 'package:pagepal/view/profile/widgets/custom_painter.dart';
 import 'package:pagepal/view/profile/widgets/main_info.dart';
 import 'package:pagepal/view/profile/widgets/profile_stats.dart';
+import 'package:pagepal/view/profile/widgets/rating_dialog.dart';
 import 'package:pagepal/view/profile/widgets/small_book_display.dart';
 import 'package:pagepal/view/templates/general/general_page.dart';
 
@@ -123,7 +124,14 @@ class ProfilePageViewState extends GeneralPageState {
                       ),
                     ),
                   ),
-              child: const Text("Take a picture!"))
+              child: const Text("Take a picture!")),
+          TextButton(
+              onPressed: () => showAdaptiveDialog(
+                  context: context,
+                  builder: (context) => RatingDialog(
+                        userID: user!.uid,
+                      )),
+              child: const Text('Rate them!!'))
         ],
         flexibleSpace: Stack(
           children: <Widget>[
