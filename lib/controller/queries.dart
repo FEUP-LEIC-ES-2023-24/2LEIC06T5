@@ -25,7 +25,7 @@ class Queries {
         .get();
   }
 
-  static Future<List<String>> retrieveUserBooks(String email) async {
+  static Future<List<DocumentReference>> retrieveUserBooks(String email) async {
     QuerySnapshot userQuery = await getUser(email);
     return List.from(
         (userQuery.docs.first.data() as Map<String, dynamic>)['owns'] ?? []);

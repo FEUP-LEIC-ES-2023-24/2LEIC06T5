@@ -1,13 +1,31 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pagepal/controller/queries.dart';
 import 'package:pagepal/model/book.dart';
 
 class BooksFetcher {
   BooksFetcher();
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  Future<List<Image>> fetchUserBookImages(String email) async {
+    final List<DocumentReference> booksRef =
+        await Queries.retrieveUserBooks(email);
+
+    final List<String> imagePaths = [];
+    for (final bookRef in booksRef) {
+      final bookDoc = await bookRef.get();
+      imagePaths.add(bookDoc['image']);
+    }
+
+    final List<Image> images =
+        imagePaths.map((path) => Image.file(File(path))).toList();
+    return images;
+  }
 
   Future<Book> searchBookByISBN(String isbn) async {
     final url = Uri.https('openlibrary.org', '/api/books',
@@ -39,8 +57,8 @@ class BooksFetcher {
         authors: [], genres: [], isbn: '', lang: '', pubYear: 0, title: '');
   }
 
-  void addBook(String name, String isbn, String author) async {
-    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  Future<DocumentReference> addBook(
+      String name, String isbn, String author, String imagePath) async {
     final FirebaseAuth auth = FirebaseAuth.instance;
 
     QuerySnapshot authorQuery = await Queries.getAuthor(author);
@@ -64,6 +82,7 @@ class BooksFetcher {
       'author': authorRef.id,
       'isbn': isbn,
       'title': name,
+      'image': imagePath,
     });
 
     authorQuery = await Queries.getAuthor(author);
@@ -76,10 +95,12 @@ class BooksFetcher {
     QuerySnapshot userQuery =
         await Queries.getUser(auth.currentUser!.email ?? '');
 
-    List<String> owns =
+    List<DocumentReference> owns =
         await Queries.retrieveUserBooks(auth.currentUser!.email ?? '');
 
-    owns.add(booksRef.id);
+    owns.add(booksRef);
     userQuery.docs.first.reference.update({'owns': owns});
+
+    return booksRef;
   }
 }

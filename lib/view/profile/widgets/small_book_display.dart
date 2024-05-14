@@ -53,7 +53,7 @@ class SmallBookDisplay {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
-                        booksFetcher.addBook(name, isbn, author);
+                        booksFetcher.addBook(name, isbn, author, '');
                         Navigator.of(context).pop();
                       }
                     },

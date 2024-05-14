@@ -5,10 +5,13 @@ import 'package:flutter_better_camera/camera.dart';
 import 'package:pagepal/controller/books_fetcher.dart';
 import 'package:pagepal/model/book.dart';
 import 'package:pagepal/view/camera/camera.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class PhotoPreviewer extends StatefulWidget {
   final String filePath;
-  const PhotoPreviewer({required this.filePath, super.key});
+  final Function(String) callback;
+  const PhotoPreviewer(
+      {required this.filePath, required this.callback, super.key});
 
   @override
   State<StatefulWidget> createState() => PhotoPreviewerState();
@@ -19,7 +22,7 @@ class PhotoPreviewerState extends State<PhotoPreviewer> {
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
     return Column(
       children: [
         Image.file(File(widget.filePath)),
@@ -38,7 +41,9 @@ class PhotoPreviewerState extends State<PhotoPreviewer> {
                                 ConnectionState.done) {
                               if (snapshot.data != null) {
                                 return TakePictureScreen(
-                                    camera: snapshot.data!.first);
+                                  camera: snapshot.data!.first,
+                                  callback: (string) => {},
+                                );
                               } else {
                                 return const Text('No camera available');
                               }
@@ -58,7 +63,7 @@ class PhotoPreviewerState extends State<PhotoPreviewer> {
                       builder: (context) => AlertDialog.adaptive(
                             content: IntrinsicHeight(
                                 child: Form(
-                              key: _formKey,
+                              key: formKey,
                               child: Column(
                                 children: [
                                   Padding(
@@ -77,12 +82,13 @@ class PhotoPreviewerState extends State<PhotoPreviewer> {
                             actions: [
                               ElevatedButton(
                                   onPressed: () async {
-                                    if (_formKey.currentState!.validate()) {
-                                      _formKey.currentState!.save();
-                                      print(isbn);
+                                    if (formKey.currentState!.validate()) {
+                                      formKey.currentState!.save();
                                       Book book = await BooksFetcher()
                                           .searchBookByISBN(isbn);
                                       showBookInformationDialog(book);
+                                      addPictureToStorage(
+                                          widget.filePath, book.isbn);
                                     }
                                   },
                                   child: const Text("Search book"))
@@ -112,12 +118,20 @@ class PhotoPreviewerState extends State<PhotoPreviewer> {
                   TextButton(
                       child: const Text("Confirm"),
                       onPressed: () {
-                        BooksFetcher()
-                            .addBook(book.title, book.isbn, book.authors[0]);
+                        BooksFetcher().addBook(book.title, book.isbn,
+                            book.authors[0], widget.filePath);
+                        widget.callback(widget.filePath);
                         Navigator.pop(context);
                       }),
                 ],
               ),
             )));
+  }
+
+  void addPictureToStorage(String filePath, String isbn) async {
+    final storageRef = FirebaseStorage.instance.ref();
+    final imagesRef = storageRef.child(isbn);
+    File file = File(filePath);
+    await imagesRef.putFile(file);
   }
 }

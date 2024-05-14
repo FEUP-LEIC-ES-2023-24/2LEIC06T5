@@ -43,7 +43,10 @@ class AuthGate extends StatelessWidget {
               });
         }
 
-        _addUserToFirestore(snapshot.data!);
+        User user = snapshot.data!;
+        if (user.metadata.creationTime == user.metadata.lastSignInTime) {
+          _addUserToFirestore(user);
+        }
 
         return const SwipePageView();
       },
@@ -53,6 +56,7 @@ class AuthGate extends StatelessWidget {
   void _addUserToFirestore(User user) {
     final CollectionReference usersRef =
         FirebaseFirestore.instance.collection('user');
+
     usersRef.doc(user.uid).set({
       'email': user.email,
       'likedGenres': [],

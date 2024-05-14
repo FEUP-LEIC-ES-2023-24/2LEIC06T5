@@ -8,7 +8,9 @@ import 'package:path_provider/path_provider.dart';
 
 class TakePictureScreen extends StatefulWidget {
   final CameraDescription camera;
-  const TakePictureScreen({required this.camera, super.key});
+  final Function(String) callback;
+  const TakePictureScreen(
+      {required this.camera, required this.callback, super.key});
 
   @override
   TakePictureScreenState createState() => TakePictureScreenState();
@@ -143,7 +145,12 @@ class TakePictureScreenState extends State<TakePictureScreen>
             builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.data != null) {
-                  return PhotoPreviewer(filePath: snapshot.data!);
+                  return PhotoPreviewer(
+                    filePath: snapshot.data!,
+                    callback: (imagePath) {
+                      widget.callback(imagePath);
+                    }
+                  );
                 } else {
                   return const CircularProgressIndicator.adaptive();
                 }
