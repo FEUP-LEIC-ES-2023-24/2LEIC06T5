@@ -35,8 +35,7 @@ class Swiper extends StatelessWidget {
     CardSwiperDirection direction,
     Book book,
   ) {
-    if (direction == CardSwiperDirection.right)
-    {
+    if (direction == CardSwiperDirection.right) {
       processSwipeRight(book);
     }
     return true;
@@ -50,7 +49,7 @@ class Swiper extends StatelessWidget {
         future: getBookCards(),
         builder:
             (BuildContext context, AsyncSnapshot<List<BookCard>?> bookCards) {
-              bookCards.data?.first.book;
+          bookCards.data?.first.book;
           if (bookCards.hasData) {
             return Column(children: [
               SizedBox(
@@ -64,7 +63,11 @@ class Swiper extends StatelessWidget {
                   controller: cardController,
                   allowedSwipeDirection:
                       const AllowedSwipeDirection.only(right: true, left: true),
-                  onSwipe: (int previousIndex, int? currentIndex, CardSwiperDirection direction) {return acceptChoice(previousIndex,currentIndex, direction ,bookCards.data![previousIndex].book);},
+                  onSwipe: (int previousIndex, int? currentIndex,
+                      CardSwiperDirection direction) {
+                    return acceptChoice(previousIndex, currentIndex, direction,
+                        bookCards.data![previousIndex].book);
+                  },
                 ),
               ),
               Container(

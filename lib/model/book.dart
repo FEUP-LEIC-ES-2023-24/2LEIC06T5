@@ -23,24 +23,20 @@ class Book {
   final String lang;
   final String pubYear;
   final String title;
-  String? ownerEmail; 
-  
+  String? ownerEmail;
 
-
-//Get a Book class instance from firebase 
-    static Future<Book> createBookFromFirestore (
-    DocumentSnapshot<Map<String, dynamic>> snapshot
-
-  ) async {
+//Get a Book class instance from firebase
+  static Future<Book> createBookFromFirestore(
+      DocumentSnapshot<Map<String, dynamic>> snapshot) async {
     final data = snapshot.data();
 
     Future<Image> img = ImageFetcher.getImageByISBN(data?['isbn']);
 
     DocumentSnapshot authorSnapshot = await (data?['authors'][0]).get();
-    final Map<String,dynamic> authorData = authorSnapshot.data() as Map<String,dynamic>;
+    final Map<String, dynamic> authorData =
+        authorSnapshot.data() as Map<String, dynamic>;
     String mainAuthorName = authorData["name"];
     //TODO maybe function get_author_from_ref()
-  
 
     return Book(
       authors: data?['authors'],

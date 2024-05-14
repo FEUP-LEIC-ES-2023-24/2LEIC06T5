@@ -26,7 +26,6 @@ class BooksFetcher {
 
       final image = await ImageFetcher.getImageByISBN(isbn);
 
-
       for (final author in data['authors']) {
         authors.add(author);
       }
@@ -35,14 +34,13 @@ class BooksFetcher {
       }
 
       DocumentSnapshot authorSnapshot = await (data['authors'][0]).get();
-      final Map<String,dynamic> authorData = authorSnapshot.data() as Map<String,dynamic>;
+      final Map<String, dynamic> authorData =
+          authorSnapshot.data() as Map<String, dynamic>;
       String mainAuthorName = authorData["name"];
-
 
       return Book(
           authors: authors,
           mainAuthor: mainAuthorName,
-
           genres: genres,
           isbn: isbn,
           lang: data['language'],
@@ -50,16 +48,16 @@ class BooksFetcher {
           pubYear: data['publish_date'],
           title: data['title']);
     } else {
-    return Book(
-        mainAuthor: " ",
-        authors: [],
-        genres: [],
-        isbn: '',
-        lang: '',
-        image: placeholderImage,
-        pubYear: '',
-        title: '',
-        ownerEmail: '');
+      return Book(
+          mainAuthor: " ",
+          authors: [],
+          genres: [],
+          isbn: '',
+          lang: '',
+          image: placeholderImage,
+          pubYear: '',
+          title: '',
+          ownerEmail: '');
     }
   }
 }

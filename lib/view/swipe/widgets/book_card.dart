@@ -9,7 +9,7 @@ class BookCard extends StatelessWidget {
     required this.book,
   });
   final Book book;
-  
+
   @override
   Widget build(BuildContext context) {
     return Container(
