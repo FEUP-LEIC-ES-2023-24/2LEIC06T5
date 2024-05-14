@@ -59,7 +59,7 @@ class Queries {
   return userData;
   }
 
-  static Future<DocumentReference?> getbookExchange(DocumentReference initiatorEmail, DocumentReference receiverEmail) async{
+  static Future<DocumentReference?> getIncompleBookExchange(DocumentReference initiatorEmail, DocumentReference receiverEmail) async{
     QuerySnapshot querySnapshot = await 
       firestore.collection('incompleteExchanges').where('switchReceiver', isEqualTo:receiverEmail).where('switchInitiator', isEqualTo: initiatorEmail).get();
 

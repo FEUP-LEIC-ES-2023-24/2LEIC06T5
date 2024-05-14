@@ -10,13 +10,24 @@ void processSwipeRight(Book book) async {
   DocumentReference currentUserRef  = await Queries.getUserDocRef(user?.email);
   DocumentReference otherUserRef    = await Queries.getUserDocRef(book.ownerEmail);
 
-  DocumentReference? bookExchangeCurrentReceiver  = await Queries.getbookExchange(otherUserRef  , currentUserRef);
-  DocumentReference? bookExchangeCurrentInitiator = await Queries.getbookExchange(currentUserRef, otherUserRef);
+  DocumentReference? bookExchangeCurrentReceiver  = await Queries.getIncompleBookExchange(otherUserRef  , currentUserRef);
+  DocumentReference? bookExchangeCurrentInitiator = await Queries.getIncompleBookExchange(currentUserRef, otherUserRef);
   
 
   if(bookExchangeCurrentReceiver != null)
   {
-    //FOUND match
+    //Found match
+    DocumentSnapshot bookExchangeSnapshot = await bookExchangeCurrentReceiver.get();
+    Map<String, dynamic> bookExchangeData = bookExchangeSnapshot.data() as Map<String, dynamic>;
+
+    FirebaseFirestore.instance.collection("idleExchanges").add({
+      'user1' :currentUserRef,
+      'book1' :bookExchangeData['receiverBooks'][0],
+      'user2' :otherUserRef,
+      'book2' :await Queries.getBookDocRef(book.isbn),
+    });
+    bookExchangeCurrentReceiver.delete();
+    //TODO send message
 
   } else if (bookExchangeCurrentInitiator != null){
     //Update exchange

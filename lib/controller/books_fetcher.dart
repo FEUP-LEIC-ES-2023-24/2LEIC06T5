@@ -37,7 +37,7 @@ class BooksFetcher {
       DocumentSnapshot authorSnapshot = await (data['authors'][0]).get();
       final Map<String,dynamic> authorData = authorSnapshot.data() as Map<String,dynamic>;
       String mainAuthorName = authorData["name"];
-      //TODO maybe function get_author_from_ref()
+
 
       return Book(
           authors: authors,
@@ -49,11 +49,10 @@ class BooksFetcher {
           image: image,
           pubYear: data['publish_date'],
           title: data['title']);
-    } else {}
+    } else {
     return Book(
-        mainAuthor: "",
+        mainAuthor: " ",
         authors: [],
-        mainAuthor: '',
         genres: [],
         isbn: '',
         lang: '',
@@ -61,5 +60,6 @@ class BooksFetcher {
         pubYear: '',
         title: '',
         ownerEmail: '');
+    }
   }
 }
