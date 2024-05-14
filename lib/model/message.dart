@@ -76,7 +76,6 @@ Future<List<Message>> getMostRecentMessagesOfUser(String userID) async {
   final users = await getAllUsersChattedWith(userID);
 
   for (final user in users) {
-    print(user);
     List<Map<String, dynamic>> userMessages = [];
 
     final snapshot = await db.collection('message').where(

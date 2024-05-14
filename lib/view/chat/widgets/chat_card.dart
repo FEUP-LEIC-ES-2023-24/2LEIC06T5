@@ -18,9 +18,9 @@ class MessageCard extends StatelessWidget {
     final currentId = FirebaseAuth.instance.currentUser?.uid;
     DocumentSnapshot<Map<String, dynamic>> user;
     if (currentId == message.senderID) {
-      user = await FirebaseFirestore.instance.doc(message.senderID).get();
-    } else {
       user = await FirebaseFirestore.instance.doc(message.recieverID).get();
+    } else {
+      user = await FirebaseFirestore.instance.doc(message.senderID).get();
     }
     return user["userName"];
   }

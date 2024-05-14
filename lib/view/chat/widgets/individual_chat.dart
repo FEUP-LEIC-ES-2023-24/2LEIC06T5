@@ -31,9 +31,9 @@ class IndividualChatViewState extends State<IndividualChatView> {
     final currentId = FirebaseAuth.instance.currentUser?.uid;
     DocumentSnapshot<Map<String, dynamic>> user;
     if (currentId == message.senderID) {
-      user = await FirebaseFirestore.instance.doc(message.senderID).get();
-    } else {
       user = await FirebaseFirestore.instance.doc(message.recieverID).get();
+    } else {
+      user = await FirebaseFirestore.instance.doc(message.senderID).get();
     }
     setState(() {
       messager = user["userName"];
@@ -45,9 +45,9 @@ class IndividualChatViewState extends State<IndividualChatView> {
     final currentId = FirebaseAuth.instance.currentUser?.uid;
     DocumentSnapshot<Map<String, dynamic>> user;
     if (currentId == message.senderID) {
-      user = await FirebaseFirestore.instance.doc(message.senderID).get();
-    } else {
       user = await FirebaseFirestore.instance.doc(message.recieverID).get();
+    } else {
+      user = await FirebaseFirestore.instance.doc(message.senderID).get();
     }
     List<SingleMessageCard> l = [];
     final m = await getAllMessagesByhUserOrdered(user.reference.path);
@@ -70,9 +70,9 @@ class IndividualChatViewState extends State<IndividualChatView> {
     final currentId = FirebaseAuth.instance.currentUser?.uid;
     DocumentSnapshot<Map<String, dynamic>> user;
     if (currentId == message.senderID) {
-      user = await FirebaseFirestore.instance.doc(message.senderID).get();
-    } else {
       user = await FirebaseFirestore.instance.doc(message.recieverID).get();
+    } else {
+      user = await FirebaseFirestore.instance.doc(message.senderID).get();
     }
     return user.id;
   }
