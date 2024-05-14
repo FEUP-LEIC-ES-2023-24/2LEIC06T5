@@ -14,7 +14,7 @@ void main() {
     when(book.title).thenReturn('Dune 27');
     when(book.isbn).thenReturn('123');
     when(book.lang).thenReturn('Portuguese');
-    when(book.pubYear).thenReturn(2);
+    when(book.pubYear).thenReturn('2');
 
     final user = User(
         email: 'rubem@gmail.com',
