@@ -45,23 +45,23 @@ Future<List<Message>> getSentMessages(String userID) async {
 Future<Set<String>> getAllUsersChattedWith(String userID) async {
   final snapshot = await db.collection("message").where(
     Filter.or(
-      Filter("senderID", isEqualTo: db.doc(userID)),
-      Filter("recieverID", isEqualTo: db.doc(userID))
+      Filter("senderID", isEqualTo: userID),
+      Filter("recieverID", isEqualTo: userID)
     )
   ).get();
 
   Set<String> users = {};
 
   for (final doc in snapshot.docs) {
-    DocumentReference senderRef = doc["senderID"];
-    DocumentReference recieverRef = doc["recieverID"];
+    String senderRef = doc["senderID"];
+    String recieverRef = doc["recieverID"];
 
-    if (senderRef != userID) {
-      final userSnap = await db.collection('user').doc(recieverRef.id).get();
-      users.add(userSnap.reference.path);
-    } else if (recieverRef != userID) {
-      final userSnap = await db.collection('user').doc(senderRef.id).get();
-      users.add(userSnap.reference.path);
+    if (senderRef == userID) {
+      final userSnap = await db.doc(recieverRef).get();
+      users.add("/${userSnap.reference.path}");
+    } else {
+      final userSnap = await db.doc(senderRef).get();
+      users.add("/${userSnap.reference.path}");
     }
   }
   return users;
@@ -73,6 +73,7 @@ Future<List<Message>> getMostRecentMessagesOfUser(String userID) async {
   final users = await getAllUsersChattedWith(userID);
 
   for (final user in users) {
+    print(user);
     List<Map<String, dynamic>> userMessages = [];
 
     final snapshot = await db.collection('message').where(
@@ -92,7 +93,7 @@ Future<List<Message>> getMostRecentMessagesOfUser(String userID) async {
 }
 
 Future<List<Message>> getAllMessagesByhUserOrdered(String userID) async {
-  List<Message> sentMessages = await getSentMessages(userID);
+  List<Message> sentMessages = await getSentMessages("/$userID");
   List<Message> recievedMessages = await getRecievedMessages("/$userID");
 
   List<Message> messages = [];
