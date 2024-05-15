@@ -28,7 +28,7 @@ class IndividualChatViewState extends State<IndividualChatView> {
 
   Future<void> getUserName() async {
     final message = ModalRoute.of(context)?.settings.arguments as Message;
-    final currentId = FirebaseAuth.instance.currentUser?.uid;
+    final currentId = "/user/${FirebaseAuth.instance.currentUser?.uid}";
     DocumentSnapshot<Map<String, dynamic>> user;
     if (currentId == message.senderID) {
       user = await FirebaseFirestore.instance.doc(message.recieverID).get();
@@ -42,7 +42,7 @@ class IndividualChatViewState extends State<IndividualChatView> {
 
   Future<void> getAllMessages() async {
     final message = ModalRoute.of(context)?.settings.arguments as Message;
-    final currentId = FirebaseAuth.instance.currentUser?.uid;
+    final currentId = "/user/${FirebaseAuth.instance.currentUser?.uid}";
     DocumentSnapshot<Map<String, dynamic>> user;
     if (currentId == message.senderID) {
       user = await FirebaseFirestore.instance.doc(message.recieverID).get();
@@ -67,8 +67,12 @@ class IndividualChatViewState extends State<IndividualChatView> {
 
   Future<String> getRecieverId() async {
     final message = ModalRoute.of(context)?.settings.arguments as Message;
-    final currentId = FirebaseAuth.instance.currentUser?.uid;
+    final currentId = "/user/${FirebaseAuth.instance.currentUser?.uid}";
     DocumentSnapshot<Map<String, dynamic>> user;
+
+    print(currentId);
+    print(message.senderID);
+    print(message.recieverID);
     if (currentId == message.senderID) {
       user = await FirebaseFirestore.instance.doc(message.recieverID).get();
     } else {

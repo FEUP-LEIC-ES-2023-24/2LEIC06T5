@@ -38,6 +38,7 @@ Future<List<Message>> getSentMessages(String userID) async {
     Filter.and(Filter('senderID', isEqualTo: "/user/${FirebaseAuth.instance.currentUser!.uid}"), Filter('recieverID', isEqualTo: userID))).get();
   List<Message> messages = [];
 
+
   snapshot.docs.forEach((doc) {
     messages.add(Message.fromMap(doc.data()));
   });
