@@ -9,7 +9,6 @@ class User {
   final String email;
   final String username;
   final List<String> likedGenres;
-  //final Location location;
   final List<Book> books;
 
   User.fromJson(Map<String, Object?> json)
