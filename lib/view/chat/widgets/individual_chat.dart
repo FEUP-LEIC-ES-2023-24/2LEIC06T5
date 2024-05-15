@@ -87,6 +87,7 @@ class IndividualChatViewState extends State<IndividualChatView> {
     final message = Message(senderID: "/user/$senderID", recieverID: "/user/$recieverID",
         text: messageController.text, date: Timestamp.now(), isRead: false);
     sendMessage(message);
+    messageController.clear();
   }
 
   Widget? uploadFile() {
