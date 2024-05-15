@@ -43,7 +43,10 @@ class AuthGate extends StatelessWidget {
               });
         }
 
-        _addUserToFirestore(snapshot.data!);
+        if (snapshot.data!.metadata.creationTime ==
+            snapshot.data!.metadata.lastSignInTime) {
+          _addUserToFirestore(snapshot.data!);
+        }
 
         return const SwipePageView();
       },
