@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pagepal/model/data/message.dart';
@@ -25,7 +24,8 @@ class ChatPageViewState extends GeneralPageState {
 
   Future<void> initializeMessages() async {
     final user = FirebaseAuth.instance.currentUser?.uid;
-    List<Message> recentMessages = await getMostRecentMessagesOfUser("/user/$user");
+    List<Message> recentMessages =
+        await getMostRecentMessagesOfUser("/user/$user");
     setState(() {
       messages = recentMessages;
     });
@@ -41,9 +41,10 @@ class ChatPageViewState extends GeneralPageState {
             itemCount: messages.length,
             itemBuilder: (context, index) {
               return MessageCard(
-                message: messages[index],
-                onPressed: () => Navigator.pushNamed(context, '/individual_chat',
-                arguments: messages[index]));
+                  message: messages[index],
+                  onPressed: () => Navigator.pushNamed(
+                      context, '/individual_chat',
+                      arguments: messages[index]));
             },
           ),
         ),
@@ -51,13 +52,12 @@ class ChatPageViewState extends GeneralPageState {
     );
   }
 
-
   Widget buildHeader() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 25, top: 55, right: 25),
+        const Padding(
+          padding: EdgeInsets.only(left: 25, top: 55, right: 25),
           child: Text(
             "Messages",
             style: TextStyle(
@@ -79,11 +79,11 @@ class ChatPageViewState extends GeneralPageState {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(Icons.search), // Search icon
-              SizedBox(width: 10), // Spacer between icon and TextField
+              const Icon(Icons.search), // Search icon
+              const SizedBox(width: 10), // Spacer between icon and TextField
               Expanded(
                 child: TextField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: "Search...",
                     border: InputBorder.none, // Remove border around TextField
                   ),

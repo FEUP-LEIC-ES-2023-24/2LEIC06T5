@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:pagepal/model/message.dart';
 import 'package:pagepal/view/chat/widgets/message_card.dart';
@@ -54,7 +53,8 @@ class IndividualChatViewState extends State<IndividualChatView> {
     for (final me in m) {
       bool flag = false;
       if (FirebaseFirestore.instance.doc(me.senderID) ==
-          FirebaseFirestore.instance.doc("/user/${FirebaseAuth.instance.currentUser!.uid}")) {
+          FirebaseFirestore.instance
+              .doc("/user/${FirebaseAuth.instance.currentUser!.uid}")) {
         flag = true;
       }
       final smc = SingleMessageCard(me.text, flag);
@@ -70,9 +70,6 @@ class IndividualChatViewState extends State<IndividualChatView> {
     final currentId = "/user/${FirebaseAuth.instance.currentUser?.uid}";
     DocumentSnapshot<Map<String, dynamic>> user;
 
-    print(currentId);
-    print(message.senderID);
-    print(message.recieverID);
     if (currentId == message.senderID) {
       user = await FirebaseFirestore.instance.doc(message.recieverID).get();
     } else {
@@ -84,8 +81,12 @@ class IndividualChatViewState extends State<IndividualChatView> {
   Future pressSendButton(BuildContext context) async {
     final senderID = FirebaseAuth.instance.currentUser!.uid;
     final recieverID = await getRecieverId();
-    final message = Message(senderID: "/user/$senderID", recieverID: "/user/$recieverID",
-        text: messageController.text, date: Timestamp.now(), isRead: false);
+    final message = Message(
+        senderID: "/user/$senderID",
+        recieverID: "/user/$recieverID",
+        text: messageController.text,
+        date: Timestamp.now(),
+        isRead: false);
     sendMessage(message);
     messageController.clear();
   }

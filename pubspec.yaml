@@ -16,6 +16,7 @@ dependencies:
   cloud_firestore: any
   intl_translation: any
   http: any
+  intl: any
   
   firebase_auth: ^4.17.8
   firebase_ui_auth: ^1.13.1

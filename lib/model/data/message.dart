@@ -20,8 +20,7 @@ class Message {
         recieverID: map['recieverID'],
         text: map['text'],
         date: map['date'],
-        isRead: map['isRead']
-    );
+        isRead: map['isRead']);
   }
 
   Map<String, dynamic> toMap() {

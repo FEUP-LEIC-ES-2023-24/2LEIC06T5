@@ -31,11 +31,8 @@ class MessageCard extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         width:
-        MediaQuery
-            .of(context)
-            .size
-            .width * 0.9, // 90% of the screen width
-        padding: EdgeInsets.all(10),
+            MediaQuery.of(context).size.width * 0.9, // 90% of the screen width
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
@@ -44,7 +41,7 @@ class MessageCard extends StatelessWidget {
               color: Colors.grey.withOpacity(0.5),
               spreadRadius: 1,
               blurRadius: 3,
-              offset: Offset(0, 2), // changes position of shadow
+              offset: const Offset(0, 2), // changes position of shadow
             ),
           ],
         ),
@@ -55,18 +52,18 @@ class MessageCard extends StatelessWidget {
             Container(
               width: 60,
               height: 60,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 // Placeholder image, replace with actual image
                 color: Colors.grey,
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.account_circle,
                 size: 60,
                 color: Colors.white,
               ),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             // Sender Name and Message
             Expanded(
               child: Column(
@@ -76,7 +73,7 @@ class MessageCard extends StatelessWidget {
                     future: getUserName(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Text(
+                        return const Text(
                           "Loading...", // Placeholder text while loading
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -85,7 +82,7 @@ class MessageCard extends StatelessWidget {
                         );
                       }
                       if (snapshot.hasError) {
-                        return Text(
+                        return const Text(
                           "Error", // Placeholder text for error
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -95,17 +92,17 @@ class MessageCard extends StatelessWidget {
                       }
                       return Text(
                         snapshot.data ?? "", // Display username if available
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
                       );
                     },
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Text(
                     message.text,
-                    style: TextStyle(fontSize: 14),
+                    style: const TextStyle(fontSize: 14),
                   ),
                 ],
               ),
@@ -114,7 +111,7 @@ class MessageCard extends StatelessWidget {
             Text(
               DateFormat('h:mm a').format(
                   message.date.toDate()), // You might want to format this date
-              style: TextStyle(fontSize: 12, color: Colors.grey),
+              style: const TextStyle(fontSize: 12, color: Colors.grey),
             ),
           ],
         ),
