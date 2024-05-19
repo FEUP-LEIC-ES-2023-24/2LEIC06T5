@@ -38,7 +38,7 @@ class InfoCard extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      book.mainAuthor, //TODO change to mainAuthor after testing
+                      book.mainAuthor,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                           fontWeight: FontWeight.bold,

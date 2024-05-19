@@ -63,6 +63,7 @@ class Swiper extends StatelessWidget {
                   controller: cardController,
                   allowedSwipeDirection:
                       const AllowedSwipeDirection.only(right: true, left: true),
+                  isLoop: false,
                   onSwipe: (int previousIndex, int? currentIndex,
                       CardSwiperDirection direction) {
                     return acceptChoice(previousIndex, currentIndex, direction,
