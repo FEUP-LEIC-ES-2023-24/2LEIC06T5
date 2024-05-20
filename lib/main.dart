@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pagepal/controller/auth/auth_gate.dart';
 import 'package:pagepal/view/chat/chat.dart';
+import 'package:pagepal/view/chat/widgets/individual_chat.dart';
 import 'package:pagepal/view/swipe/swipe.dart';
 import 'package:pagepal/view/profile/profile.dart';
 import 'package:pagepal/view/settings/settings.dart';
@@ -66,6 +67,12 @@ class MyAppState extends State<MyApp> {
             case '/settings':
               return PageRouteBuilder(
                 pageBuilder: (_, __, ___) => const SettingsPageView(),
+                transitionDuration: const Duration(seconds: 0),
+                settings: settings,
+              );
+            case '/individual_chat':
+              return PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const IndividualChatView(),
                 transitionDuration: const Duration(seconds: 0),
                 settings: settings,
               );

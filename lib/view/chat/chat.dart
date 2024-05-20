@@ -1,4 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pagepal/model/data/message.dart';
+import 'package:pagepal/model/message.dart';
+import 'package:pagepal/view/chat/widgets/chat_card.dart';
 import 'package:pagepal/view/templates/general/general_page.dart';
 
 class ChatPageView extends StatefulWidget {
@@ -9,15 +13,89 @@ class ChatPageView extends StatefulWidget {
 }
 
 class ChatPageViewState extends GeneralPageState {
+  List<Message> messages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Call the asynchronous method to initialize the messages list
+    initializeMessages();
+  }
+
+  Future<void> initializeMessages() async {
+    final user = FirebaseAuth.instance.currentUser?.uid;
+    List<Message> recentMessages =
+        await getMostRecentMessagesOfUser("/user/$user");
+    setState(() {
+      messages = recentMessages;
+    });
+  }
+
   @override
   Widget getBody(BuildContext context) {
-    return const SizedBox(
-        height: double.infinity,
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [Text("CHAT PAGE")],
-        ));
+    return Column(
+      children: [
+        buildHeader(),
+        Expanded(
+          child: ListView.builder(
+            itemCount: messages.length,
+            itemBuilder: (context, index) {
+              return MessageCard(
+                  message: messages[index],
+                  onPressed: () => Navigator.pushNamed(
+                      context, '/individual_chat',
+                      arguments: messages[index]));
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildHeader() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(left: 25, top: 55, right: 25),
+          child: Text(
+            "Messages",
+            style: TextStyle(
+              fontSize: 35,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFFCCD5AE),
+            ),
+          ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.grey[300], // Grey background color
+            borderRadius: BorderRadius.circular(20), // Rounded corners
+          ),
+          padding:
+              const EdgeInsets.symmetric(horizontal: 10), // Reduced padding
+          margin: const EdgeInsets.symmetric(
+              horizontal: 25, vertical: 10), // Margin to adjust size
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Icon(Icons.search), // Search icon
+              const SizedBox(width: 10), // Spacer between icon and TextField
+              Expanded(
+                child: TextField(
+                  decoration: const InputDecoration(
+                    hintText: "Search...",
+                    border: InputBorder.none, // Remove border around TextField
+                  ),
+                  onChanged: (value) {
+                    // Implement search functionality
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }
