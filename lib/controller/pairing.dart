@@ -16,18 +16,6 @@ void processSwipeRight(Book book) async {
 
   if (bookExchangeCurrentReceiver != null) {
     //Found match
-    DocumentSnapshot bookExchangeSnapshot =
-        await bookExchangeCurrentReceiver.get();
-    Map<String, dynamic> bookExchangeData =
-        bookExchangeSnapshot.data() as Map<String, dynamic>;
-
-    FirebaseFirestore.instance.collection("idleExchanges").add({
-      'user1': currentUserRef,
-      'book1': bookExchangeData['receiverBooks'][0],
-      'user2': otherUserRef,
-      'book2': await Queries.getBookDocRef(book.isbn),
-    });
-    bookExchangeCurrentReceiver.delete();
     //TODO send message
   } else if (bookExchangeCurrentInitiator != null) {
     //Update exchange

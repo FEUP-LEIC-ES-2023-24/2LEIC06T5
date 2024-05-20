@@ -12,10 +12,10 @@ double degreesToRadians(double degree) {
 
 Future<bool> isWithinDistance(double userLat, double userLon, double otherLat,
     double otherLon, double distance) async {
-  otherLat = degreesToRadians(otherLat);
-  otherLon = degreesToRadians(otherLon);
-  userLat = degreesToRadians(userLat);
-  userLon = degreesToRadians(userLon);
+  otherLat  = degreesToRadians(otherLat);
+  otherLon  = degreesToRadians(otherLon);
+  userLat   = degreesToRadians(userLat);
+  userLon   = degreesToRadians(userLon);
 
   double deltaLat = otherLat - userLat;
   double deltaLon = otherLon - userLon;
@@ -76,12 +76,11 @@ Future<List<DocumentReference>> getPairedUsers(
   return pairedUsers;
 }
 
-Future<Book> getBookFromRef(DocumentReference bookRef) async {
+Future<Book> getBookFromRef(DocumentReference bookRef, [String ownerEmail = "_"]) async {
   DocumentSnapshot<Map<String, dynamic>> bookData =
       await bookRef.get() as DocumentSnapshot<Map<String, dynamic>>;
 
-  Book book = await Book.createBookFromFirestore(bookData);
-
+  Book book = await Book.createBookFromFirestore(bookData, ownerEmail);
   return book;
 }
 
@@ -94,14 +93,11 @@ Future<List<Book>> getUsersBooks(List<DocumentReference> pairedUsers,
   List<dynamic> ownedBooks = ownedBooksData['owns'] as List<dynamic>;
 
   for (DocumentReference userRef in pairedUsers) {
-    Map<String, dynamic> userData =
-        (await userRef.get()).data() as Map<String, dynamic>;
-
+    Map<String, dynamic> userData = (await userRef.get()).data() as Map<String, dynamic>;
     for (DocumentReference bookRef in userData['owns']) {
       bool isOwned = ownedBooks.any((ref) => ref == bookRef);
       if (!isOwned) {
-        Book newBook = await getBookFromRef(bookRef);
-        newBook.ownerEmail = userData['email'];
+        Book newBook = await getBookFromRef(bookRef, userData['email']);
         pairedBooks.add(newBook);
       }
     }
@@ -110,17 +106,19 @@ Future<List<Book>> getUsersBooks(List<DocumentReference> pairedUsers,
 }
 
 Future<List<Book>> getNearbyUsersBooks() async {
+
   final User? currentUser = FirebaseAuth.instance.currentUser;
   DocumentReference currentUserDocRef =
       await Queries.getUserDocRef(currentUser?.email);
   List<DocumentReference> pairedUsers = await getPairedUsers(currentUserDocRef);
+
   List<DocumentReference> nearbyUsers = await getNearbyUsers();
+
   for (DocumentReference nearbyUser in nearbyUsers) {
     if (!pairedUsers.contains(nearbyUser)) {
       pairedUsers.add(nearbyUser);
     }
   }
-
   List<Book> usersBooks = await getUsersBooks(pairedUsers, currentUserDocRef);
 
 /*
@@ -130,6 +128,5 @@ const query = "Valbom";
 List<Location> locations = await locationFromAddress(query);
 logger.d('Latitude: ${locations.first.latitude}, Longitude: ${locations.first.longitude}');
 */
-
   return usersBooks;
 }
