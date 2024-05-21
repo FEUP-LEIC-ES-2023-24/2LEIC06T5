@@ -68,21 +68,32 @@ class InfoCard extends StatelessWidget {
               content: SizedBox(
                 height: 200,
                 child: Column(children: [
-                  Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: Text(book.mainAuthor),
+                  Title(
+                      color: Colors.black,
+                      child: const Text("Book Information")),
+                  const Spacer(
+                    flex: 1,
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: Text(book.authors.join(", ")),
+                    padding: const EdgeInsets.all(3),
+                    child: Text("Title: ${book.title}"),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: Text(book.title),
+                    padding: const EdgeInsets.all(3),
+                    child: Text("Main Author: ${book.mainAuthor}"),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: Text(book.genres.join(", ")),
+                    padding: const EdgeInsets.all(3),
+                    child: Text("Language: ${book.lang}"),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(3),
+                    child: Text(
+                        "Publication Year: ${book.pubYear != "0" ? book.pubYear : "No data"}"),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(3),
+                    child: Text("Genres: ${book.genres.join(", ")}"),
                   )
                 ]),
               ),
