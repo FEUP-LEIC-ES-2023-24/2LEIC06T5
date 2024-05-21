@@ -6,13 +6,15 @@ class ImageFetcher {
 
   static final storage = FirebaseStorage.instance;
 
-  static Future<Image> getImageByISBN(String isbn) async {
-    final ref = storage.ref().child("$isbn.jpg");
+  static Future<Image> getImageByIsbnId(String isbn, String ownerId) async {
+    var ref = storage.ref().child("${isbn}_$ownerId");
+
     String url;
     try {
       url = await ref.getDownloadURL();
     } catch (error) {
-      url = "NoCover.jpg";
+      ref = storage.ref().child("NoCover.jpg");
+      url = await ref.getDownloadURL();
     }
 
     return Image(

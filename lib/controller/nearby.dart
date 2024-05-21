@@ -6,6 +6,7 @@ import 'package:logger/logger.dart';
 
 import 'package:pagepal/model/book.dart';
 import 'package:pagepal/controller/queries.dart';
+import 'package:geocoding/geocoding.dart';
 
 double degreesToRadians(double degree) {
   return degree * pi / 180.0;
@@ -77,32 +78,26 @@ Future<List<DocumentReference>> getPairedUsers(
   return pairedUsers;
 }
 
-Future<Book> getBookFromRef(DocumentReference bookRef) async {
+Future<Book> getBookFromRef(DocumentReference bookRef,
+    [String ownerEmail = "_"]) async {
   DocumentSnapshot<Map<String, dynamic>> bookData =
       await bookRef.get() as DocumentSnapshot<Map<String, dynamic>>;
 
-  Book book = await Book.createBookFromFirestore(bookData);
-
+  Book book = await Book.createBookFromFirestore(bookData, ownerEmail);
   return book;
 }
 
-Future<List<Book>> getUsersBooks(List<DocumentReference> pairedUsers,
-    DocumentReference currentUserDocRef) async {
+Future<List<Book>> getUsersBooks(
+    List<DocumentReference> pairedUsers, List<dynamic> ownedBooks) async {
   List<Book> pairedBooks = [];
-
-  Map<String, dynamic> ownedBooksData =
-      ((await currentUserDocRef.get()).data() as Map<String, dynamic>);
-  List<dynamic> ownedBooks = ownedBooksData['owns'] as List<dynamic>;
 
   for (DocumentReference userRef in pairedUsers) {
     Map<String, dynamic> userData =
         (await userRef.get()).data() as Map<String, dynamic>;
-
     for (DocumentReference bookRef in userData['owns']) {
       bool isOwned = ownedBooks.any((ref) => ref == bookRef);
       if (!isOwned) {
-        Book newBook = await getBookFromRef(bookRef);
-        newBook.ownerEmail = userData['email'];
+        Book newBook = await getBookFromRef(bookRef, userData['email']);
         pairedBooks.add(newBook);
       }
     }
@@ -115,25 +110,31 @@ Future<List<Book>> getNearbyUsersBooks() async {
   DocumentReference currentUserDocRef =
       await Queries.getUserDocRef(currentUser?.email);
   List<DocumentReference> pairedUsers = await getPairedUsers(currentUserDocRef);
+
   List<DocumentReference> nearbyUsers = await getNearbyUsers();
+
   for (DocumentReference nearbyUser in nearbyUsers) {
     if (!pairedUsers.contains(nearbyUser)) {
       pairedUsers.add(nearbyUser);
     }
   }
-  Logger().d(pairedUsers.toString());
-  Logger().d(currentUserDocRef.toString());
 
-
-  List<Book> usersBooks = await getUsersBooks(pairedUsers, currentUserDocRef);
-
-/*
-//Turn query to coordinates
-import 'package:geocoding/geocoding.dart';
-const query = "Valbom";
-List<Location> locations = await locationFromAddress(query);
-logger.d('Latitude: ${locations.first.latitude}, Longitude: ${locations.first.longitude}');
-*/
+  Map<String, dynamic> ownedBooksData =
+      ((await currentUserDocRef.get()).data() as Map<String, dynamic>);
+  List<dynamic> ownedBooks = ownedBooksData['owns'] as List<dynamic>;
+  List<Book> usersBooks = await getUsersBooks(pairedUsers, ownedBooks);
 
   return usersBooks;
+}
+
+void updateLocation(String? newLocation) async {
+  if (newLocation == null) return;
+
+  List<Location> location = await locationFromAddress(newLocation);
+  final currentUser = FirebaseAuth.instance.currentUser;
+  DocumentReference currentUserDocRef =
+      await Queries.getUserDocRef(currentUser!.email);
+  currentUserDocRef.update({
+    "Location": GeoPoint(location.first.latitude, location.first.longitude),
+  });
 }

@@ -43,9 +43,11 @@ class AuthGate extends StatelessWidget {
               });
         }
 
-        if (snapshot.data!.metadata.creationTime ==
-            snapshot.data!.metadata.lastSignInTime) {
-          _addUserToFirestore(snapshot.data!);
+        User user = snapshot.data!;
+        if (user.metadata.creationTime!
+                .compareTo(user.metadata.lastSignInTime!) ==
+            0) {
+          _addUserToFirestore(user);
         }
 
         return const SwipePageView();
@@ -56,12 +58,22 @@ class AuthGate extends StatelessWidget {
   void _addUserToFirestore(User user) {
     final CollectionReference usersRef =
         FirebaseFirestore.instance.collection('user');
+
     usersRef.doc(user.uid).set({
       'email': user.email,
       'likedGenres': [],
       'owns': [],
       'Location': const GeoPoint(0, 0),
       'userName': '',
+      'rating': 5.0
     });
+
+    final rating = {
+      "rating": 5,
+      "size": 1,
+      "userID": user.uid,
+    };
+
+    FirebaseFirestore.instance.collection('rating').add(rating);
   }
 }

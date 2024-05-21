@@ -20,4 +20,9 @@ class SettingsPageViewState extends GeneralPageState {
           children: [Text("SETTINGS PAGE")],
         ));
   }
+
+  @override
+  PreferredSizeWidget? getAppBar(BuildContext context) {
+    return null;
+  }
 }

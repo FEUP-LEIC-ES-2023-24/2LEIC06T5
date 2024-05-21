@@ -20,4 +20,9 @@ class ShopPageViewState extends GeneralPageState {
           children: [Text("SHOP PAGE")],
         ));
   }
+
+  @override
+  PreferredSizeWidget? getAppBar(BuildContext context) {
+    return null;
+  }
 }

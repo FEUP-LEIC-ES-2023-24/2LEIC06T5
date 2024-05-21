@@ -27,6 +27,7 @@ void main() {
       expect(author.name, 'Rubem Neto');
       expect(author.books[0].isbn, '123');
       expect(author.books[0].lang, 'Portuguese');
+
       expect(author.books[0].pubYear, '2');
     });
   });

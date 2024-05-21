@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
 import 'package:pagepal/model/book.dart';
+
 import 'package:pagepal/view/swipe/widgets/book_card.dart';
 import 'package:pagepal/view/swipe/widgets/little_info_card.dart';
 
