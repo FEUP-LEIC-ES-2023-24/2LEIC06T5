@@ -38,7 +38,7 @@ class InfoCard extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      book.mainAuthor,
+                      book.authors[0],
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                           fontWeight: FontWeight.bold,
@@ -80,7 +80,7 @@ class InfoCard extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(3),
-                    child: Text("Main Author: ${book.mainAuthor}"),
+                    child: Text("Main Author: ${book.authors[0]}"),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(3),
@@ -88,12 +88,11 @@ class InfoCard extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(3),
-                    child: Text(
-                        "Publication Year: ${book.pubYear != "0" ? book.pubYear : "No data"}"),
+                    child: Text("Publication Year: ${book.pubYear}"),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(3),
-                    child: Text("Genres: ${book.genres.join(", ")}"),
+                    child: Text("Genres: ${book.genres.sublist(0, 3)}"),
                   )
                 ]),
               ),

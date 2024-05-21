@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,14 +17,17 @@ class BooksFetcher {
     final List<DocumentReference> booksRef =
         await Queries.retrieveUserBooks(email);
 
-    final List<String> imagePaths = [];
+    final userID = FirebaseAuth.instance.currentUser!.uid;
+
+    final List<String> imageISBN = [];
     for (final bookRef in booksRef) {
       final bookDoc = await bookRef.get();
-      imagePaths.add(bookDoc['image']);
+      imageISBN.add(bookDoc['isbn']);
     }
 
-    final List<Image> images =
-        imagePaths.map((path) => Image.file(File(path))).toList();
+    final List<Image> images = await Future.wait(
+        imageISBN.map((path) => ImageFetcher.getImageByIsbnId(path, userID)));
+
     return images;
   }
 
@@ -41,36 +43,26 @@ class BooksFetcher {
     if (response.statusCode == 200) {
       final Map<String, dynamic> data =
           json.decode(response.body)['ISBN:$isbn'];
-      final List<dynamic> authors = [];
-      final List<dynamic> genres = [];
-
-      final image = await ImageFetcher.getImageByIsbnId(isbn, "_");
+      final List<String> authors = [];
+      final List<String> genres = [];
 
       for (final author in data['authors']) {
-        authors.add(author);
+        authors.add(author['name']);
       }
       for (final genre in data['subjects']) {
         genres.add(genre['name']);
       }
 
-      DocumentSnapshot authorSnapshot = await (data['authors'][0]).get();
-      final Map<String, dynamic> authorData =
-          authorSnapshot.data() as Map<String, dynamic>;
-      String mainAuthorName = authorData["name"];
-
       return Book(
           authors: authors,
-          mainAuthor: mainAuthorName,
           genres: genres,
           isbn: isbn,
-          image: image,
-          lang: '',
+          lang: 'no data',
           pubYear:
               data['publish_date'] != "" ? data['publish_date'] : 'no data',
           title: data['title']);
     } else {}
     return Book(
-      mainAuthor: '',
       authors: [],
       genres: [],
       isbn: '',
@@ -101,6 +93,7 @@ class BooksFetcher {
     final DocumentReference booksRef = firestore.collection('book').doc();
 
     booksRef.set({
+      'Language': book.lang,
       'authors': [authorRef],
       'isbn': book.isbn,
       'title': book.title,
