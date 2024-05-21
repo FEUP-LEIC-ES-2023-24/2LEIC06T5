@@ -137,7 +137,7 @@ logger.d('Latitude: ${locations.first.latitude}, Longitude: ${locations.first.lo
 void updateLocation(String? newLocation) async {
   if (newLocation == null) return;
 
-  List<Location> location = await locationFromAddress(newLocation!);
+  List<Location> location = await locationFromAddress(newLocation);
   final currentUser = FirebaseAuth.instance.currentUser;
   DocumentReference currentUserDocRef =
       await Queries.getUserDocRef(currentUser!.email);
