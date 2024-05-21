@@ -64,20 +64,28 @@ Our Deployment Diagram is composed of two parts, the PagePal app that present in
 
 ### SPRINT 1
 
-+ Done:
+Sprint Planning: For the first sprint, we will try to have the biggest amount of features finished so that we can focus on polishing the app.
+
+Sprint Retrospective:
++ What went well?
+  + The assignment of the different tasks
++ What went not well?
+  + Expectations about tasks
++ What can be done differently?
+  + Have better communication
+  + Work harder on the current tasks to have more done
+
+Sprint Review:
+
+Goal: For the next sprint will be more focused on the tasks.
+
+Done:
   + Authentication
-  + Database integration
-  + Fix Widget Displacement
-
-+ Doing:
-  + Messages page
-  + Pairing algorithm
+  + Front-end for choosing books
+To be done:
+  + Chat
+  + Pairing System
   + Profile Page
-
-+ Puzzles:
-  + Epics instead of user stories
-  + Communication problems
-  + Bad Expectations
 
 Before:
 ![Before first sprint](assets/before_sprint_1.png)
@@ -87,17 +95,29 @@ After:
 
 ### SPRINT 2
 
-+ Done:
-  + Tests
+Sprint Planning: For the second sprint, we have to finish the tasks that are still in progress so that we can start testing and polishing the final product.
+the 
+Sprint Retrospective:
++ What went well?
+  + Unit Tests
++ What went not well?
+  + There is not a lot of tasks that were added to the product
+  + The group organization was lacking
++ What ca be done differently?
+  + Focus even more on the current tasks
+  + Organize the tasks better
+  + Break down some epics into user stories
 
-+ Doing:
-  + Messages page
-  + Pairing algorithm
+Sprint Review:
+
+Goal: Finish the current tasks to have a final product
+
+Done:
+  + Unit Tests
+To be done:
+  + Chat
+  + Pairing System
   + Profile Page
-
-+ Puzzles:
-  + Communication problems
-  + Bad Expectations
 
 Before:
 ![Before second sprint](assets/before_sprint_2.png)
@@ -110,5 +130,23 @@ After:
 
 + Sprint Planning: Since the result on the previous sprints were not as expected, we decided to cut some of the feature and focus what is really important. Then we decided to remove the settings and search users stories and give total focus on the main aspects of the app.
 
+Sprint Retrospective
++ What went well?
+  + All the remaining features were finished
++ What went not well?
+  + This sprint was rushed, as there was not much finished in the rest of the sprints
+  + There was no time for testing
++ What could be done differently?
+  + Organized better the tasks between the group
+  + The group as a whole could have worked more
+
+Sprint Review
+
+Done:
++ Chat
++ Pairing System
++ Profile Page 
+
 Before:
-![Before second sprint](assets/before_sprint_3.png)
+![Before third sprint](assets/before_sprint_3.png)
+![After third sprint](assets/after_sprint_3.png)
