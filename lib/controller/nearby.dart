@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:pagepal/model/book.dart';
 import 'package:pagepal/controller/queries.dart';
+import 'package:geocoding/geocoding.dart';
 
 double degreesToRadians(double degree) {
   return degree * pi / 180.0;
@@ -125,11 +126,22 @@ Future<List<Book>> getNearbyUsersBooks() async {
 
 /*
 //Turn query to coordinates
-import 'package:geocoding/geocoding.dart';
 const query = "Valbom";
 List<Location> locations = await locationFromAddress(query);
 logger.d('Latitude: ${locations.first.latitude}, Longitude: ${locations.first.longitude}');
 */
 
   return usersBooks;
+}
+
+void updateLocation(String? newLocation) async {
+  if (newLocation == null) return;
+
+  List<Location> location = await locationFromAddress(newLocation!);
+  final currentUser = FirebaseAuth.instance.currentUser;
+  DocumentReference currentUserDocRef =
+      await Queries.getUserDocRef(currentUser!.email);
+  currentUserDocRef.update({
+    "Location": GeoPoint(location.first.latitude, location.first.longitude),
+  });
 }
