@@ -35,7 +35,7 @@ class IndividualChatViewState extends State<IndividualChatView> {
       user = await FirebaseFirestore.instance.doc(message.senderID).get();
     }
     setState(() {
-      messager = user["userName"];
+      messager = user.data()?["userName"];
     });
   }
 

@@ -24,8 +24,6 @@ class ProfileStatsState extends State {
     final rating =
         await Queries.getRating(FirebaseAuth.instance.currentUser!.uid);
     setState(() {
-      print(rating.rating);
-      print(rating.rating.round());
       numStars = rating.rating.round();
     });
   }

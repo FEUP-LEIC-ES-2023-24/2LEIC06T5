@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,15 @@ class MainInfoState extends State {
   @override
   void initState() {
     super.initState();
-    username = user!.displayName ?? '';
+    updateUsername();
+  }
+
+  void updateUsername() async {
+    final currentID = "/user/${FirebaseAuth.instance.currentUser?.uid}";
+    final currentUser = await FirebaseFirestore.instance.doc(currentID).get();
+    setState(() {
+      username = currentUser.data()?["userName"] ?? 'No name';
+    });
   }
 
   @override

@@ -38,8 +38,15 @@ class Queries {
         .collection('rating')
         .where('userID', isEqualTo: userDocRef)
         .get();
-    final rating = ratingQuery.docs.first.data() as Map<String, dynamic>;
-    return Rating(rating: rating['rating'], size: rating['size']);
+    final ratingDocs = ratingQuery.docs;
+    if (ratingDocs.isEmpty) {
+      final data = {"rating": 5, "size": 1, "userID": userID};
+      firestore.collection('rating').add(data);
+      return Rating(rating: 5.00, size: 1);
+    } else {
+      final rating = ratingQuery.docs.first.data() as Map<String, dynamic>;
+      return Rating(rating: rating['rating'], size: rating['size']);
+    }
   }
 
   static void updateRating(String userID, Rating rating, int value) async {

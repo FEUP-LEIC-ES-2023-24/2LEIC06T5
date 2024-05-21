@@ -37,6 +37,7 @@ class ProfilePageViewState extends GeneralPageState {
   Future<void> loadBookImages() async {
     final bookImages =
         await BooksFetcher().fetchUserBookImages(user?.email ?? '');
+    // ignore: use_build_context_synchronously
     Provider.of<BooksProvider>(context, listen: false).setBooks(bookImages);
   }
 
