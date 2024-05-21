@@ -8,7 +8,7 @@ class InfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () => bookInfoWidget(context),
       child: Opacity(
         opacity: 1,
         child: Container(
@@ -38,7 +38,7 @@ class InfoCard extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      book.mainAuthor, //TODO change to mainAuthor after testing
+                      book.mainAuthor,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                           fontWeight: FontWeight.bold,
@@ -59,5 +59,44 @@ class InfoCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<dynamic> bookInfoWidget(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) => AlertDialog.adaptive(
+              content: SizedBox(
+                height: 200,
+                child: Column(children: [
+                  Title(
+                      color: Colors.black,
+                      child: const Text("Book Information")),
+                  const Spacer(
+                    flex: 1,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(3),
+                    child: Text("Title: ${book.title}"),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(3),
+                    child: Text("Main Author: ${book.mainAuthor}"),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(3),
+                    child: Text("Language: ${book.lang}"),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(3),
+                    child: Text(
+                        "Publication Year: ${book.pubYear != "0" ? book.pubYear : "No data"}"),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(3),
+                    child: Text("Genres: ${book.genres.join(", ")}"),
+                  )
+                ]),
+              ),
+            ));
   }
 }
