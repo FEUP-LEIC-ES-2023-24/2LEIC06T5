@@ -3,10 +3,6 @@ import 'package:pagepal/model/nav_item.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 enum NavBarItem {
-  shopItem(
-    Icon(PhosphorIconsBold.shoppingCart, color: Colors.white, size: 30),
-    NavItem.shopPage,
-  ),
   messagesItem(
     Icon(
       PhosphorIconsBold.chatCircle,
@@ -29,14 +25,6 @@ enum NavBarItem {
       size: 30,
     ),
     NavItem.profilePage,
-  ),
-  settingsItem(
-    Icon(
-      PhosphorIconsBold.gear,
-      color: Colors.white,
-      size: 30,
-    ),
-    NavItem.settingsPage,
   );
 
   const NavBarItem(this.icon, this.page);
