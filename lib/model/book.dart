@@ -11,6 +11,6 @@ class Book {
   final List<String> genres;
   final String isbn;
   final String lang;
-  final int pubYear;
+  final String pubYear;
   final String title;
 }

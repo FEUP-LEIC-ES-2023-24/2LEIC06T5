@@ -50,18 +50,18 @@ class BooksFetcher {
           genres: genres,
           isbn: isbn,
           lang: '',
-          pubYear: 0,
+          pubYear:
+              data['publish_date'] != "" ? data['publish_date'] : 'no data',
           title: data['title']);
     } else {}
     return Book(
-        authors: [], genres: [], isbn: '', lang: '', pubYear: 0, title: '');
+        authors: [], genres: [], isbn: '', lang: '', pubYear: '', title: '');
   }
 
-  Future<DocumentReference> addBook(
-      String name, String isbn, String author, String imagePath) async {
+  Future<DocumentReference> addBook(Book book) async {
     final FirebaseAuth auth = FirebaseAuth.instance;
 
-    QuerySnapshot authorQuery = await Queries.getAuthor(author);
+    QuerySnapshot authorQuery = await Queries.getAuthor(book.authors[0]);
 
     DocumentReference authorRef;
 
@@ -69,7 +69,7 @@ class BooksFetcher {
       authorRef = firestore.collection('author').doc();
 
       authorRef.set({
-        'name': author,
+        'name': book.authors[0],
         'wrote': [],
       });
     } else {
@@ -79,15 +79,16 @@ class BooksFetcher {
     final DocumentReference booksRef = firestore.collection('book').doc();
 
     booksRef.set({
-      'author': authorRef.id,
-      'isbn': isbn,
-      'title': name,
-      'image': imagePath,
+      'authors': [authorRef],
+      'isbn': book.isbn,
+      'title': book.title,
+      'publicationYear': book.pubYear,
+      'genres': book.genres,
     });
 
-    authorQuery = await Queries.getAuthor(author);
+    authorQuery = await Queries.getAuthor(book.authors[0]);
 
-    List<String> wrote = await Queries.retrieveAuthorBooks(author);
+    List<String> wrote = await Queries.retrieveAuthorBooks(book.authors[0]);
 
     wrote.add(booksRef.id);
     authorQuery.docs.first.reference.update({'wrote': wrote});

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_better_camera/camera.dart';
 import 'package:pagepal/controller/books_fetcher.dart';
@@ -118,8 +119,7 @@ class PhotoPreviewerState extends State<PhotoPreviewer> {
                   TextButton(
                       child: const Text("Confirm"),
                       onPressed: () {
-                        BooksFetcher().addBook(book.title, book.isbn,
-                            book.authors[0], widget.filePath);
+                        BooksFetcher().addBook(book);
                         widget.callback(widget.filePath);
                         Navigator.pop(context);
                       }),
@@ -129,8 +129,10 @@ class PhotoPreviewerState extends State<PhotoPreviewer> {
   }
 
   void addPictureToStorage(String filePath, String isbn) async {
+    final user = FirebaseAuth.instance.currentUser;
+
     final storageRef = FirebaseStorage.instance.ref();
-    final imagesRef = storageRef.child(isbn);
+    final imagesRef = storageRef.child('${isbn}_${user!.uid}');
     File file = File(filePath);
     await imagesRef.putFile(file);
   }

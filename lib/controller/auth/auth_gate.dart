@@ -44,7 +44,9 @@ class AuthGate extends StatelessWidget {
         }
 
         User user = snapshot.data!;
-        if (user.metadata.creationTime == user.metadata.lastSignInTime) {
+        if (user.metadata.creationTime!
+                .compareTo(user.metadata.lastSignInTime!) ==
+            0) {
           _addUserToFirestore(user);
         }
 
@@ -65,5 +67,13 @@ class AuthGate extends StatelessWidget {
       'userName': '',
       'rating': 5.0
     });
+
+    final rating = {
+      "rating": 5,
+      "size": 1,
+      "userID": user.uid,
+    };
+
+    FirebaseFirestore.instance.collection('rating').add(rating);
   }
 }

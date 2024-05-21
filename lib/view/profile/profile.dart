@@ -12,7 +12,6 @@ import 'package:pagepal/view/profile/widgets/custom_painter.dart';
 import 'package:pagepal/view/profile/widgets/main_info.dart';
 import 'package:pagepal/view/profile/widgets/profile_stats.dart';
 import 'package:pagepal/view/profile/widgets/rating_dialog.dart';
-import 'package:pagepal/view/profile/widgets/small_book_display.dart';
 import 'package:pagepal/view/templates/general/general_page.dart';
 import 'package:provider/provider.dart';
 
@@ -45,7 +44,7 @@ class ProfilePageViewState extends GeneralPageState {
       // needs to be an image provider to work
       "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png");
 
-  final smallBoookDisplay = SmallBookDisplay();
+  //final smallBoookDisplay = SmallBookDisplay();
 
   @override
   Widget getBody(BuildContext context) {
@@ -54,7 +53,7 @@ class ProfilePageViewState extends GeneralPageState {
       children: [
         const MainInfo(),
         const ProfileStats(),
-        smallBoookDisplay.getYourBooksBar(),
+        //smallBoookDisplay.getYourBooksBar(),
         getBooksPics(books)
       ],
     );
