@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:pagepal/controller/images_fetcher.dart';
-
 import 'package:pagepal/model/book.dart';
 
 class BooksFetcher {
@@ -24,7 +23,7 @@ class BooksFetcher {
       final List<dynamic> authors = [];
       final List<dynamic> genres = [];
 
-      final image = await ImageFetcher.getImageByISBN(isbn);
+      final image = await ImageFetcher.getImageByIsbnId(isbn, "_");
 
       for (final author in data['authors']) {
         authors.add(author);
@@ -43,9 +42,9 @@ class BooksFetcher {
           mainAuthor: mainAuthorName,
           genres: genres,
           isbn: isbn,
-          lang: data['language'],
+          lang: data['Language'],
           image: image,
-          pubYear: data['publish_date'],
+          pubYear: data['publicationYear'],
           title: data['title']);
     } else {
       return Book(
