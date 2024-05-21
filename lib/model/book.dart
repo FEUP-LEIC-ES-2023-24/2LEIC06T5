@@ -6,7 +6,6 @@ import 'package:pagepal/controller/queries.dart';
 class Book {
   Book({
     required this.authors,
-    required this.mainAuthor,
     required this.genres,
     required this.isbn,
     required this.lang,
@@ -17,7 +16,6 @@ class Book {
   });
 
   final List<dynamic> authors;
-  final String mainAuthor;
   final List<dynamic> genres;
   Image? image;
   final String isbn;
@@ -34,19 +32,22 @@ class Book {
 
     String ownerId = (await Queries.getUserDocRef(ownerEmail)).id;
     Future<Image> img = ImageFetcher.getImageByIsbnId(data?['isbn'], ownerId);
-    DocumentSnapshot authorSnapshot = await (data?['authors'][0]).get();
-    final Map<String, dynamic> authorData =
-        authorSnapshot.data() as Map<String, dynamic>;
-    String mainAuthorName = authorData["name"];
+
+    List<String> authors = [];
+
+    for (DocumentReference authorRef in data?['authors']) {
+      authors.add((await authorRef.get())['name']);
+    }
 
     return Book(
-        authors: data?['authors'],
-        mainAuthor: mainAuthorName,
+        authors: authors,
         genres: data?['genres'],
         image: await img,
         isbn: data?['isbn'],
-        lang: data?['Language'],
-        pubYear: data?['publicationYear'],
+        lang: 'no data',
+        pubYear: data?['publicationYear'] == ""
+            ? 'no data'
+            : data?['publicationYear'],
         title: data?['title'],
         ownerEmail: ownerEmail);
   }

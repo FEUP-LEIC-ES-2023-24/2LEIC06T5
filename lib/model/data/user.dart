@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
   final String email;
-  final List<dynamic> likedGenres;
+  final List<String> likedGenres;
   final GeoPoint location;
-  final List<dynamic> owns;
+  final List<String> owns;
   final String username;
 
   User(

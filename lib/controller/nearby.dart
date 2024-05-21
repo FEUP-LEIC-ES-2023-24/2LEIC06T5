@@ -107,6 +107,7 @@ Future<List<Book>> getUsersBooks(
 
 Future<List<Book>> getNearbyUsersBooks() async {
   final User? currentUser = FirebaseAuth.instance.currentUser;
+
   DocumentReference currentUserDocRef =
       await Queries.getUserDocRef(currentUser?.email);
   List<DocumentReference> pairedUsers = await getPairedUsers(currentUserDocRef);
@@ -121,7 +122,8 @@ Future<List<Book>> getNearbyUsersBooks() async {
 
   Map<String, dynamic> ownedBooksData =
       ((await currentUserDocRef.get()).data() as Map<String, dynamic>);
-  List<dynamic> ownedBooks = ownedBooksData['owns'] as List<dynamic>;
+  List<dynamic> ownedBooks = ownedBooksData['owns'];
+
   List<Book> usersBooks = await getUsersBooks(pairedUsers, ownedBooks);
 
   return usersBooks;

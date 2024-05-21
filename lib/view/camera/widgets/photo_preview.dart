@@ -114,7 +114,7 @@ class PhotoPreviewerState extends State<PhotoPreviewer> {
                   Text(book.title),
                   Text(book.authors[0]),
                   Text(book.genres[0]),
-                  Text(book.pubYear.toString()),
+                  Text(book.pubYear),
                   Text(book.lang),
                   TextButton(
                       child: const Text("Confirm"),
