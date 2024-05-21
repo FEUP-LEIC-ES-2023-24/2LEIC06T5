@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pagepal/controller/nearby.dart';
 import 'package:pagepal/view/swipe/widgets/swiper.dart';
 import 'package:pagepal/view/templates/general/general_page.dart';
 
@@ -12,14 +13,17 @@ class SwipePageView extends StatefulWidget {
 }
 
 class SwipePageViewState extends GeneralPageState {
+  final _formKey = GlobalKey<FormState>();
+  String? newLocation;
+
   @override
   Widget getBody(BuildContext context) {
     return ListView(children: [
       Column(
         children: [
           buildHeader(),
-          Padding(
-            padding: const EdgeInsets.all(5),
+          const Padding(
+            padding: EdgeInsets.all(5),
             child: Swiper(),
           ),
         ],
@@ -48,7 +52,47 @@ class SwipePageViewState extends GeneralPageState {
                   },
                   child: const Text("Sign Out")),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog.adaptive(
+                      content: SizedBox(
+                        height: 100,
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              const Text("New Location"),
+                              Padding(
+                                padding: const EdgeInsets.all(1),
+                                child: TextFormField(
+                                  onSaved: (String? value) =>
+                                      newLocation = value,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      actions: [
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text("Cancel")),
+                        ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                _formKey.currentState!.save();
+                                updateLocation(newLocation);
+                                Navigator.of(context).pop();
+                              }
+                            },
+                            child: const Text("Submit")),
+                      ],
+                    ),
+                  );
+                },
                 style: ElevatedButton.styleFrom(elevation: 10),
                 child: const Row(
                   children: [
@@ -78,11 +122,7 @@ class SwipePageViewState extends GeneralPageState {
                           fontSize: 35,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFFCCD5AE))),
-                  Row(children: [
-                    Icon(Icons.add),
-                    // TODO: THIS IS HARDCODED
-                    Text("Porto, Portugal")
-                  ])
+                  Row(children: [])
                 ],
               )),
         )

@@ -4,8 +4,10 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i3;
-import 'package:pagepal/model/book.dart' as _i2;
+
+import 'package:flutter/cupertino.dart' as _i2;
+import 'package:mockito/src/dummies.dart' as _i4;
+import 'package:pagepal/model/book.dart' as _i3;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -20,32 +22,72 @@ import 'package:pagepal/model/book.dart' as _i2;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
+class _FakeImage_0 extends _i1.SmartFake implements _i2.Image {
+  _FakeImage_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+
+  @override
+  String toString({_i2.DiagnosticLevel? minLevel = _i2.DiagnosticLevel.info}) =>
+      super.toString();
+}
+
 /// A class which mocks [Book].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockBook extends _i1.Mock implements _i2.Book {
+class MockBook extends _i1.Mock implements _i3.Book {
   @override
-  List<String> get authors => (super.noSuchMethod(
+  List<dynamic> get authors => (super.noSuchMethod(
         Invocation.getter(#authors),
-        returnValue: <String>[],
-        returnValueForMissingStub: <String>[],
-      ) as List<String>);
+        returnValue: <dynamic>[],
+        returnValueForMissingStub: <dynamic>[],
+      ) as List<dynamic>);
 
   @override
-  List<String> get genres => (super.noSuchMethod(
+  String get mainAuthor => (super.noSuchMethod(
+        Invocation.getter(#mainAuthor),
+        returnValue: _i4.dummyValue<String>(
+          this,
+          Invocation.getter(#mainAuthor),
+        ),
+        returnValueForMissingStub: _i4.dummyValue<String>(
+          this,
+          Invocation.getter(#mainAuthor),
+        ),
+      ) as String);
+
+  @override
+  List<dynamic> get genres => (super.noSuchMethod(
         Invocation.getter(#genres),
-        returnValue: <String>[],
-        returnValueForMissingStub: <String>[],
-      ) as List<String>);
+        returnValue: <dynamic>[],
+        returnValueForMissingStub: <dynamic>[],
+      ) as List<dynamic>);
+
+  @override
+  _i2.Image get image => (super.noSuchMethod(
+        Invocation.getter(#image),
+        returnValue: _FakeImage_0(
+          this,
+          Invocation.getter(#image),
+        ),
+        returnValueForMissingStub: _FakeImage_0(
+          this,
+          Invocation.getter(#image),
+        ),
+      ) as _i2.Image);
 
   @override
   String get isbn => (super.noSuchMethod(
         Invocation.getter(#isbn),
-        returnValue: _i3.dummyValue<String>(
+        returnValue: _i4.dummyValue<String>(
           this,
           Invocation.getter(#isbn),
         ),
-        returnValueForMissingStub: _i3.dummyValue<String>(
+        returnValueForMissingStub: _i4.dummyValue<String>(
           this,
           Invocation.getter(#isbn),
         ),
@@ -54,33 +96,48 @@ class MockBook extends _i1.Mock implements _i2.Book {
   @override
   String get lang => (super.noSuchMethod(
         Invocation.getter(#lang),
-        returnValue: _i3.dummyValue<String>(
+        returnValue: _i4.dummyValue<String>(
           this,
           Invocation.getter(#lang),
         ),
-        returnValueForMissingStub: _i3.dummyValue<String>(
+        returnValueForMissingStub: _i4.dummyValue<String>(
           this,
           Invocation.getter(#lang),
         ),
       ) as String);
 
   @override
-  int get pubYear => (super.noSuchMethod(
+  String get pubYear => (super.noSuchMethod(
         Invocation.getter(#pubYear),
-        returnValue: 0,
-        returnValueForMissingStub: 0,
-      ) as int);
+        returnValue: _i4.dummyValue<String>(
+          this,
+          Invocation.getter(#pubYear),
+        ),
+        returnValueForMissingStub: _i4.dummyValue<String>(
+          this,
+          Invocation.getter(#pubYear),
+        ),
+      ) as String);
 
   @override
   String get title => (super.noSuchMethod(
         Invocation.getter(#title),
-        returnValue: _i3.dummyValue<String>(
+        returnValue: _i4.dummyValue<String>(
           this,
           Invocation.getter(#title),
         ),
-        returnValueForMissingStub: _i3.dummyValue<String>(
+        returnValueForMissingStub: _i4.dummyValue<String>(
           this,
           Invocation.getter(#title),
         ),
       ) as String);
+
+  @override
+  set ownerEmail(String? _ownerEmail) => super.noSuchMethod(
+        Invocation.setter(
+          #ownerEmail,
+          _ownerEmail,
+        ),
+        returnValueForMissingStub: null,
+      );
 }

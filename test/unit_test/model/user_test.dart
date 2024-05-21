@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:pagepal/model/book.dart';
-import 'package:pagepal/model/rating.dart';
 import 'package:pagepal/model/user.dart';
 
 import 'author_test.mocks.dart';
@@ -15,10 +14,9 @@ void main() {
     when(book.title).thenReturn('Dune 27');
     when(book.isbn).thenReturn('123');
     when(book.lang).thenReturn('Portuguese');
-    when(book.pubYear).thenReturn(2);
+    when(book.pubYear).thenReturn('2');
 
     final user = User(
-        rating: Rating(rating: 0),
         email: 'rubem@gmail.com',
         username: 'Rubem Neto',
         likedGenres: ['Horror', 'Romance', 'Fantasy'],

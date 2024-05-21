@@ -13,7 +13,7 @@ def get_book_genre(title):
             return "Genre information not available."
     else:
         return "Book not found."
-
+# 
 # Example usage
 book_title = "Mensagem"
 book_isbn = "1781us103089"

@@ -20,7 +20,7 @@ class BottomNavBar extends StatelessWidget {
   Widget _buildMiddleSeparator() {
     return SizedBox(
       height: 60.0,
-      width: 25,
+      width: 70,
       child: Container(),
     );
   }
@@ -42,7 +42,9 @@ class BottomNavBar extends StatelessWidget {
       }
     }
 
+    items.insert(0, _buildMiddleSeparator());
     items.insert(2, _buildMiddleSeparator());
+    items.insert(3, _buildMiddleSeparator());
 
     return BottomAppBar(
       shape: const CircularNotchedRectangle(),
@@ -50,7 +52,6 @@ class BottomNavBar extends StatelessWidget {
       height: 60,
       color: const Color(0xFFD4A373),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: items,
       ),
     );
