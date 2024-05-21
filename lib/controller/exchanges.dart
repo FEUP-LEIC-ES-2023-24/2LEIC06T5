@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pagepal/controller/queries.dart';
 import 'package:pagepal/model/user.dart';
@@ -19,7 +20,16 @@ void removeBookFromUser(User user, DocumentReference book) async{
     if (updatedReceiverBooks.isEmpty) {
       await userExchangeSnapshot.reference.delete();
     }
+  }
 
+  QuerySnapshot otherExchanges = await db.collection("incompleteExchanges").where('switchReceiver',isEqualTo: userRef).get();
+  for (QueryDocumentSnapshot otherExchange in otherExchanges.docs) {
+    Map<String,dynamic> otherExchangeData = otherExchange.data() as Map<String, dynamic>;
+    List<DocumentReference> receiverBooks = otherExchangeData['receiverBooks'];
+    receiverBooks.remove(book);
+    if (receiverBooks.isEmpty) {
+      await db.collection('incompleteExchanges').doc(otherExchange.id).delete();
+    }
   }
 }
 
