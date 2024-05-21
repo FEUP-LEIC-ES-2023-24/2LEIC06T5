@@ -146,11 +146,10 @@ class TakePictureScreenState extends State<TakePictureScreen>
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.data != null) {
                   return PhotoPreviewer(
-                    filePath: snapshot.data!,
-                    callback: (imagePath) {
-                      widget.callback(imagePath);
-                    }
-                  );
+                      filePath: snapshot.data!,
+                      callback: (imagePath) {
+                        widget.callback(imagePath);
+                      });
                 } else {
                   return const CircularProgressIndicator.adaptive();
                 }

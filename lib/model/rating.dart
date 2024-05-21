@@ -1,4 +1,3 @@
-
 class Rating {
   Rating({
     required this.rating,
@@ -7,5 +6,4 @@ class Rating {
 
   double rating;
   int size;
-
 }

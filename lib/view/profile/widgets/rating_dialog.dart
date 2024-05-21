@@ -53,7 +53,7 @@ class RatingDialogState extends State<RatingDialog> {
   Widget getStarButton(int starIndex, bool selected) {
     return IconButton(
         onPressed: () => {
-               setState(() {
+              setState(() {
                 numStars = starIndex + 1;
               })
             },
