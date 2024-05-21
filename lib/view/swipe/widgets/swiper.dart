@@ -7,7 +7,7 @@ import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:pagepal/controller/nearby.dart';
 import 'package:pagepal/controller/pairing.dart';
 import 'package:pagepal/controller/queries.dart';
-import 'package:pagepal/model/bookExchange.dart';
+import 'package:pagepal/model/book_exchange.dart';
 import 'package:pagepal/view/swipe/widgets/book_card.dart';
 
 import '../../../model/book.dart';
@@ -16,14 +16,6 @@ class Swiper extends StatelessWidget {
   const Swiper({super.key});
 
   Future<List<BookCard>> getBookCards() async {
-    /*
-    final bookFetcher = BooksFetcher();
-    
-    final firstBook = await bookFetcher.searchBookByISBN("0425038912");
-    final secondBook = await bookFetcher.searchBookByISBN("1451673310");
-    final thirdBook = await bookFetcher.searchBookByISBN("8401434645");
-    */
-
     List<Book> books = await getNearbyUsersBooks();
 
     return createBookCards(books);
@@ -73,23 +65,29 @@ class Swiper extends StatelessWidget {
           if (bookCards.hasData) {
             return Column(children: [
               SizedBox(
-                height: 400,
-                child: CardSwiper(
-                  cardsCount: bookCards.data!.length,
-                  cardBuilder:
-                      (context, index, percentThresholdX, percentThresholdY) =>
-                          bookCards.data?[index],
-                  duration: const Duration(milliseconds: 200),
-                  controller: cardController,
-                  allowedSwipeDirection:
-                      const AllowedSwipeDirection.only(right: true, left: true),
-                  onSwipe: (int previousIndex, int? currentIndex,
-                      CardSwiperDirection direction) {
-                    return acceptChoice(previousIndex, currentIndex, direction,
-                        bookCards.data![previousIndex].book);
-                  },
-                ),
-              ),
+                  height: 400,
+                  child: Stack(
+                    children: [
+                      const Center(child: Text("No more books to show")),
+                      CardSwiper(
+                        cardsCount: bookCards.data!.length,
+                        cardBuilder: (context, index, percentThresholdX,
+                                percentThresholdY) =>
+                            bookCards.data?[index],
+                        duration: const Duration(milliseconds: 200),
+                        controller: cardController,
+                        allowedSwipeDirection: const AllowedSwipeDirection.only(
+                            right: true, left: true),
+                        onSwipe: (int previousIndex, int? currentIndex,
+                            CardSwiperDirection direction) {
+                          return acceptChoice(previousIndex, currentIndex,
+                              direction, bookCards.data![previousIndex].book);
+                        },
+                        isLoop: false,
+                        numberOfCardsDisplayed: 1,
+                      ),
+                    ],
+                  )),
               Container(
                 padding: const EdgeInsets.only(top: 10),
                 child: Row(

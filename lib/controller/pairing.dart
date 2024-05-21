@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pagepal/model/book.dart';
 import 'package:pagepal/controller/queries.dart';
-import 'package:pagepal/model/bookExchange.dart';
+import 'package:pagepal/model/book_exchange.dart';
 
 void processSwipeRight(
     Book book, BookExchange exchange, FirebaseFirestore db) async {
