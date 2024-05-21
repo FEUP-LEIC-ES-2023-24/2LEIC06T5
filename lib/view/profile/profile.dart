@@ -24,7 +24,7 @@ class ProfilePageViewState extends GeneralPageState {
       onPressed: () {
         showDialog(
             context: context,
-            builder: (context) => AlertDialog(
+            builder: (context) => AlertDialog.adaptive(
                   content: Form(
                       key: _formKey,
                       child: Column(
