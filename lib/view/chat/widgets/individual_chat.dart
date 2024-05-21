@@ -161,11 +161,6 @@ class IndividualChatViewState extends State<IndividualChatView> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              IconButton(
-                  onPressed: () => uploadFile(), icon: const Icon(Icons.add)),
-              IconButton(
-                  onPressed: () => sendPicture(),
-                  icon: const Icon(Icons.image)),
               const SizedBox(width: 10),
               Expanded(
                 child: TextFormField(

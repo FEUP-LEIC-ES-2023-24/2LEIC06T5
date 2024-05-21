@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: camel_case_types
 class customPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {

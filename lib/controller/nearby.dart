@@ -140,3 +140,13 @@ void updateLocation(String? newLocation) async {
     "Location": GeoPoint(location.first.latitude, location.first.longitude),
   });
 }
+
+Future<String> getLocation(String email) async {
+  DocumentReference currentUserDocRef = await Queries.getUserDocRef(email);
+  final mapUser =
+      (await currentUserDocRef.get()).data() as Map<String, dynamic>;
+  final geoPoint = mapUser['Location'] as GeoPoint;
+  final placemark =
+      await placemarkFromCoordinates(geoPoint.latitude, geoPoint.longitude);
+  return ("${placemark.first.locality!}, ${placemark.first.country!}");
+}

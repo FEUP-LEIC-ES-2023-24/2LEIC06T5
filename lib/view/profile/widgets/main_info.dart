@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pagepal/controller/nearby.dart';
 
 class MainInfo extends StatefulWidget {
   const MainInfo({super.key});
@@ -13,8 +14,8 @@ class MainInfoState extends State {
   final user = FirebaseAuth.instance.currentUser;
 
   String username = '';
-  final String userTitle = 'Scrum Master';
-  final String location = 'Porto, Portugal';
+  String userTitle = 'Scrum Master';
+  String location = 'Porto, Portugal';
 
   @override
   void initState() {
@@ -25,8 +26,10 @@ class MainInfoState extends State {
   void updateUsername() async {
     final currentID = "/user/${FirebaseAuth.instance.currentUser?.uid}";
     final currentUser = await FirebaseFirestore.instance.doc(currentID).get();
+    final newLocation = await getLocation(user!.email!);
     setState(() {
       username = currentUser.data()?["userName"] ?? 'No name';
+      location = newLocation;
     });
   }
 
@@ -45,9 +48,9 @@ class MainInfoState extends State {
                   username,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-                Text(
-                  userTitle,
-                  style: const TextStyle(fontSize: 10, color: Colors.grey),
+                const Text(
+                  "Current User",
+                  style: TextStyle(fontSize: 10, color: Colors.grey),
                 ),
                 Text(
                   location,

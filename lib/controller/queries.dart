@@ -39,8 +39,9 @@ class Queries {
         .where('userID', isEqualTo: userDocRef)
         .get();
     final ratingDocs = ratingQuery.docs;
+
     if (ratingDocs.isEmpty) {
-      final data = {"rating": 5, "size": 1, "userID": userID};
+      final data = {"rating": 5.00, "size": 1, "userID": userDocRef};
       firestore.collection('rating').add(data);
       return Rating(rating: 5.00, size: 1);
     } else {
@@ -49,7 +50,8 @@ class Queries {
     }
   }
 
-  static void updateRating(String userID, Rating rating, int value) async {
+  static Future<void> updateRating(
+      String userID, Rating rating, int value) async {
     final double newRating =
         (rating.size * rating.rating + value) / (rating.size + 1);
     final userDocRef = firestore.collection('user').doc(userID);
@@ -57,12 +59,18 @@ class Queries {
         .collection('rating')
         .where('userID', isEqualTo: userDocRef)
         .get();
-    final ratingID = ratingDocRef.docs.first.id;
-    firestore.doc('rating/$ratingID').update({
-      'rating': double.parse(newRating.toStringAsFixed(2)),
-      'size': rating.size + 1,
-      'userID': userDocRef
-    });
+    if (ratingDocRef.docs.isEmpty) {
+      final data = {"rating": rating, "size": 1, "userID": userDocRef};
+      firestore.collection('rating').add(data);
+    } else {
+      final ratingID = ratingDocRef.docs.first.id;
+      firestore.doc('rating/$ratingID').update({
+        'rating': double.parse(newRating.toStringAsFixed(2)),
+        'size': rating.size + 1,
+        // ignore: prefer_interpolation_to_compose_strings
+        'userID': userDocRef,
+      });
+    }
   }
 
   static Future<DocumentSnapshot> getCurrentUser() async {

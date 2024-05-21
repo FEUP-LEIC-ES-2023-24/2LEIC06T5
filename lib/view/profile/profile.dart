@@ -10,8 +10,6 @@ import 'package:pagepal/view/profile/widgets/edit_dialog.dart';
 
 import 'package:pagepal/view/profile/widgets/custom_painter.dart';
 import 'package:pagepal/view/profile/widgets/main_info.dart';
-import 'package:pagepal/view/profile/widgets/profile_stats.dart';
-import 'package:pagepal/view/profile/widgets/rating_dialog.dart';
 import 'package:pagepal/view/templates/general/general_page.dart';
 import 'package:provider/provider.dart';
 
@@ -53,7 +51,6 @@ class ProfilePageViewState extends GeneralPageState {
     return Column(
       children: [
         const MainInfo(),
-        const ProfileStats(),
         //smallBoookDisplay.getYourBooksBar(),
         getBooksPics(books)
       ],
@@ -132,15 +129,6 @@ class ProfilePageViewState extends GeneralPageState {
         toolbarHeight: heightAppBar,
         leading: null,
         automaticallyImplyLeading: false,
-        actions: [
-          TextButton(
-              onPressed: () => showAdaptiveDialog(
-                  context: context,
-                  builder: (context) => RatingDialog(
-                        userID: user!.uid,
-                      )),
-              child: const Text('Rate them!!'))
-        ],
         flexibleSpace: Stack(
           children: <Widget>[
             Container(
