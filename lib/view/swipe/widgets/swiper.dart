@@ -1,9 +1,13 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:pagepal/controller/nearby.dart';
 import 'package:pagepal/controller/pairing.dart';
+import 'package:pagepal/controller/queries.dart';
+import 'package:pagepal/model/bookExchange.dart';
 import 'package:pagepal/view/swipe/widgets/book_card.dart';
 
 import '../../../model/book.dart';
@@ -29,14 +33,30 @@ class Swiper extends StatelessWidget {
     return (books.map((book) => BookCard(book: book))).toList();
   }
 
-  bool acceptChoice(
+  Future<bool> acceptChoice(
     int previousIndex,
     int? currentIndex,
     CardSwiperDirection direction,
     Book book,
-  ) {
+  ) async {
     if (direction == CardSwiperDirection.right) {
-      processSwipeRight(book);
+      final User? user = FirebaseAuth.instance.currentUser;
+      DocumentReference curUser = await Queries.getUserDocRef(user?.email);
+      DocumentReference otherUser =
+          await Queries.getUserDocRef(book.ownerEmail);
+      DocumentReference? bookExchangeCurrentAsReceiver =
+          await Queries.getIncompleBookExchange(otherUser, curUser);
+      DocumentReference? bookExchangeCurrentAsInitiator =
+          await Queries.getIncompleBookExchange(curUser, otherUser);
+      List<Book> receiverBooks = await getUsersBooks([curUser], []);
+      BookExchange exchange = BookExchange(
+          curUser,
+          otherUser,
+          bookExchangeCurrentAsInitiator,
+          bookExchangeCurrentAsReceiver,
+          receiverBooks);
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      processSwipeRight(book, exchange, db);
     }
     return true;
   }

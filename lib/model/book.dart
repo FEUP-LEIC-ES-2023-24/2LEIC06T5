@@ -28,26 +28,26 @@ class Book {
 
 //Get a Book class instance from firebase
   static Future<Book> createBookFromFirestore(
-      DocumentSnapshot<Map<String, dynamic>> snapshot, String ownerEmail) async {
+      DocumentSnapshot<Map<String, dynamic>> snapshot,
+      String ownerEmail) async {
     final data = snapshot.data();
 
     String ownerId = (await Queries.getUserDocRef(ownerEmail)).id;
-    Future<Image> img = ImageFetcher.getImageByIsbnId(data?['isbn'],ownerId);
+    Future<Image> img = ImageFetcher.getImageByIsbnId(data?['isbn'], ownerId);
     DocumentSnapshot authorSnapshot = await (data?['authors'][0]).get();
     final Map<String, dynamic> authorData =
         authorSnapshot.data() as Map<String, dynamic>;
-    String mainAuthorName = authorData["name"];    
+    String mainAuthorName = authorData["name"];
 
     return Book(
-      authors: data?['authors'],
-      mainAuthor: mainAuthorName,
-      genres: data?['genres'],
-      image: await img,
-      isbn: data?['isbn'],
-      lang: data?['Language'],
-      pubYear: data?['publicationYear'],
-      title: data?['title'],
-      ownerEmail: ownerEmail
-    );
+        authors: data?['authors'],
+        mainAuthor: mainAuthorName,
+        genres: data?['genres'],
+        image: await img,
+        isbn: data?['isbn'],
+        lang: data?['Language'],
+        pubYear: data?['publicationYear'],
+        title: data?['title'],
+        ownerEmail: ownerEmail);
   }
 }

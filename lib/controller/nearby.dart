@@ -12,10 +12,10 @@ double degreesToRadians(double degree) {
 
 Future<bool> isWithinDistance(double userLat, double userLon, double otherLat,
     double otherLon, double distance) async {
-  otherLat  = degreesToRadians(otherLat);
-  otherLon  = degreesToRadians(otherLon);
-  userLat   = degreesToRadians(userLat);
-  userLon   = degreesToRadians(userLon);
+  otherLat = degreesToRadians(otherLat);
+  otherLon = degreesToRadians(otherLon);
+  userLat = degreesToRadians(userLat);
+  userLon = degreesToRadians(userLon);
 
   double deltaLat = otherLat - userLat;
   double deltaLon = otherLon - userLon;
@@ -76,7 +76,8 @@ Future<List<DocumentReference>> getPairedUsers(
   return pairedUsers;
 }
 
-Future<Book> getBookFromRef(DocumentReference bookRef, [String ownerEmail = "_"]) async {
+Future<Book> getBookFromRef(DocumentReference bookRef,
+    [String ownerEmail = "_"]) async {
   DocumentSnapshot<Map<String, dynamic>> bookData =
       await bookRef.get() as DocumentSnapshot<Map<String, dynamic>>;
 
@@ -84,16 +85,13 @@ Future<Book> getBookFromRef(DocumentReference bookRef, [String ownerEmail = "_"]
   return book;
 }
 
-Future<List<Book>> getUsersBooks(List<DocumentReference> pairedUsers,
-    DocumentReference currentUserDocRef) async {
+Future<List<Book>> getUsersBooks(
+    List<DocumentReference> pairedUsers, List<dynamic> ownedBooks) async {
   List<Book> pairedBooks = [];
 
-  Map<String, dynamic> ownedBooksData =
-      ((await currentUserDocRef.get()).data() as Map<String, dynamic>);
-  List<dynamic> ownedBooks = ownedBooksData['owns'] as List<dynamic>;
-
   for (DocumentReference userRef in pairedUsers) {
-    Map<String, dynamic> userData = (await userRef.get()).data() as Map<String, dynamic>;
+    Map<String, dynamic> userData =
+        (await userRef.get()).data() as Map<String, dynamic>;
     for (DocumentReference bookRef in userData['owns']) {
       bool isOwned = ownedBooks.any((ref) => ref == bookRef);
       if (!isOwned) {
@@ -106,7 +104,6 @@ Future<List<Book>> getUsersBooks(List<DocumentReference> pairedUsers,
 }
 
 Future<List<Book>> getNearbyUsersBooks() async {
-
   final User? currentUser = FirebaseAuth.instance.currentUser;
   DocumentReference currentUserDocRef =
       await Queries.getUserDocRef(currentUser?.email);
@@ -119,7 +116,10 @@ Future<List<Book>> getNearbyUsersBooks() async {
       pairedUsers.add(nearbyUser);
     }
   }
-  List<Book> usersBooks = await getUsersBooks(pairedUsers, currentUserDocRef);
+  Map<String, dynamic> ownedBooksData =
+      ((await currentUserDocRef.get()).data() as Map<String, dynamic>);
+  List<dynamic> ownedBooks = ownedBooksData['owns'] as List<dynamic>;
+  List<Book> usersBooks = await getUsersBooks(pairedUsers, ownedBooks);
 
 /*
 //Turn query to coordinates
