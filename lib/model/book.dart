@@ -12,14 +12,14 @@ class Book {
     required this.lang,
     required this.pubYear,
     required this.title,
-    required this.image,
+    this.image,
     this.ownerEmail,
   });
 
   final List<dynamic> authors;
   final String mainAuthor;
   final List<dynamic> genres;
-  final Image image;
+  Image? image;
   final String isbn;
   final String lang;
   final String pubYear;

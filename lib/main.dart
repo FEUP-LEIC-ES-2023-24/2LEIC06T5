@@ -1,5 +1,7 @@
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:pagepal/controller/auth/auth_gate.dart';
+import 'package:pagepal/model/providers/book_provider.dart';
 import 'package:pagepal/view/chat/chat.dart';
 import 'package:pagepal/view/chat/widgets/individual_chat.dart';
 import 'package:pagepal/view/swipe/swipe.dart';
@@ -12,7 +14,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+      create: (_) => BooksProvider(), child: const MyApp()));
 }
 
 class MyApp extends StatefulWidget {

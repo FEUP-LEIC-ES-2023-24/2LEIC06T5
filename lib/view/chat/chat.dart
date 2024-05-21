@@ -98,4 +98,9 @@ class ChatPageViewState extends GeneralPageState {
       ],
     );
   }
+
+  @override
+  PreferredSizeWidget? getAppBar(BuildContext context) {
+    return null;
+  }
 }
