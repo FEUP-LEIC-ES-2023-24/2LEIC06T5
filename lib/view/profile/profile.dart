@@ -27,13 +27,11 @@ class ProfilePageViewState extends GeneralPageState {
   String imagePath = '';
   String isbn = '';
   FileImage? profilePic;
-  static String username = '';
   late StreamingSharedPreferences prefs;
 
   @override
   void initState() {
     super.initState();
-    username = user?.displayName ?? '';
     initializePreferences();
     loadBookImages();
   }
@@ -102,44 +100,51 @@ class ProfilePageViewState extends GeneralPageState {
             width: 100,
             height: 150,
             child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10), color: Colors.grey),
-              child: IconButton(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.grey),
+                child: IconButton(
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onPressed: () {
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => FutureBuilder<List<CameraDescription>?>(
-                          future: availableCameras(),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<List<CameraDescription>?>
-                                  snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
-                              if (snapshot.data != null) {
-                                return TakePictureScreen(
-                                  camera: snapshot.data!.first,
-                                  callback: (imagePath, isbn) {
-                                    Provider.of<BooksProvider>(context,
-                                            listen: false)
-                                        .addBook(Book(
-                                            authors: [],
-                                            genres: [],
-                                            isbn: isbn,
-                                            lang: '',
-                                            pubYear: '',
-                                            title: '',
-                                            image:
-                                                Image.file(File(imagePath))));
-                                  },
-                                );
-                              } else {
-                                return const Text('No camera available');Também tenho 
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => FutureBuilder<
+                                    List<CameraDescription>?>(
+                                future: availableCameras(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<List<CameraDescription>?>
+                                        snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.done) {
+                                    if (snapshot.data != null) {
+                                      return TakePictureScreen(
+                                        camera: snapshot.data!.first,
+                                        callback: (imagePath, isbn) {
+                                          Provider.of<BooksProvider>(context,
+                                                  listen: false)
+                                              .addBook(Book(
+                                                  authors: [],
+                                                  genres: [],
+                                                  isbn: isbn,
+                                                  lang: '',
+                                                  pubYear: '',
+                                                  title: '',
+                                                  image: Image.file(
+                                                      File(imagePath))));
+                                        },
+                                      );
+                                    } else {
+                                      return const Text('No camera available');
+                                    }
+                                  } else {
+                                    return const CircularProgressIndicator();
+                                  }
+                                })));
                   },
-                  icon: const Icon(Icons.add)),
-            )));
+                  icon: const Icon(Icons.add),
+                ))));
 
     picBooks.insert(0, buttonToAddBook);
 
@@ -179,8 +184,7 @@ class ProfilePageViewState extends GeneralPageState {
                 )),
             Container(
               alignment: Alignment.bottomCenter,
-              child:
-                  const CircleAvatar(radius: 35, backgroundImage: profilePic),
+              child: CircleAvatar(radius: 35, backgroundImage: profilePic),
             ),
             Container(
               padding: const EdgeInsets.all(3),

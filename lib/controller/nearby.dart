@@ -145,7 +145,11 @@ Future<String> getLocation(String email) async {
   final mapUser =
       (await currentUserDocRef.get()).data() as Map<String, dynamic>;
   final geoPoint = mapUser['Location'] as GeoPoint;
-  final placemark =
-      await placemarkFromCoordinates(geoPoint.latitude, geoPoint.longitude);
-  return ("${placemark.first.locality!}, ${placemark.first.country!}");
+  try {
+    final placemark =
+        await placemarkFromCoordinates(geoPoint.latitude, geoPoint.longitude);
+    return ("${placemark.first.locality!}, ${placemark.first.country!}");
+  } catch (e) {
+    return "No location";
+  }
 }

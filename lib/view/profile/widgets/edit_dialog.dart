@@ -17,7 +17,7 @@ class EditProfileDialog extends StatelessWidget {
             "Change your Profile:",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          Padding(padding: EdgeInsets.all(10)),
+          const Padding(padding: EdgeInsets.all(10)),
           buildButton(context, "Change Username", const ChangeUsernameDialog()),
           buildButton(context, "Change Password", const ChangePasswordDialog()),
           buildButton(context, "Change Email", const ChangeEmailDialog()),

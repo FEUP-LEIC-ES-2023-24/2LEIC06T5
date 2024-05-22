@@ -38,7 +38,11 @@ class BooksFetcher {
     final List<String> imageISBN = [];
     for (final bookRef in booksRef) {
       final bookDoc = await bookRef.get();
-      imageISBN.add(bookDoc['isbn']);
+      try {
+        imageISBN.add(bookDoc['isbn']);
+      } catch (e) {
+        continue;
+      }
     }
 
     final List<Book> images = await Future.wait(imageISBN.map((path) async =>

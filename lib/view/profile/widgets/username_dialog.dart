@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pagepal/controller/queries.dart';
+import 'package:logger/logger.dart';
 
 class ChangeUsernameDialog extends StatefulWidget {
   const ChangeUsernameDialog({super.key});
