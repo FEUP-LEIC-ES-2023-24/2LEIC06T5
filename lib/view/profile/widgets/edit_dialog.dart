@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pagepal/view/profile/widgets/email_dialog.dart';
+import 'package:pagepal/view/profile/widgets/image_picker.dart';
 import 'package:pagepal/view/profile/widgets/password_dialog.dart';
 import 'package:pagepal/view/profile/widgets/username_dialog.dart';
 
@@ -15,7 +16,7 @@ class EditProfileDialog extends StatelessWidget {
           buildButton(context, "Change Username", const ChangeUsernameDialog()),
           buildButton(context, "Change Password", const ChangePasswordDialog()),
           buildButton(context, "Change Email", const ChangeEmailDialog()),
-          buildButton(context, "Change Avatar", const ChangeUsernameDialog()),
+          buildButton(context, "Change Avatar", const ImagePickerScreen()),
         ]),
       ),
     );

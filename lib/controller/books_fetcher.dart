@@ -12,12 +12,28 @@ import 'package:pagepal/model/book.dart';
 class BooksFetcher {
   BooksFetcher();
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  Future<List<Image>> fetchUserBookImages(String email) async {
+  Future<bool> removeBook(String isbn) async {
+    QuerySnapshot querySnapshot =
+        await firestore.collection('book').where('isbn', isEqualTo: isbn).get();
+
+    DocumentSnapshot queryUserSnapshot = await Queries.getCurrentUser();
+
+    for (var element in querySnapshot.docs) {
+      queryUserSnapshot.reference.update({
+        'owns': FieldValue.arrayRemove([element.reference])
+      });
+    }
+
+    return true;
+  }
+
+  Future<List<Book>> fetchUserBookWithImages(String email) async {
     final List<DocumentReference> booksRef =
         await Queries.retrieveUserBooks(email);
 
-    final userID = FirebaseAuth.instance.currentUser!.uid;
+    final userID = firebaseAuth.currentUser!.uid;
 
     final List<String> imageISBN = [];
     for (final bookRef in booksRef) {
@@ -25,8 +41,15 @@ class BooksFetcher {
       imageISBN.add(bookDoc['isbn']);
     }
 
-    final List<Image> images = await Future.wait(
-        imageISBN.map((path) => ImageFetcher.getImageByIsbnId(path, userID)));
+    final List<Book> images = await Future.wait(imageISBN.map((path) async =>
+        Book(
+            authors: [],
+            genres: [],
+            isbn: path,
+            lang: '',
+            pubYear: '',
+            title: '',
+            image: await ImageFetcher.getImageByIsbnId(path, userID))));
 
     return images;
   }
@@ -58,8 +81,7 @@ class BooksFetcher {
           genres: genres,
           isbn: isbn,
           lang: 'no data',
-          pubYear:
-              data['publish_date'] != "" ? data['publish_date'] : 'no data',
+          pubYear: data['publish_date'] ?? 'no data',
           title: data['title']);
     } else {}
     return Book(

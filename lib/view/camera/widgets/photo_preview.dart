@@ -10,7 +10,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 class PhotoPreviewer extends StatefulWidget {
   final String filePath;
-  final Function(String) callback;
+  final Function(String, String) callback;
   const PhotoPreviewer(
       {required this.filePath, required this.callback, super.key});
 
@@ -29,93 +29,81 @@ class PhotoPreviewerState extends State<PhotoPreviewer> {
       children: [
         Expanded(child: Image.file(File(widget.filePath))),
         Center(
-            child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: TextButton(
-                  style: TextButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black),
-                  onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) =>
-                              FutureBuilder<List<CameraDescription>?>(
-                            future: availableCameras(),
-                            builder: (BuildContext context,
-                                AsyncSnapshot<List<CameraDescription>?>
-                                    snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.done) {
-                                if (snapshot.data != null) {
-                                  return TakePictureScreen(
-                                    camera: snapshot.data!.first,
-                                    callback: (string) => {},
-                                  );
-                                } else {
-                                  return const Text('No camera available');
-                                }
-                              } else {
-                                return const CircularProgressIndicator();
-                              }
-                            },
-                          ),
-                        ),
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          TextButton(
+              onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => FutureBuilder<List<CameraDescription>?>(
+                        future: availableCameras(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List<CameraDescription>?> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            if (snapshot.data != null) {
+                              return TakePictureScreen(
+                                camera: snapshot.data!.first,
+                                callback: (string, string2) => {},
+                              );
+                            } else {
+                              return const Text('No camera available');
+                            }
+                          } else {
+                            return const CircularProgressIndicator();
+                          }
+                        },
                       ),
-                  child: const Text("Retake")),
-            ),
-            Padding(
-                padding: const EdgeInsets.all(5),
-                child: TextButton(
-                    style: TextButton.styleFrom(
-                        padding: const EdgeInsets.all(3),
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.black),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/profile');
-                      showAdaptiveDialog(
-                          context: context,
-                          builder: (context) => AlertDialog.adaptive(
-                                content: IntrinsicHeight(
-                                    child: Form(
-                                  key: formKey,
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8),
-                                        child: TextFormField(
-                                          decoration: const InputDecoration(
-                                            labelText: "ISBN",
-                                            icon: Icon(Icons.book),
-                                          ),
-                                          onSaved: (String? value) =>
-                                              isbn = value!,
-                                        ),
+                    ),
+                  ),
+              child: const Text("Retake")),
+        ])),
+        Padding(
+            padding: const EdgeInsets.all(5),
+            child: TextButton(
+                style: TextButton.styleFrom(
+                    padding: const EdgeInsets.all(3),
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/profile');
+                  showAdaptiveDialog(
+                      context: context,
+                      builder: (context) => AlertDialog.adaptive(
+                            content: IntrinsicHeight(
+                                child: Form(
+                              key: formKey,
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: TextFormField(
+                                      decoration: const InputDecoration(
+                                        labelText: "ISBN",
+                                        icon: Icon(Icons.book),
                                       ),
-                                    ],
+                                      onSaved: (String? value) => isbn = value!,
+                                    ),
                                   ),
-                                )),
-                                actions: [
-                                  ElevatedButton(
-                                      onPressed: () async {
-                                        if (formKey.currentState!.validate()) {
-                                          formKey.currentState!.save();
-                                          Book book = await BooksFetcher()
-                                              .searchBookByISBN(isbn);
-                                          showBookInformationDialog(book);
-                                          addPictureToStorage(
-                                              widget.filePath, book.isbn);
-                                        }
-                                      },
-                                      child: const Text("Search book"))
                                 ],
-                              ));
-                    },
-                    child: const Text("Approve")))
-          ],
-        ))
+                              ),
+                            )),
+                            actions: [
+                              ElevatedButton(
+                                  onPressed: () async {
+                                    if (formKey.currentState!.validate()) {
+                                      formKey.currentState!.save();
+                                      Book book = await BooksFetcher()
+                                          .searchBookByISBN(isbn);
+                                      showBookInformationDialog(book);
+                                      addPictureToStorage(
+                                          widget.filePath, book.isbn);
+                                    }
+                                  },
+                                  child: const Text("Search book"))
+                            ],
+                          ));
+                },
+                child: const Text("Approve")))
       ],
     );
   }
@@ -137,7 +125,7 @@ class PhotoPreviewerState extends State<PhotoPreviewer> {
                       child: const Text("Confirm"),
                       onPressed: () {
                         BooksFetcher().addBook(book);
-                        widget.callback(widget.filePath);
+                        widget.callback(widget.filePath, book.isbn);
                         Navigator.pop(context);
                       }),
                 ],

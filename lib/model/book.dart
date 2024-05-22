@@ -45,9 +45,7 @@ class Book {
         image: await img,
         isbn: data?['isbn'],
         lang: 'no data',
-        pubYear: data?['publicationYear'] == ""
-            ? 'no data'
-            : data?['publicationYear'],
+        pubYear: data?['publicationYear'] ?? 'no data',
         title: data?['title'],
         ownerEmail: ownerEmail);
   }

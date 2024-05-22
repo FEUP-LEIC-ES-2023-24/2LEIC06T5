@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pagepal/controller/nearby.dart';
+import 'package:pagepal/view/profile/widgets/username_dialog.dart';
 import 'package:pagepal/view/swipe/widgets/swiper.dart';
 import 'package:pagepal/view/templates/general/general_page.dart';
 
@@ -15,6 +16,7 @@ class SwipePageView extends StatefulWidget {
 class SwipePageViewState extends GeneralPageState {
   final _formKey = GlobalKey<FormState>();
   String? newLocation;
+  User? auth = FirebaseAuth.instance.currentUser;
 
   @override
   Widget getBody(BuildContext context) {

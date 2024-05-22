@@ -28,6 +28,8 @@ dependencies:
 
   http: ^1.2.0
   geocoding: ^3.0.0
+  streaming_shared_preferences: ^2.0.0
+  image_picker: ^1.1.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

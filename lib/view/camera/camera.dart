@@ -8,7 +8,7 @@ import 'package:path_provider/path_provider.dart';
 
 class TakePictureScreen extends StatefulWidget {
   final CameraDescription camera;
-  final Function(String) callback;
+  final Function(String, String) callback;
   const TakePictureScreen(
       {required this.camera, required this.callback, super.key});
 
@@ -33,6 +33,7 @@ class TakePictureScreenState extends State<TakePictureScreen>
     with WidgetsBindingObserver {
   late CameraController? _controller;
   String? imagePath;
+  String? isbn;
   FlashMode flashMode = FlashMode.off;
 
   @override
@@ -147,8 +148,8 @@ class TakePictureScreenState extends State<TakePictureScreen>
                 if (snapshot.data != null) {
                   return PhotoPreviewer(
                       filePath: snapshot.data!,
-                      callback: (imagePath) {
-                        widget.callback(imagePath);
+                      callback: (imagePath, isbn) {
+                        widget.callback(imagePath, isbn);
                       });
                 } else {
                   return const CircularProgressIndicator.adaptive();
