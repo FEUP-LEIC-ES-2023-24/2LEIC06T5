@@ -13,6 +13,11 @@ class EditProfileDialog extends StatelessWidget {
       backgroundColor: const Color(0xFFD4A373),
       content: IntrinsicHeight(
         child: Column(children: [
+          const Text(
+            "Change your Profile:",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Padding(padding: EdgeInsets.all(10)),
           buildButton(context, "Change Username", const ChangeUsernameDialog()),
           buildButton(context, "Change Password", const ChangePasswordDialog()),
           buildButton(context, "Change Email", const ChangeEmailDialog()),
@@ -27,7 +32,8 @@ class EditProfileDialog extends StatelessWidget {
         style: TextButton.styleFrom(
             backgroundColor: Colors.white,
             shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(4)))),
+                borderRadius: BorderRadius.all(Radius.circular(12))),
+            minimumSize: const Size(200, 40)),
         onPressed: () => {
               Navigator.of(context).pop(),
               showAdaptiveDialog(
@@ -37,9 +43,8 @@ class EditProfileDialog extends StatelessWidget {
             },
         child: Text(
           text,
-          style: const TextStyle(
-            color: Color(0xFFD4A373),
-          ),
+          style:
+              const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
         ));
   }
 }

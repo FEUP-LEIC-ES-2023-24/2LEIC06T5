@@ -6,7 +6,6 @@ void main() {
   group('Book object tests', () {
     test('Create a book object', () {
       final book = Book(
-          mainAuthor: 'me',
           authors: ['Rubem', 'Goiana', 'Marta', 'Alex', 'Rachel'],
           genres: ['Horror'],
           isbn: "123",

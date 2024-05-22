@@ -24,6 +24,7 @@ class ChangeUsernameDialogState extends State {
               key: _formKey,
               child: Column(
                 children: [
+                  const Text("New Username:"),
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: TextFormField(

@@ -8,7 +8,6 @@ import 'package:pagepal/view/swipe/widgets/little_info_card.dart';
 
 void main() {
   final book = Book(
-      mainAuthor: 'me',
       authors: ['Rubem', 'Goiana', 'Marta', 'Alex', 'Rachel'],
       genres: ['Horror'],
       isbn: "123",
@@ -30,7 +29,6 @@ void main() {
       expect(find.byType(Image), findsOneWidget);
     });
     test('BookCard elements', () {
-      expect(book.mainAuthor, 'me');
       expect(book.isbn, '123');
     });
   });

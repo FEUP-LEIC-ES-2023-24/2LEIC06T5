@@ -136,15 +136,7 @@ class ProfilePageViewState extends GeneralPageState {
                                   },
                                 );
                               } else {
-                                return const Text('No camera available');
-                              }
-                            } else {
-                              return const CircularProgressIndicator();
-                            }
-                          },
-                        ),
-                      ),
-                    );
+                                return const Text('No camera available');Também tenho 
                   },
                   icon: const Icon(Icons.add)),
             )));
@@ -160,7 +152,7 @@ class ProfilePageViewState extends GeneralPageState {
 
   @override
   PreferredSizeWidget getAppBar(BuildContext context) {
-    const double heightAppBar = 190;
+    const double heightAppBar = 200;
 
     return AppBar(
         toolbarHeight: heightAppBar,
@@ -169,22 +161,8 @@ class ProfilePageViewState extends GeneralPageState {
         flexibleSpace: Stack(
           children: <Widget>[
             Container(
-              height: heightAppBar * 0.8,
+              height: heightAppBar * 0.75,
               color: const Color(0xFFD4A373),
-            ),
-            Container(
-              alignment: Alignment.topRight,
-              child: TextButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => const EditProfileDialog(),
-                    );
-                  },
-                  style: TextButton.styleFrom(
-                      backgroundColor: const Color(0xFFFEFAE0),
-                      foregroundColor: const Color(0xFFD4A373)),
-                  child: const Text('Edit Profile')),
             ),
             Container(
                 alignment: Alignment.bottomCenter,
@@ -201,8 +179,23 @@ class ProfilePageViewState extends GeneralPageState {
                 )),
             Container(
               alignment: Alignment.bottomCenter,
-              child: CircleAvatar(radius: 35, backgroundImage: profilePic),
-            )
+              child:
+                  const CircleAvatar(radius: 35, backgroundImage: profilePic),
+            ),
+            Container(
+              padding: const EdgeInsets.all(3),
+              alignment: Alignment.bottomRight,
+              child: OutlinedButton(
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => const EditProfileDialog(),
+                ),
+                style: TextButton.styleFrom(
+                    backgroundColor: const Color(0xFFFEFAE0),
+                    foregroundColor: const Color(0xFFD4A373)),
+                child: const Text('Edit Profile'),
+              ),
+            ),
           ],
         ));
   }
