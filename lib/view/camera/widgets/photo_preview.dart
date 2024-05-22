@@ -31,6 +31,10 @@ class PhotoPreviewerState extends State<PhotoPreviewer> {
         Center(
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           TextButton(
+              style: TextButton.styleFrom(
+                  padding: const EdgeInsets.all(3),
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black),
               onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -56,54 +60,55 @@ class PhotoPreviewerState extends State<PhotoPreviewer> {
                     ),
                   ),
               child: const Text("Retake")),
-        ])),
-        Padding(
-            padding: const EdgeInsets.all(5),
-            child: TextButton(
-                style: TextButton.styleFrom(
-                    padding: const EdgeInsets.all(3),
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/profile');
-                  showAdaptiveDialog(
-                      context: context,
-                      builder: (context) => AlertDialog.adaptive(
-                            content: IntrinsicHeight(
-                                child: Form(
-                              key: formKey,
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: TextFormField(
-                                      decoration: const InputDecoration(
-                                        labelText: "ISBN",
-                                        icon: Icon(Icons.book),
+          Padding(
+              padding: const EdgeInsets.all(5),
+              child: TextButton(
+                  style: TextButton.styleFrom(
+                      padding: const EdgeInsets.all(3),
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.black),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/profile');
+                    showAdaptiveDialog(
+                        context: context,
+                        builder: (context) => AlertDialog.adaptive(
+                              content: IntrinsicHeight(
+                                  child: Form(
+                                key: formKey,
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: TextFormField(
+                                        decoration: const InputDecoration(
+                                          labelText: "ISBN",
+                                          icon: Icon(Icons.book),
+                                        ),
+                                        onSaved: (String? value) =>
+                                            isbn = value!,
                                       ),
-                                      onSaved: (String? value) => isbn = value!,
                                     ),
-                                  ),
-                                ],
-                              ),
-                            )),
-                            actions: [
-                              ElevatedButton(
-                                  onPressed: () async {
-                                    if (formKey.currentState!.validate()) {
-                                      formKey.currentState!.save();
-                                      Book book = await BooksFetcher()
-                                          .searchBookByISBN(isbn);
-                                      showBookInformationDialog(book);
-                                      addPictureToStorage(
-                                          widget.filePath, book.isbn);
-                                    }
-                                  },
-                                  child: const Text("Search book"))
-                            ],
-                          ));
-                },
-                child: const Text("Approve")))
+                                  ],
+                                ),
+                              )),
+                              actions: [
+                                ElevatedButton(
+                                    onPressed: () async {
+                                      if (formKey.currentState!.validate()) {
+                                        formKey.currentState!.save();
+                                        Book book = await BooksFetcher()
+                                            .searchBookByISBN(isbn);
+                                        showBookInformationDialog(book);
+                                        addPictureToStorage(
+                                            widget.filePath, book.isbn);
+                                      }
+                                    },
+                                    child: const Text("Search book"))
+                              ],
+                            ));
+                  },
+                  child: const Text("Approve")))
+        ]))
       ],
     );
   }
