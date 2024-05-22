@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:pagepal/controller/nearby.dart';
 
@@ -30,7 +29,6 @@ class MainInfoState extends State {
         .collection('user')
         .where('email', isEqualTo: user!.email)
         .get();
-    ;
 
     setState(() {
       username = userName.docs[0]['userName'];
