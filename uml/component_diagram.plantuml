@@ -1,0 +1,40 @@
+@startuml DomainModel
+
+package "Pagepal App" {
+    [Book]
+    [Author]
+    [User]
+    [Genre]
+    [BookRating]
+    [Message]
+    [UserRating]
+    [BookExchange]
+}
+
+package "Database" {
+    [BookRepository]
+    [AuthorRepository]
+    [UserRepository]
+    [GenreRepository]
+    [BookRatingRepository]
+    [MessageRepository]
+    [UserRatingRepository]
+    [BookExchangeRepository]
+}
+
+package "External Services" {
+    [AuthenticationService]
+}
+
+[User] --> [UserRepository]
+[Book] --> [BookRepository]
+[Author] --> [AuthorRepository]
+[Genre] --> [GenreRepository]
+[BookRating] --> [BookRatingRepository]
+[Message] --> [MessageRepository]
+[UserRating] --> [UserRatingRepository]
+[BookExchange] --> [BookExchangeRepository]
+
+[User] --> [AuthenticationService]
+
+@enduml

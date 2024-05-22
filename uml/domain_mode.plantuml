@@ -1,0 +1,62 @@
+@startuml DomainModel
+
+class Book {
+    title : String
+    isbn : String
+    publication_date : String
+    language : String
+}
+
+class Author {
+    first_name : String
+    last_name : String
+}
+
+class User {
+    user_name : String
+    location : String
+    email : String
+    password : String
+}
+
+class Genre {
+    genre_name : String
+}
+
+Author "1..*" -- "*" Book: wrote
+User "*" -- "*" Book : has
+User "*" -- "*" Book : wants
+Genre "*" -- "*" Book : is_of_genre
+User "*" -- "*" Genre : likes
+User "*" -- "*" Book
+(User, Book) .. BookRating
+User "*" -- "*" User
+(User, User) .. UserRating
+
+class BookRating {
+    rating : int
+    comment : String
+}
+
+class Message {
+    text : String
+    date : String
+}
+
+Message "*" -- "1" User : sent
+Message "*" -- "1" User : recieved
+
+class UserRating {
+    rating : int
+    comment : String
+}
+
+class BookExchange {
+    date : String
+}
+
+BookExchange "*" -- "1" User : gives
+BookExchange "*" -- "1" User : takes
+BookExchange "*" -- "1" Book
+
+@enduml
